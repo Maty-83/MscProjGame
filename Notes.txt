@@ -1,0 +1,11 @@
+Initial notes about diploma thesis:
+>6 DOF space with a velocity limit=pseudo-newtonian
+>Impulse every frame modifies existing direction vector and is only then clamped to the speed regimen
+>Multiple ways to control, we focus on the most common control interface: Mouse+KB
+	>Since the physics are E:D inspired, we'll steal controls from there
+	>Other schemes we'd like to try: NMS, X4 (Yay, I get to buy those two games)
+	
+>Process of program creation:
+	>Unity 6.4 3D URP
+	>Uses https://github.com/dyrdadev/milky-way-skybox-for-unity?tab=readme-ov-file as skybox package
+	>Scale chosen: 1m to 1 unit
