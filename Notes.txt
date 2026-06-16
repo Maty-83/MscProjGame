@@ -9,3 +9,4 @@ Initial notes about diploma thesis:
 	>Unity 6.4 3D URP
 	>Uses https://github.com/dyrdadev/milky-way-skybox-for-unity?tab=readme-ov-file as skybox package
 	>Scale chosen: 1m to 1 unit
+	>Very rough ship blockout in place; Blockout inspired by YF-23 combined with the Chengdu J-20 and  F-19 model airplane; Wuill need to be redone at a later date
