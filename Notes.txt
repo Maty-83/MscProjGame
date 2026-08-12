@@ -9,4 +9,21 @@ Initial notes about diploma thesis:
 	>Unity 6.4 3D URP
 	>Uses https://github.com/dyrdadev/milky-way-skybox-for-unity?tab=readme-ov-file as skybox package
 	>Scale chosen: 1m to 1 unit
-	>Very rough ship blockout in place; Blockout inspired by YF-23 combined with the Chengdu J-20 and  F-19 model airplane; Wuill need to be redone at a later date
+	>Very rough ship blockout in place; Blockout inspired by YF-23 combined with the Chengdu J-20 and F-19 model airplane
+	
+		>Process took significantly longer than expected due to complexity of hard surface modelling
+			>Describe eventual outcome and what shaders were used?
+			
+		>Problem incorporating into Unity as Unity has automatic backface culling even through transparent materials
+			>I'd have to disable globally or rewrite material shaders
+			>TODO: Separate cockpit frame and glass.
+		
+		>More issues arise with transfer of material shaders
+			>Intent was using an AO calculation for thruster effect for RCS ports.
+			
+		>To simplify design process, RCS ports only exist in cardinal directions except four at the back.
+			>These will be handled quite simply: We can trigger two at a time based on what control axes are used
+			>TECHNICALLY these fall outside the COM for combined lateral+vertical traverse, but this can be finished by either	a)Limiting the maximum used for any given direction to balance or,
+																																b)Forgoing realism for ease of implementation
+	>Upon preliminary model completion, attention turned to early controls implementation and testing
+		>Have some pics of tests?

@@ -62,8 +62,8 @@ public class ShipMovementProto : MonoBehaviour
             pitchOverFrames = 0;
             yawOverFrames = 0;
         }
-        pitch = Input.GetAxis("MouseX");
-        yaw = Input.GetAxis("MouseY");
+        //pitch = Input.GetAxis("MouseX"); //Temp removal
+        //yaw = Input.GetAxis("MouseY");
 
         pitchOverFrames += pitch;
         yawOverFrames += yaw;
@@ -82,7 +82,7 @@ public class ShipMovementProto : MonoBehaviour
         //TODO: After we get this fully going, we should actually do a roll over frames too.
         float rollVel= Mathf.Clamp(rb.angularVelocity.z + Time.fixedDeltaTime * rollAccelPerSec * roll, -maxRollVel, maxRollVel);
         //Assign the new velocity (Could be done easier if I didn't need to clamp it)
-        rb.angularVelocity = new Vector3(pitchVel, yawVel, rollVel);
+        rb.angularVelocity = new Vector3(rollVel, pitchVel, yawVel);
 
         //Now the linear velocity!
 
@@ -108,8 +108,8 @@ public class ShipMovementProto : MonoBehaviour
         velocityInDirs=new Vector3(
             Mathf.Clamp(velocityInDirs.x+forwardAccel,-maxReverseVel,maxVel),
             Mathf.Clamp(velocityInDirs.y+vertAccel,-maxVerticalVel,maxVerticalVel),
-            Mathf.Clamp(velocityInDirs.z,-maxLateralVel, maxLateralVel
-            ));
+            Mathf.Clamp(velocityInDirs.z+sideAccel,-maxLateralVel, maxLateralVel)
+            );
         //Assign newly calculated velocity vector
         rb.linearVelocity = rb.rotation * velocityInDirs;
     }
