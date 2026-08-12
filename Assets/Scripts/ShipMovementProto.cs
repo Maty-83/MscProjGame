@@ -82,8 +82,10 @@ public class ShipMovementProto : MonoBehaviour
         //TODO: Apply effectors to ship. This is the distinction of the PerFrame input: If PerFrame is active, remove the motion.
 
         //Need to calculate Pitch change for a given dir. Basically the same process should exist for all other options.
+
+        var inverseVec = transform.InverseTransformVector(rb.angularVelocity);
         float pitchThisFrame = Mathf.Clamp(pitchOverFrames, -maxPitchVel, maxPitchVel);
-        float pitchVel = Mathf.Clamp(rb.angularVelocity.z + pitchThisFrame * pitchAccelPerSec * Time.fixedDeltaTime, -maxPitchVel, maxPitchVel);
+        float pitchVel = Mathf.Clamp(inverseVec.z + pitchThisFrame * pitchAccelPerSec * Time.fixedDeltaTime, -maxPitchVel, maxPitchVel);
         if (pitchOnMouse)
         {
             pitchOverFrames -= pitchThisFrame;
@@ -91,7 +93,7 @@ public class ShipMovementProto : MonoBehaviour
         else pitchOverFrames = 0;
         //Yaw
         float yawThisFrame= Mathf.Clamp(yawOverFrames, -maxYawVel, maxYawVel);
-        float yawVel = Mathf.Clamp(rb.angularVelocity.y + yawThisFrame*yawAccelPerSec*Time.fixedDeltaTime, -maxYawVel, maxYawVel);
+        float yawVel = Mathf.Clamp(inverseVec.y + yawThisFrame*yawAccelPerSec*Time.fixedDeltaTime, -maxYawVel, maxYawVel);
         if (yawOnMouse)
         {
             yawOverFrames -= yawThisFrame;
@@ -99,14 +101,19 @@ public class ShipMovementProto : MonoBehaviour
         else yawOverFrames = 0;
         //Roll
         //TODO: After we get this fully going, we should actually do a roll over frames too.
-        float rollVel= Mathf.Clamp(rb.angularVelocity.x + Time.fixedDeltaTime * rollAccelPerSec * roll, -maxRollVel, maxRollVel);
+        float rollVel= Mathf.Clamp(inverseVec.x + Time.fixedDeltaTime * rollAccelPerSec * roll, -maxRollVel, maxRollVel);
         if (rollOnMouse)
         {
             //TODO: This does nothing for now, need to implement it.
         }
 
         //Assign the new velocity (Could be done easier if I didn't need to clamp it)
-        rb.angularVelocity = new Vector3(rollVel, yawVel, pitchVel);
+
+
+
+        rb.angularVelocity = transform.TransformDirection(new Vector3(rollVel, yawVel, pitchVel));
+
+        //rb.angularVelocity = new Vector3(rollVel, yawVel, pitchVel);
         //Now the linear velocity!
 
         float forwardAccel = 0f;
