@@ -33,3 +33,5 @@ Initial notes about diploma thesis:
 		>Apparently, Unity doesn't support concave mesh colliders-Problem solvable by decomposing model in Blender (TODO)
 			>In essence, canards can be separated, each engine can and main wing in two pieces... Leaving two more (Cockpit segment, and in-between engines segment)
 				>Will likely use an automated tool.
+				
+		>Testing the camera attachment in-game has proved to be important, as due to a misjudgement about scaling the model we will have to eventually replace the cockpit

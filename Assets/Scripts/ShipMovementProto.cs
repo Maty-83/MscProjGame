@@ -79,11 +79,6 @@ public class ShipMovementProto : MonoBehaviour
         pitchOverFrames += pitch;
         yawOverFrames += yaw;
 
-        if (Mathf.Abs(rb.angularVelocity.z) > 0.5)
-        {
-            var a = 0;
-        }
-
         //TODO: Apply effectors to ship. This is the distinction of the PerFrame input: If PerFrame is active, remove the motion.
 
         //Need to calculate Pitch change for a given dir. Basically the same process should exist for all other options.
