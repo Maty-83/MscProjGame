@@ -282,27 +282,27 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7310538931458642005, guid: 8373a9ebe7b9c3d4c8c3821492a80b7e, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 7310538931458642005, guid: 8373a9ebe7b9c3d4c8c3821492a80b7e, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: -25
       objectReference: {fileID: 0}
     - target: {fileID: 7310538931458642005, guid: 8373a9ebe7b9c3d4c8c3821492a80b7e, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: 0.9622502
       objectReference: {fileID: 0}
     - target: {fileID: 7310538931458642005, guid: 8373a9ebe7b9c3d4c8c3821492a80b7e, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: 0.02255758
       objectReference: {fileID: 0}
     - target: {fileID: 7310538931458642005, guid: 8373a9ebe7b9c3d4c8c3821492a80b7e, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: 0.084186025
       objectReference: {fileID: 0}
     - target: {fileID: 7310538931458642005, guid: 8373a9ebe7b9c3d4c8c3821492a80b7e, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: 0.25783423
       objectReference: {fileID: 0}
     - target: {fileID: 7310538931458642005, guid: 8373a9ebe7b9c3d4c8c3821492a80b7e, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -310,11 +310,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7310538931458642005, guid: 8373a9ebe7b9c3d4c8c3821492a80b7e, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 7310538931458642005, guid: 8373a9ebe7b9c3d4c8c3821492a80b7e, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
+      value: 30
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -519,10 +519,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ShipMovementProto
   pitchAccelPerSec: 1
   maxPitchVel: 1
+  pitchOnMouse: 0
   yawAccelPerSec: 0.5
   maxYawVel: 0.5
+  yawOnMouse: 0
   rollAccelPerSec: 1
   maxRollVel: 1
+  rollOnMouse: 0
   forwardAccelPerSec: 40
   maxVel: 200
   reverseAccelPerSec: 20
