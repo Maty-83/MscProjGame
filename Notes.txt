@@ -27,3 +27,9 @@ Initial notes about diploma thesis:
 																																b)Forgoing realism for ease of implementation
 	>Upon preliminary model completion, attention turned to early controls implementation and testing
 		>Have some pics of tests?
+		
+	>Movement testing!
+		>First test done via fixed cam looking at RB'd ship.
+		>Apparently, Unity doesn't support concave mesh colliders-Problem solvable by decomposing model in Blender (TODO)
+			>In essence, canards can be separated, each engine can and main wing in two pieces... Leaving two more (Cockpit segment, and in-between engines segment)
+				>Will likely use an automated tool.
