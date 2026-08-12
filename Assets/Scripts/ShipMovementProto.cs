@@ -8,7 +8,7 @@ public class ShipMovementProto : MonoBehaviour
     public bool pitchOnMouse = false; //If pitch is on mouse, we collect overflow inputs and apply until overflow is exhausted
 
     public float yawAccelPerSec = 0.5f;
-    public float maxYawVel = 0.5f;//Max Yaw speed, rad/sec
+    public float maxYawVel = 1.0f;//Max Yaw speed, rad/sec
     public bool yawOnMouse = false; //If yaw is on mouse, we collect overflow inputs and apply until overflow is exhausted
 
     public float rollAccelPerSec = 1.0f;
@@ -17,19 +17,25 @@ public class ShipMovementProto : MonoBehaviour
 
     public float forwardAccelPerSec = 40f;
     public float maxVel = 200; //FA-off movement: Max speed limit. FA-on movement: Max forward velocity.
+
     public float reverseAccelPerSec = 20f;
     public float maxReverseVel = 100; //FA-on: Max reverse velocity.
+
     public float lateralAccelPerSec = 10f;
     public float maxLateralVel = 100; //FA-on movement: Max Lateral velocity
+
     public float verticalAccelPerSec = 10f;
     public float maxVerticalVel = 100; //FA-on movement: Max vertical velocity
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+
+    
     public bool perFrameInput=false;
     public float mouseDeltaMult = 1;
 
     private float pitchOverFrames = 0;
     private float yawOverFrames = 0;
+    private float rollOverFrames = 0;
     private Rigidbody rb;
+    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         rb = this.gameObject.GetComponent<Rigidbody>();
@@ -60,6 +66,9 @@ public class ShipMovementProto : MonoBehaviour
         if (Input.GetKey(KeyCode.A)) { roll++; }
         if (Input.GetKey(KeyCode.D)) { roll--; }
 
+
+
+
         //TODO for the movement script: Input.GetAxis, as accumulation
         //TODO for movement script: Middle mouse to reset accumulation.
         bool resetMouseInputs = Input.GetKeyDown(KeyCode.Mouse2);
@@ -78,22 +87,28 @@ public class ShipMovementProto : MonoBehaviour
 
         pitchOverFrames += pitch;
         yawOverFrames += yaw;
+        rollOverFrames += roll;
 
         //TODO: Apply effectors to ship. This is the distinction of the PerFrame input: If PerFrame is active, remove the motion.
 
-        //Need to calculate Pitch change for a given dir. Basically the same process should exist for all other options.
+        /* How this is SUPPOSED to work
+         * Calculate changes in local coordinate space
+         * Add said changes to the GLOBAL rotation.
+         * Then, transform rotation into LOCAL space again and clamp speeds (Or if they're over, at least dampen them by some amount)
+         * THEN TRANSFORM IT BACK AND SET AS A RESULT
+         */
 
-        var inverseVec = transform.InverseTransformVector(rb.angularVelocity);
-        float pitchThisFrame = Mathf.Clamp(pitchOverFrames, -maxPitchVel, maxPitchVel);
-        float pitchVel = Mathf.Clamp(inverseVec.z + pitchThisFrame * pitchAccelPerSec * Time.fixedDeltaTime, -maxPitchVel, maxPitchVel);
+        
+        float pitchThisFrame = Mathf.Clamp(pitchOverFrames, -1, 1);
+        float pitchAcc = pitchThisFrame * pitchAccelPerSec * Time.fixedDeltaTime;
         if (pitchOnMouse)
         {
             pitchOverFrames -= pitchThisFrame;
         }
         else pitchOverFrames = 0;
         //Yaw
-        float yawThisFrame= Mathf.Clamp(yawOverFrames, -maxYawVel, maxYawVel);
-        float yawVel = Mathf.Clamp(inverseVec.y + yawThisFrame*yawAccelPerSec*Time.fixedDeltaTime, -maxYawVel, maxYawVel);
+        float yawThisFrame= Mathf.Clamp(yawOverFrames, -1, 1);
+        float yawAcc = yawThisFrame * yawAccelPerSec * Time.fixedDeltaTime;
         if (yawOnMouse)
         {
             yawOverFrames -= yawThisFrame;
@@ -101,19 +116,25 @@ public class ShipMovementProto : MonoBehaviour
         else yawOverFrames = 0;
         //Roll
         //TODO: After we get this fully going, we should actually do a roll over frames too.
-        float rollVel= Mathf.Clamp(inverseVec.x + Time.fixedDeltaTime * rollAccelPerSec * roll, -maxRollVel, maxRollVel);
+        float rollThisFrame = Mathf.Clamp(rollOverFrames, -1, 1);
+        float rollAcc = rollThisFrame * Time.fixedDeltaTime * rollAccelPerSec;
         if (rollOnMouse)
         {
-            //TODO: This does nothing for now, need to implement it.
+            rollOverFrames-=rollThisFrame;
         }
+        else rollOverFrames = 0;
 
         //Assign the new velocity (Could be done easier if I didn't need to clamp it)
 
+        //Calculate roll delta
+        var rollDelta = rb.angularVelocity.x * Time.fixedDeltaTime;
 
 
-        rb.angularVelocity = transform.TransformDirection(new Vector3(rollVel, yawVel, pitchVel));
 
-        //rb.angularVelocity = new Vector3(rollVel, yawVel, pitchVel);
+        /*rb.angularVelocity += transform.TransformDirection(new Vector3(rollAcc, 0, 0));
+        rb.angularVelocity += transform.TransformDirection(new Vector3(0, yawAcc, 0));
+        rb.angularVelocity += transform.TransformDirection(new Vector3(0, 0, pitchAcc));*/
+        
         //Now the linear velocity!
 
         float forwardAccel = 0f;
