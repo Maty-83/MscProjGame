@@ -268,6 +268,10 @@ PrefabInstance:
       propertyPath: m_IsKinematic
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5656400985707504874, guid: 8373a9ebe7b9c3d4c8c3821492a80b7e, type: 3}
+      propertyPath: m_AngularDamping
+      value: 0.01
+      objectReference: {fileID: 0}
     - target: {fileID: 6257767235296585632, guid: 8373a9ebe7b9c3d4c8c3821492a80b7e, type: 3}
       propertyPath: m_Name
       value: Ship
