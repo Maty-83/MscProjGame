@@ -82,9 +82,13 @@ public class ShipMovementProto : MonoBehaviour
         resetMultiFrameInputs = Input.GetKey(KeyCode.Mouse2);
     }
 
-    private void ApplyRotationVelChanges() 
+    private void ApplyRotationVelChanges(bool dampIfNotAccelerating=false) 
     {
         //TODO: Apply effectors to ship. This is the distinction of the PerFrame input: If PerFrame is active, remove the motion.
+
+        Vector3 localAngularVelocity = transform.InverseTransformDirection(rb.angularVelocity); //P=Z, R=X, Y=Y
+
+        Debug.Log(localAngularVelocity);
 
         float pitchThisFrame = Mathf.Clamp(pitchOverFrames, -1, 1);
         float pitchAcc = pitchThisFrame * pitchAccelPerSec * Time.fixedDeltaTime;
@@ -93,6 +97,12 @@ public class ShipMovementProto : MonoBehaviour
             pitchOverFrames -= pitchThisFrame;
         }
         else pitchOverFrames = 0;
+
+        if (pitchThisFrame == 0 && dampIfNotAccelerating)
+        {
+            pitchAcc = Mathf.Clamp(-1 * Mathf.Sign(localAngularVelocity.z) * pitchAccelPerSec * Time.fixedDeltaTime, -Mathf.Abs(localAngularVelocity.z), Mathf.Abs(localAngularVelocity.z));
+        }
+
 
         //Yaw
         float yawThisFrame = Mathf.Clamp(yawOverFrames, -1, 1);
@@ -103,6 +113,11 @@ public class ShipMovementProto : MonoBehaviour
         }
         else yawOverFrames = 0;
 
+        if (yawThisFrame == 0 && dampIfNotAccelerating)
+        {
+            yawAcc = Mathf.Clamp(-1 * Mathf.Sign(localAngularVelocity.y) * yawAccelPerSec * Time.fixedDeltaTime, -Mathf.Abs(localAngularVelocity.y), Mathf.Abs(localAngularVelocity.y));
+        }
+
         //Roll
         float rollThisFrame = Mathf.Clamp(rollOverFrames, -1, 1);
         float rollAcc = rollThisFrame * Time.fixedDeltaTime * rollAccelPerSec;
@@ -111,6 +126,11 @@ public class ShipMovementProto : MonoBehaviour
             rollOverFrames -= rollThisFrame;
         }
         else rollOverFrames = 0;
+
+        if (rollThisFrame == 0 && dampIfNotAccelerating)
+        {
+            rollAcc = Mathf.Clamp(-1 * Mathf.Sign(localAngularVelocity.x) * rollAccelPerSec * Time.fixedDeltaTime, -Mathf.Abs(localAngularVelocity.x), Mathf.Abs(localAngularVelocity.x));
+        }
 
         //Assign the new velocity (Could be done easier if I didn't need to clamp it)
 
@@ -121,6 +141,7 @@ public class ShipMovementProto : MonoBehaviour
     {
         
         var velocityInDirs = Quaternion.Inverse(rb.rotation) * rb.linearVelocity;
+
         float forwardAccel = 0f;
         if (forward > 0)
         {
@@ -135,25 +156,25 @@ public class ShipMovementProto : MonoBehaviour
             //For now, we just use a simple damping as a proof of concept.
             if (velocityInDirs.x > 0)
             {
-                forwardAccel = Mathf.Min(velocityInDirs.x, forward * Time.fixedDeltaTime * reverseAccelPerSec);
+                forwardAccel = -Mathf.Min(velocityInDirs.x, Time.fixedDeltaTime * reverseAccelPerSec);
             }
             if (velocityInDirs.x < 0)//Gotta handle this separate
             {
-                forwardAccel = Mathf.Max(velocityInDirs.x, forward * Time.fixedDeltaTime * forwardAccelPerSec);
+                forwardAccel = -Mathf.Max(velocityInDirs.x, -Time.fixedDeltaTime * forwardAccelPerSec);//Confusing, NEEDS TESTING. Should work.
             }
         }
         //Side accel (Z, left-handed)
         float sideAccel = lateral * Time.fixedDeltaTime * lateralAccelPerSec;
         if (lateral == 0 && dampIfNotAccelerating)
         {
-            sideAccel = Mathf.Clamp(-1 * Mathf.Sign(velocityInDirs.z) * Time.fixedDeltaTime * lateralAccelPerSec, -velocityInDirs.z, velocityInDirs.z);
+            sideAccel = Mathf.Clamp(-1 * Mathf.Sign(velocityInDirs.z) * Time.fixedDeltaTime * lateralAccelPerSec, -Mathf.Abs(velocityInDirs.z), Mathf.Abs(velocityInDirs.z));
         }
 
         //Vertical accel
         float vertAccel = vertical * Time.fixedDeltaTime * verticalAccelPerSec;
         if (vertical == 0 && dampIfNotAccelerating)
         {
-            vertAccel = Mathf.Clamp(-1 * Mathf.Sign(velocityInDirs.y) * Time.fixedDeltaTime * verticalAccelPerSec, -velocityInDirs.y, velocityInDirs.y);
+            vertAccel = Mathf.Clamp(-1 * Mathf.Sign(velocityInDirs.y) * Time.fixedDeltaTime * verticalAccelPerSec, -Mathf.Abs(velocityInDirs.y), Mathf.Abs(velocityInDirs.y));
         }
 
         //TODO: Check if this works as intended based on the velocity limits. Also, implement FA-on.
