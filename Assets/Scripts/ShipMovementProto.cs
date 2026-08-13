@@ -129,7 +129,7 @@ public class ShipMovementProto : MonoBehaviour
         //Calculate roll delta
         var rollDelta = rb.angularVelocity.x * Time.fixedDeltaTime;
 
-        rb.AddRelativeTorque(rollAcc / 6.283f*360, yawAcc / 6.283f * 360, pitchAcc / 6.283f * 360);
+        rb.AddRelativeTorque(rollAcc, yawAcc, pitchAcc, ForceMode.VelocityChange);
 
         //Now the linear velocity!
 

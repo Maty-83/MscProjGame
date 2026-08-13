@@ -35,3 +35,6 @@ Initial notes about diploma thesis:
 				>Will likely use an automated tool.
 				
 		>Testing the camera attachment in-game has proved to be important, as due to a misjudgement about scaling the model we will have to eventually replace the cockpit
+		
+		>A major issue cropped up where Unity's native rigidbody doesn't support angular momentum conversion
+			>This can be fixed by adding relative torque, but now we need a way to detect and limit rotation velocity
