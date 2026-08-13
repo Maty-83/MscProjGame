@@ -117,26 +117,49 @@ public class ShipMovementProto : MonoBehaviour
         rb.AddRelativeTorque(rollAcc, yawAcc, pitchAcc, ForceMode.VelocityChange);
     }
 
-    private void ApplyLinearVelChanges(float forward, float lateral, float vertical)
+    private void ApplyLinearVelChanges(float forward, float lateral, float vertical, bool dampIfNotAccelerating=false)
     {
+        
+        var velocityInDirs = Quaternion.Inverse(rb.rotation) * rb.linearVelocity;
         float forwardAccel = 0f;
         if (forward > 0)
         {
             forwardAccel = forward * Time.fixedDeltaTime * forwardAccelPerSec;
         }
-        else
+        else if (forward < 0)
         {
             forwardAccel = forward * Time.fixedDeltaTime * reverseAccelPerSec;
         }
+        if(forward==0&& dampIfNotAccelerating)
+        {
+            //For now, we just use a simple damping as a proof of concept.
+            if (velocityInDirs.x > 0)
+            {
+                forwardAccel = Mathf.Min(velocityInDirs.x, forward * Time.fixedDeltaTime * reverseAccelPerSec);
+            }
+            if (velocityInDirs.x < 0)//Gotta handle this separate
+            {
+                forwardAccel = Mathf.Max(velocityInDirs.x, forward * Time.fixedDeltaTime * forwardAccelPerSec);
+            }
+        }
         //Side accel (Z, left-handed)
         float sideAccel = lateral * Time.fixedDeltaTime * lateralAccelPerSec;
+        if (lateral == 0 && dampIfNotAccelerating)
+        {
+            sideAccel = Mathf.Clamp(-1 * Mathf.Sign(velocityInDirs.z) * Time.fixedDeltaTime * lateralAccelPerSec, -velocityInDirs.z, velocityInDirs.z);
+        }
+
         //Vertical accel
         float vertAccel = vertical * Time.fixedDeltaTime * verticalAccelPerSec;
+        if (vertical == 0 && dampIfNotAccelerating)
+        {
+            vertAccel = Mathf.Clamp(-1 * Mathf.Sign(velocityInDirs.y) * Time.fixedDeltaTime * verticalAccelPerSec, -velocityInDirs.y, velocityInDirs.y);
+        }
 
         //TODO: Check if this works as intended based on the velocity limits. Also, implement FA-on.
 
         //Rotate our velocity system to local space
-        var velocityInDirs = Quaternion.Inverse(rb.rotation) * rb.linearVelocity;
+
         //Compute new velocity
         velocityInDirs = new Vector3(
             Mathf.Clamp(velocityInDirs.x + forwardAccel, -maxReverseVel, maxVel),
