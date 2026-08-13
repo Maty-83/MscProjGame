@@ -37,4 +37,4 @@ Initial notes about diploma thesis:
 		>Testing the camera attachment in-game has proved to be important, as due to a misjudgement about scaling the model we will have to eventually replace the cockpit
 		
 		>A major issue cropped up where Unity's native rigidbody doesn't support angular momentum conversion
-			>This can be fixed by adding relative torque, but now we need a way to detect and limit rotation velocity
+			>This can be fixed by adding relative torque, but that poses a slight issue when canceling out momentum automatically. Luckily, with velocity mode and getting local angular velocity, I can apply it.

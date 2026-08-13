@@ -1,5 +1,7 @@
 using Unity.Hierarchy;
+using Unity.VisualScripting;
 using UnityEngine;
+using static UnityEditor.Searcher.SearcherWindow.Alignment;
 
 public class ShipMovementProto : MonoBehaviour
 {
@@ -80,7 +82,7 @@ public class ShipMovementProto : MonoBehaviour
         resetMultiFrameInputs = Input.GetKey(KeyCode.Mouse2);
     }
 
-    private void ApplyRotationChanges() 
+    private void ApplyRotationVelChanges() 
     {
         //TODO: Apply effectors to ship. This is the distinction of the PerFrame input: If PerFrame is active, remove the motion.
 
@@ -115,6 +117,35 @@ public class ShipMovementProto : MonoBehaviour
         rb.AddRelativeTorque(rollAcc, yawAcc, pitchAcc, ForceMode.VelocityChange);
     }
 
+    private void ApplyLinearVelChanges(float forward, float lateral, float vertical)
+    {
+        float forwardAccel = 0f;
+        if (forward > 0)
+        {
+            forwardAccel = forward * Time.fixedDeltaTime * forwardAccelPerSec;
+        }
+        else
+        {
+            forwardAccel = forward * Time.fixedDeltaTime * reverseAccelPerSec;
+        }
+        //Side accel (Z, left-handed)
+        float sideAccel = lateral * Time.fixedDeltaTime * lateralAccelPerSec;
+        //Vertical accel
+        float vertAccel = vertical * Time.fixedDeltaTime * verticalAccelPerSec;
+
+        //TODO: Check if this works as intended based on the velocity limits. Also, implement FA-on.
+
+        //Rotate our velocity system to local space
+        var velocityInDirs = Quaternion.Inverse(rb.rotation) * rb.linearVelocity;
+        //Compute new velocity
+        velocityInDirs = new Vector3(
+            Mathf.Clamp(velocityInDirs.x + forwardAccel, -maxReverseVel, maxVel),
+            Mathf.Clamp(velocityInDirs.y + vertAccel, -maxVerticalVel, maxVerticalVel),
+            Mathf.Clamp(velocityInDirs.z + sideAccel, -maxLateralVel, maxLateralVel)
+            );
+        //Assign newly calculated velocity vector
+        rb.linearVelocity = rb.rotation * velocityInDirs;
+    }
     void FixedUpdate()
     {
         //The inputs sections should be replaced by a function call in the future, same for "Over time" values
@@ -137,35 +168,10 @@ public class ShipMovementProto : MonoBehaviour
             rollOverFrames += roll;
         }
 
-        ApplyRotationChanges();
+        ApplyRotationVelChanges();
 
         //Now the linear velocity!
 
-        float forwardAccel = 0f;
-        if (forward > 0)
-        {
-            forwardAccel = forward * Time.fixedDeltaTime * forwardAccelPerSec;
-        }
-        else
-        {
-            forwardAccel = forward * Time.fixedDeltaTime * reverseAccelPerSec;
-        }
-        //Side accel (Z, left-handed)
-        float sideAccel = lateral * Time.fixedDeltaTime * lateralAccelPerSec;
-        //Vertical accel
-        float vertAccel = vertical * Time.fixedDeltaTime * verticalAccelPerSec;
-
-        //TODO: Check if this works as intended based on the velocity limits. Also, implement FA-on.
-
-        //Rotate our velocity system to local space
-        var velocityInDirs = Quaternion.Inverse(rb.rotation) * rb.linearVelocity;
-        //Compute new velocity
-        velocityInDirs=new Vector3(
-            Mathf.Clamp(velocityInDirs.x+forwardAccel,-maxReverseVel,maxVel),
-            Mathf.Clamp(velocityInDirs.y+vertAccel,-maxVerticalVel,maxVerticalVel),
-            Mathf.Clamp(velocityInDirs.z+sideAccel,-maxLateralVel, maxLateralVel)
-            );
-        //Assign newly calculated velocity vector
-        rb.linearVelocity = rb.rotation * velocityInDirs;
+        ApplyLinearVelChanges(forward, lateral, vertical);
     }
 }
