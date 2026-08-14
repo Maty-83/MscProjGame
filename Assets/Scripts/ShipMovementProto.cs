@@ -29,7 +29,8 @@ public class ShipMovementProto : MonoBehaviour
     public float verticalAccelPerSec = 10f;
     public float maxVerticalVel = 100; //FA-on movement: Max vertical velocity
 
-    
+    public bool enableDamping = false;
+
     public bool perFrameInput=false;
     public float mouseDeltaMult = 1;
 
@@ -37,6 +38,8 @@ public class ShipMovementProto : MonoBehaviour
     private float yawOverFrames = 0;
     private float rollOverFrames = 0;
     private Rigidbody rb;
+
+    
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -199,6 +202,12 @@ public class ShipMovementProto : MonoBehaviour
 
         GetControlInputs(out pitch, out yaw, out roll, out forward, out vertical, out lateral, out resetMultiFrameInputs);
 
+        //TEMP: For testing damping
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            enableDamping = !enableDamping;
+        }
+
         if (resetMultiFrameInputs)
         {
             pitchOverFrames = 0;
@@ -212,10 +221,10 @@ public class ShipMovementProto : MonoBehaviour
             rollOverFrames += roll;
         }
 
-        ApplyRotationVelChanges();
+        ApplyRotationVelChanges(enableDamping);
 
         //Now the linear velocity!
 
-        ApplyLinearVelChanges(forward, lateral, vertical);
+        ApplyLinearVelChanges(forward, lateral, vertical, enableDamping);
     }
 }
