@@ -38,3 +38,31 @@ Initial notes about diploma thesis:
 		
 		>A major issue cropped up where Unity's native rigidbody doesn't support angular momentum conversion
 			>This can be fixed by adding relative torque, but that poses a slight issue when canceling out momentum automatically. Luckily, with velocity mode and getting local angular velocity, I can apply it.
+		
+		>"Damping" testing.
+			>We want linear damp, simulating counter-thrust
+				>This is taken directly from E:D.
+				>Slowing down can be decomposed into individual constituent parts as worst-case slowdown is a vector product
+					>Could do a full complex counter-thrust analysis, but that's out-of-scope
+			
+			>Testing proved it working equivalent to E:D
+			
+		>Dust particle system
+			>Necessary for player orientation
+			>Imagine you're in deep space and can't see anything close. How the hell do you immediately tell your velocity vector compared to ambient matter?
+				>Illuminated dust!
+			>IDEALLY I'd use the particle system, but I think initially I'll just use GameObject spawning unless I can understand a tutorial.
+			
+		>UI
+			>Also a huge part of the game.
+			>Will have to be redeveloped at some point, but for now, static is good enough
+			>Considering the camera perspective is near-static, but we may need multiple levels, developing it via BP is likely.
+				>This UI element will be fixed to the ship itself, since I may implement freelook.
+			>I'll replicate E:D to an extent since that's what I'm familiar with
+			>Necessary items:
+				>Target-ball (Points to next target, inspired by E:D)
+				>Speedometer/Thrust indicator
+				>Since I'm not using certain elements, having a decomposed speed and rotation readings would be very good.
+			>Ball radar would be nice to have and serve as centerpiece, but it's not critical IMO.
+				
+			>Nice-to-haves:
