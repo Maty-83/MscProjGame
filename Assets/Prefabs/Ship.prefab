@@ -47,11 +47,11 @@ SphereCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 100
+  m_Radius: 110
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1620731927662849683
 GameObject:
@@ -103,7 +103,7 @@ ParticleSystem:
   ringBufferLoopRange: {x: 0, y: 1}
   emitterVelocityMode: 1
   looping: 1
-  prewarm: 0
+  prewarm: 1
   playOnAwake: 1
   useUnscaledTime: 0
   autoRandomSeed: 1
@@ -170,7 +170,7 @@ ParticleSystem:
     startLifetime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 3
+      scalar: 4
       minScalar: 5
       maxCurve:
         serializedVersion: 2
@@ -658,7 +658,7 @@ ParticleSystem:
         m_RotationOrder: 4
     randomizeRotationDirection: 0
     gravitySource: 0
-    maxNumParticles: 4000
+    maxNumParticles: 10000
     customEmitterVelocity: {x: 0, y: 0, z: 0}
     size3D: 0
     rotation3D: 0
@@ -722,7 +722,7 @@ ParticleSystem:
     angle: 25
     length: 5
     boxThickness: {x: 0, y: 0, z: 0}
-    radiusThickness: 0.1
+    radiusThickness: 0.5
     donutRadius: 0.2
     m_Position: {x: 0, y: 0, z: 0}
     m_Rotation: {x: 0, y: 0, z: 0}
@@ -924,7 +924,7 @@ ParticleSystem:
     rateOverTime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 1000
+      scalar: 2500
       minScalar: 10
       maxCurve:
         serializedVersion: 2
@@ -1049,32 +1049,23 @@ ParticleSystem:
           inWeight: 0
           outWeight: 1
         - serializedVersion: 3
-          time: 0.15795955
-          value: 0.46271303
-          inSlope: 6.652877
-          outSlope: 6.652877
+          time: 0.098500095
+          value: 0.5088669
+          inSlope: 4.8608923
+          outSlope: 4.8608923
           tangentMode: 0
           weightedMode: 0
           inWeight: 0.4695871
-          outWeight: 0.33333334
+          outWeight: 0.11558804
         - serializedVersion: 3
-          time: 0.39973035
-          value: 1
+          time: 1
+          value: 0.015384138
           inSlope: 0.18332714
           outSlope: 0.18332714
           tangentMode: 0
           weightedMode: 0
           inWeight: 0.64817244
           outWeight: 0.23875362
-        - serializedVersion: 3
-          time: 1
-          value: 0
-          inSlope: -2
-          outSlope: -2
-          tangentMode: 0
-          weightedMode: 0
-          inWeight: 0
-          outWeight: 0
         m_PreInfinity: 2
         m_PostInfinity: 2
         m_RotationOrder: 4
@@ -3693,14 +3684,13 @@ ParticleSystem:
   CollisionModule:
     enabled: 1
     serializedVersion: 4
-    type: 0
+    type: 1
     collisionMode: 0
     colliderForce: 0
     multiplyColliderForceByParticleSize: 0
     multiplyColliderForceByParticleSpeed: 0
     multiplyColliderForceByCollisionAngle: 1
-    m_Planes:
-    - {fileID: 2339312328747262192}
+    m_Planes: []
     m_Dampen:
       serializedVersion: 2
       minMaxState: 0
@@ -3861,7 +3851,7 @@ ParticleSystem:
         m_PostInfinity: 2
         m_RotationOrder: 4
     minKillSpeed: 0
-    maxKillSpeed: 0
+    maxKillSpeed: 25
     radiusScale: 1
     collidesWith:
       serializedVersion: 2
