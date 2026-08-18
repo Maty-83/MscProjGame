@@ -65,4 +65,13 @@ Initial notes about diploma thesis:
 				>Since I'm not using certain elements, having a decomposed speed and rotation readings would be very good.
 			>Ball radar would be nice to have and serve as centerpiece, but it's not critical IMO.
 				
-			>Nice-to-haves:
+	>Particle system:
+		>Dust system implementation tied to the ship.
+		>Meant to serve as an anchor showing player their velocity
+		>Done with Unity's Particle system
+			>Defined outer despawn radius
+			>Collisions handle close camera passes (We're inside a translucent cockpit)
+			>Wide random radius, we don't spawn below 1/2 of radius to prevent excessive popping in. Random radius MUST be large, otherwise we end up with issues of dust density during movement
+				>Basically, if we're moving through somewhere a full cycle hasn't been executed yet, the density will be lower than that of places we ran the full cycle through
+				>Great to show visually in thesis: Reduce the random radius and test if you wanna know WHY we need it.
+			>Animation to reduce popping even more (Using a curve for size of particle)
