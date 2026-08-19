@@ -75,3 +75,8 @@ Initial notes about diploma thesis:
 				>Basically, if we're moving through somewhere a full cycle hasn't been executed yet, the density will be lower than that of places we ran the full cycle through
 				>Great to show visually in thesis: Reduce the random radius and test if you wanna know WHY we need it.
 			>Animation to reduce popping even more (Using a curve for size of particle)
+			
+	>Checkpoint design:
+		>Primarily inspired by TM2020
+		>Same color-coding: (Green=start, blue=checkpoint, red=finish)
+		>Fairly large as baseline (Inner diameter of 50m to accomodate a ship easily)
