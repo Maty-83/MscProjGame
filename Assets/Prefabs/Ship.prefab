@@ -4976,7 +4976,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Unity.InputSystem::UnityEngine.InputSystem.PlayerInput
   m_Actions: {fileID: -944628639613478452, guid: 90f439398f121bd4682be23bf5445398, type: 3}
-  m_NotificationBehavior: 0
+  m_NotificationBehavior: 2
   m_UIInputModule: {fileID: 0}
   m_DeviceLostEvent:
     m_PersistentCalls:
@@ -4987,10 +4987,94 @@ MonoBehaviour:
   m_ControlsChangedEvent:
     m_PersistentCalls:
       m_Calls: []
-  m_ActionEvents: []
-  m_NeverAutoSwitchControlSchemes: 0
+  m_ActionEvents:
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: d1e02f7b-1f44-4510-902d-31ff35f585af
+    m_ActionName: 'Primary/Thrust Forward[/Keyboard/s,/Keyboard/w]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: d202b124-a7e9-437c-b3ef-f0d3a54dbff9
+    m_ActionName: 'Primary/Thrust Lateral[/Keyboard/e,/Keyboard/q]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: a7b38226-b990-4b76-9e38-5cf6758cc770
+    m_ActionName: 'Primary/Thrust Vertical[/Keyboard/f,/Keyboard/r]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 154efc7a-dab9-433f-8990-0aa8a105c7f5
+    m_ActionName: 'Primary/Rotation Roll[/Keyboard/d,/Keyboard/a]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: f957a0df-eeb1-415d-becd-3584e95263b9
+    m_ActionName: 'Primary/Rotation Pitch[/Mouse/delta/down,/Mouse/delta/up]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 224acae9-6401-499c-a979-db86c3734543
+    m_ActionName: 'Primary/Rotation Yaw[/Mouse/delta/left,/Mouse/delta/right]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 2f111f00-745e-4ae7-9792-0d9b1c9cd9c6
+    m_ActionName: 'Primary/Toggle FA[/Keyboard/z]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: d29811e9-7804-459b-b224-52fed5c1ec98
+    m_ActionName: 'Primary KB-only/Thrust Forward[/Keyboard/s,/Keyboard/w]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 17846783-5745-4c4a-9d84-58a74ef95dde
+    m_ActionName: 'Primary KB-only/Thrust Lateral[/Keyboard/e,/Keyboard/q]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 6fc08fda-a04a-4717-9e8b-c5ea2f1b18ea
+    m_ActionName: 'Primary KB-only/Thrust Vertical[/Keyboard/f,/Keyboard/r]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 400a7fc1-4c2c-465b-bb09-4051dd8648cb
+    m_ActionName: 'Primary KB-only/Rotation Roll[/Keyboard/d,/Keyboard/a]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: bdc8bab9-500b-4403-b9a1-47d103b29bb6
+    m_ActionName: 'Primary KB-only/Rotation Pitch[/Keyboard/k,/Keyboard/i]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 1e3a9e07-4795-4fbf-b9f6-ab179d6e52a6
+    m_ActionName: 'Primary KB-only/Rotation Yaw[/Keyboard/j,/Keyboard/l]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: e7afdbf7-b526-4ce8-867d-aab011e39f14
+    m_ActionName: 'Primary KB-only/Toggle FA[/Keyboard/z]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 4bdfb073-0165-43c2-a1c1-bb74bc216eef
+    m_ActionName: 'Primary Roll-on-mouse/Thrust Forward[/Keyboard/s,/Keyboard/w]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 8fcd7520-d1de-428a-81e9-9abb41f637da
+    m_ActionName: 'Primary Roll-on-mouse/Thrust Lateral[/Keyboard/e,/Keyboard/q]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 5a73a522-0b79-45ac-ba86-2991af0d21c4
+    m_ActionName: 'Primary Roll-on-mouse/Thrust Vertical[/Keyboard/f,/Keyboard/r]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 277eb4d9-6cd3-422b-a312-9fbbfb65536e
+    m_ActionName: 'Primary Roll-on-mouse/Rotation Roll[/Mouse/delta/right,/Mouse/delta/left]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 55e84132-f295-4c36-a135-185c20ba475d
+    m_ActionName: 'Primary Roll-on-mouse/Rotation Pitch[/Mouse/delta/down,/Mouse/delta/up]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 5cc0c230-00da-429d-8e0e-9aba4688caf2
+    m_ActionName: 'Primary Roll-on-mouse/Rotation Yaw[/Keyboard/a,/Keyboard/d]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 71e6b393-eca9-44fa-bb43-4bb3d76af9e3
+    m_ActionName: 'Primary Roll-on-mouse/Toggle FA[/Keyboard/z]'
+  m_NeverAutoSwitchControlSchemes: 1
   m_DefaultControlScheme: KB+Mouse
-  m_DefaultActionMap: Primary
+  m_DefaultActionMap: c62e0eed-e458-45e2-8c4f-8230415c5aec
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
 --- !u!114 &56359291506201547

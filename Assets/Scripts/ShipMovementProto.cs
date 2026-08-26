@@ -1,21 +1,16 @@
-using Unity.Hierarchy;
-using Unity.VisualScripting;
 using UnityEngine;
-using static UnityEditor.Searcher.SearcherWindow.Alignment;
+using UnityEngine.InputSystem;
 
 public class ShipMovementProto : MonoBehaviour
 {
     public float pitchAccelPerSec = 1.0f;//Pitch acceleration per second
     public float maxPitchVel = 1.0f;//Max Pitch speed, Rad/Sec
-    public bool pitchOnMouse = false; //If pitch is on mouse, we collect overflow inputs and apply until overflow is exhausted
 
     public float yawAccelPerSec = 0.5f;
     public float maxYawVel = 1.0f;//Max Yaw speed, rad/sec
-    public bool yawOnMouse = false; //If yaw is on mouse, we collect overflow inputs and apply until overflow is exhausted
 
     public float rollAccelPerSec = 1.0f;
     public float maxRollVel = 1.0f;//Max Roll Speed, rad/sec
-    public bool rollOnMouse = false; //If roll is on mouse, we collect overflow inputs and apply until overflow is exhausted
 
     public float forwardAccelPerSec = 40f;
     public float maxVel = 200; //FA-off movement: Max speed limit. FA-on movement: Max forward velocity.
@@ -39,11 +34,24 @@ public class ShipMovementProto : MonoBehaviour
     private float rollOverFrames = 0;
     private Rigidbody rb;
 
+    private PlayerInput playerInput;
+    private InputActionMap currentMap;
+    private InputAction forwardAxis;
+    private InputAction lateralAxis;
+    private InputAction verticalAxis;
+    private InputAction pitchAxis;
+    private InputAction yawAxis;
+    private InputAction rollAxis;
+
+
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         rb = this.gameObject.GetComponent<Rigidbody>();
+        playerInput= this.gameObject.GetComponent<PlayerInput>();
+        currentMap = playerInput.currentActionMap;
+        ReloadInputBindings();
     }
 
     // Update is called once per frame
@@ -51,38 +59,71 @@ public class ShipMovementProto : MonoBehaviour
     {
         
     }
+    private void ReloadInputBindings()
+    {
+        forwardAxis = currentMap.FindAction("Thrust Forward",true);
+        lateralAxis = currentMap.FindAction("Thrust Lateral",true);
+        verticalAxis = currentMap.FindAction("Thrust Vertical",true);
+        pitchAxis = currentMap.FindAction("Rotation Pitch",true);
+        yawAxis = currentMap.FindAction("Rotation Yaw", true);
+        rollAxis = currentMap.FindAction("Rotation Roll",true);
+        Debug.Log("Reloading input bindings");
+    }
+
     private void GetControlInputs(out float pitch, out float yaw, out float roll, out float forward, out float vertical, out float lateral, out bool resetMultiFrameInputs)
     {
+        if (currentMap != playerInput.currentActionMap)
+        {
+            currentMap= playerInput.currentActionMap;
+            ReloadInputBindings();
+        }
+
         pitch = 0;
         yaw=0;
         roll = 0;
         forward = 0;
         vertical = 0;
         lateral = 0;
-        //TODO: Swap this to input axes (Helps also modularity later)
+        resetMultiFrameInputs = false;
+        //TODO: We can actually use InputAction.bindings to potentially retrieve if the binding is a mouse binding and behave accordingly!!!
 
-        //Lateral
-        if (Input.GetKey(KeyCode.Q)) { lateral++; }
-        if (Input.GetKey(KeyCode.E)) { lateral--; }
+        //Lateral (Left/Right)
+        //if (Input.GetKey(KeyCode.Q)) { lateral++; }
+        //if (Input.GetKey(KeyCode.E)) { lateral--; }
+        lateral = lateralAxis.ReadValue<float>();
+
         //Throttle axis (Forward/Back)
-        if (Input.GetKey(KeyCode.W)) { forward++; }
-        if (Input.GetKey(KeyCode.S)) { forward--; }
+        //if (Input.GetKey(KeyCode.W)) { forward++; }
+        //if (Input.GetKey(KeyCode.S)) { forward--; }
+        forward=forwardAxis.ReadValue<float>();
+
         //Vertical Axis (Up/Down)
-        if (Input.GetKey(KeyCode.R)) { vertical++; }
-        if (Input.GetKey(KeyCode.F)) { vertical--; }
+        //if (Input.GetKey(KeyCode.R)) { vertical++; }
+        //if (Input.GetKey(KeyCode.F)) { vertical--; }
+        vertical=verticalAxis.ReadValue<float>();
 
 
         //Roll Axis
-        if (Input.GetKey(KeyCode.A)) { roll++; }
-        if (Input.GetKey(KeyCode.D)) { roll--; }
+        //if (Input.GetKey(KeyCode.A)) { roll++; }
+        //if (Input.GetKey(KeyCode.D)) { roll--; }
+        roll=rollAxis.ReadValue<float>();
 
-        if (Input.GetKey(KeyCode.I)) { pitch++; }
-        if (Input.GetKey(KeyCode.K)) { pitch--; }
+        //Pitch Axis
+        //if (Input.GetKey(KeyCode.I)) { pitch++; }
+        //if (Input.GetKey(KeyCode.K)) { pitch--; }
+        pitch=pitchAxis.ReadValue<float>();
+        
 
-        if (Input.GetKey(KeyCode.L)) { yaw++; }
-        if (Input.GetKey(KeyCode.J)) { yaw--; }
+        //Yaw Axis
+        //if (Input.GetKey(KeyCode.L)) { yaw++; }
+        //if (Input.GetKey(KeyCode.J)) { yaw--; }
+        yaw=yawAxis.ReadValue<float>();
 
-        resetMultiFrameInputs = Input.GetKey(KeyCode.Mouse2);
+
+
+        Debug.Log($"F: {forward}, L: {lateral}, V: {vertical}, P:{pitch}, Y:{yaw}, R: {roll}");
+
+        //resetMultiFrameInputs = Input.GetKey(KeyCode.Mouse2);
     }
 
     private void ApplyRotationVelChanges(bool dampIfNotAccelerating=false) 
@@ -91,15 +132,13 @@ public class ShipMovementProto : MonoBehaviour
 
         Vector3 localAngularVelocity = transform.InverseTransformDirection(rb.angularVelocity); //P=Z, R=X, Y=Y
 
-        Debug.Log(localAngularVelocity);
-
         float pitchThisFrame = Mathf.Clamp(pitchOverFrames, -1, 1);
         float pitchAcc = pitchThisFrame * pitchAccelPerSec * Time.fixedDeltaTime;
-        if (pitchOnMouse)
+        /*if (pitchOnMouse)
         {
             pitchOverFrames -= pitchThisFrame;
         }
-        else pitchOverFrames = 0;
+        else*/ pitchOverFrames = 0;
 
         if (pitchThisFrame == 0 && dampIfNotAccelerating)
         {
@@ -110,11 +149,11 @@ public class ShipMovementProto : MonoBehaviour
         //Yaw
         float yawThisFrame = Mathf.Clamp(yawOverFrames, -1, 1);
         float yawAcc = yawThisFrame * yawAccelPerSec * Time.fixedDeltaTime;
-        if (yawOnMouse)
+        /*if (yawOnMouse)
         {
             yawOverFrames -= yawThisFrame;
         }
-        else yawOverFrames = 0;
+        else*/ yawOverFrames = 0;
 
         if (yawThisFrame == 0 && dampIfNotAccelerating)
         {
@@ -124,11 +163,11 @@ public class ShipMovementProto : MonoBehaviour
         //Roll
         float rollThisFrame = Mathf.Clamp(rollOverFrames, -1, 1);
         float rollAcc = rollThisFrame * Time.fixedDeltaTime * rollAccelPerSec;
-        if (rollOnMouse)
+        /*if (rollOnMouse)
         {
             rollOverFrames -= rollThisFrame;
         }
-        else rollOverFrames = 0;
+        else*/ rollOverFrames = 0;
 
         if (rollThisFrame == 0 && dampIfNotAccelerating)
         {
