@@ -4910,6 +4910,8 @@ GameObject:
   m_Component:
   - component: {fileID: 7310538931458642005}
   - component: {fileID: 5656400985707504874}
+  - component: {fileID: 874683936366354658}
+  - component: {fileID: 56359291506201547}
   m_Layer: 0
   m_Name: Ship
   m_TagString: Untagged
@@ -4944,7 +4946,7 @@ Rigidbody:
   serializedVersion: 5
   m_Mass: 1
   m_LinearDamping: 0
-  m_AngularDamping: 0.05
+  m_AngularDamping: 0
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -4957,10 +4959,72 @@ Rigidbody:
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 0
-  m_IsKinematic: 1
+  m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &874683936366354658
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6257767235296585632}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.InputSystem::UnityEngine.InputSystem.PlayerInput
+  m_Actions: {fileID: -944628639613478452, guid: 90f439398f121bd4682be23bf5445398, type: 3}
+  m_NotificationBehavior: 0
+  m_UIInputModule: {fileID: 0}
+  m_DeviceLostEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_DeviceRegainedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ControlsChangedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ActionEvents: []
+  m_NeverAutoSwitchControlSchemes: 0
+  m_DefaultControlScheme: KB+Mouse
+  m_DefaultActionMap: Primary
+  m_SplitScreenIndex: -1
+  m_Camera: {fileID: 0}
+--- !u!114 &56359291506201547
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6257767235296585632}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1270f700868a3a4aaab4caee3f6e026, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ShipMovementProto
+  pitchAccelPerSec: 1
+  maxPitchVel: 1
+  pitchOnMouse: 0
+  yawAccelPerSec: 0.5
+  maxYawVel: 1
+  yawOnMouse: 0
+  rollAccelPerSec: 1
+  maxRollVel: 1
+  rollOnMouse: 0
+  forwardAccelPerSec: 40
+  maxVel: 200
+  reverseAccelPerSec: 20
+  maxReverseVel: 100
+  lateralAccelPerSec: 10
+  maxLateralVel: 100
+  verticalAccelPerSec: 10
+  maxVerticalVel: 100
+  enableDamping: 0
+  perFrameInput: 0
+  mouseDeltaMult: 1
 --- !u!1001 &2881267292678735643
 PrefabInstance:
   m_ObjectHideFlags: 0

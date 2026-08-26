@@ -80,3 +80,7 @@ Initial notes about diploma thesis:
 		>Primarily inspired by TM2020
 		>Same color-coding: (Green=start, blue=checkpoint, red=finish)
 		>Fairly large as baseline (Inner diameter of 50m to accomodate a ship easily)
+		>Issue with Blender visual shaders: Texture inside ring hard to do procedurally (Would have to define angles and calculate from direction vector. Even then, not direction agnostic)
+			>Can't grab innate UV, only XYZ coords.
+			>Done the "Easy but stupid route"-Splitting the individual faces into multiple and using single BSDFs per face
+			>Limits textures of thrusters as well
