@@ -84,3 +84,10 @@ Initial notes about diploma thesis:
 			>Can't grab innate UV, only XYZ coords.
 			>Done the "Easy but stupid route"-Splitting the individual faces into multiple and using single BSDFs per face
 			>Limits textures of thrusters as well
+			
+	>Rewriting inputs to Input System.
+		>Harder than it looks...
+		>Less intuitive.
+		>But, significantly more rewarding.
+		>Necessary for fast swaps between multiple control schemes
+		>Set up for automatic detection of active mapping (Would be better to do every frame maybe? TODO.)
