@@ -91,3 +91,29 @@ Initial notes about diploma thesis:
 		>But, significantly more rewarding.
 		>Necessary for fast swaps between multiple control schemes
 		>Set up for automatic detection of active mapping (Would be better to do every frame maybe? TODO.)
+	
+	Controls to be implemented:
+	
+		>Mouse controls:
+			>Two ways you can do mouse controls.
+				>Direct: 
+					>Mouse controls acceleration (Mouse moving = accelerate in that direction)
+					>Great if you don't damp the acceleration (Precise frame-by-frame control)
+					>By modifying the mouse delta sensitivity, we can achieve extremely precise control in a given axis.
+					>Would be good to have a "Control overflow" feature, so exact frame and control timing doesn't influence acceleration, only total displacement does.
+						>Counter on mouse.
+				>Indirect:
+					>Mouse displacement controls maximum (rotational) velocity
+					>If you intend to damp inputs, having this continuous input is a better idea.
+					>Implementation is also fairly straightforward. We accelerate towards the desired total vector.
+					>Disadvantage: No way to "clear" input precisely becomes a significantly greater issue than a direct control.
+						>Needs a way to clear these (Already partially implemented): Middle mouse is perfect for this.
+					
+		>Throttle control:
+			>If we're damping inputs, keeping a continuous throttle allows us having a player constantly keep the thrust button pressed.
+			>Inherited from airplanes as they are.
+			>Many implementations across different genres (As just one example, WT uses it for planes), so would be good to test for our purposes.
+			>Precise control again becomes an issue.
+				>"Throttle cut" key? E:D uses 'X' for it.
+				>Or "Stop and re-press" when reaching zero?
+			
