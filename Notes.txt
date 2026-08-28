@@ -108,6 +108,7 @@ Initial notes about diploma thesis:
 					>Implementation is also fairly straightforward. We accelerate towards the desired total vector.
 					>Disadvantage: No way to "clear" input precisely becomes a significantly greater issue than a direct control.
 						>Needs a way to clear these (Already partially implemented): Middle mouse is perfect for this.
+						>Or we can have non-linear curves/deadzone, similar to what is used by controllers to counteract stick drift!
 					
 		>Throttle control:
 			>If we're damping inputs, keeping a continuous throttle allows us having a player constantly keep the thrust button pressed.
@@ -116,4 +117,12 @@ Initial notes about diploma thesis:
 			>Precise control again becomes an issue.
 				>"Throttle cut" key? E:D uses 'X' for it.
 				>Or "Stop and re-press" when reaching zero?
-			
+				
+			>Testing if throttle control on multiple axes helps would be interesting.
+		
+		>Which axes to damp?
+			>Primary aim of the study is to figure out comfortable controls.
+			>We're looking for a control scheme the players like and which preserves good performance.
+			>Damping a part of the comfort of the control scheme (Familiar to those who've played flight sims, easier orientation in space by partly coupling ship forward vector and direction of travel)
+			>Also a part of actually HANDLING the controls (Automatic recovery from rotation the player lost control over.)
+			>Some axis coupling possible (Pitch & Yaw, Lateral & Vertical)
