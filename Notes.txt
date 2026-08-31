@@ -126,3 +126,12 @@ Initial notes about diploma thesis:
 			>Damping a part of the comfort of the control scheme (Familiar to those who've played flight sims, easier orientation in space by partly coupling ship forward vector and direction of travel)
 			>Also a part of actually HANDLING the controls (Automatic recovery from rotation the player lost control over.)
 			>Some axis coupling possible (Pitch & Yaw, Lateral & Vertical)
+			
+		>Actually programming in the mouse inputs:
+			>Delta is not limited to +1/-1 range.
+			>But that's a good thing, since it records the movement.
+			>We'll introduce a singleton storing the info between different sessions eventually.
+			>Create a storage var for accumulated X/Y delta of the mouse.
+				>We detect which if any axis is using it and store it that way. Then, using that detected use we can calculate the input.
+			>We also need to expand the "Apply" function with an indirect mode, converting the controls for each axis into approaching a given fraction of maximum.
+			
