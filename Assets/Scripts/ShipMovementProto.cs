@@ -1,39 +1,48 @@
+using System.Runtime.CompilerServices;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using static UnityEditor.Searcher.SearcherWindow.Alignment;
 
 public class ShipMovementProto : MonoBehaviour
 {
+    [Header("Pitch")]
     public float pitchAccelPerSec = 1.0f;//Pitch acceleration per second
     public float maxPitchVel = 1.0f;//Max Pitch speed, Rad/Sec
-
+    [Header("Yaw")]
     public float yawAccelPerSec = 0.5f;
     public float maxYawVel = 1.0f;//Max Yaw speed, rad/sec
-
+    [Header("Roll")]
     public float rollAccelPerSec = 1.0f;
     public float maxRollVel = 1.0f;//Max Roll Speed, rad/sec
-
+    [Header("Thrust")]
     public float forwardAccelPerSec = 40f;
     public float maxVel = 200; //FA-off movement: Max speed limit. FA-on movement: Max forward velocity.
-
     public float reverseAccelPerSec = 20f;
     public float maxReverseVel = 100; //FA-on: Max reverse velocity.
-
+    [Header("Lateral")]
     public float lateralAccelPerSec = 10f;
     public float maxLateralVel = 100; //FA-on movement: Max Lateral velocity
-
+    [Header("Vertical")]
     public float verticalAccelPerSec = 10f;
     public float maxVerticalVel = 100; //FA-on movement: Max vertical velocity
+    [Header("Control Settings")]
+    public bool enableDamping = false; //If an input is not pressed, the ship starts decellerating to zero.
+    //TODO: FA should be specifically per-axis
+    public float mouseSensitivity = 1; //Multiplier on any mouse inputs.
+    public bool enableRelativeMouse = true; //If enabled, causes the inputs linked to the mouse movement to decrease as they are processed.
+    public float maxMouseExcess = 250; //Governs between which values pitch/yaw/roll over frames will be clamped
+    [Header("Debug")]
+    public bool logInputs = false;
+    public bool logAppliedRotAcc = false;
+    public bool logAppliedLinAcc = false;
 
-    public bool enableDamping = false;
-
-    public bool perFrameInput=false;
-    public float mouseDeltaMult = 1;
 
     private float pitchOverFrames = 0;
     private float yawOverFrames = 0;
     private float rollOverFrames = 0;
-    private Rigidbody rb;
 
+    private Rigidbody rb;
     private PlayerInput playerInput;
     private InputActionMap currentMap;
     private InputAction forwardAxis;
@@ -42,8 +51,6 @@ public class ShipMovementProto : MonoBehaviour
     private InputAction pitchAxis;
     private InputAction yawAxis;
     private InputAction rollAxis;
-
-
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -119,9 +126,7 @@ public class ShipMovementProto : MonoBehaviour
         //if (Input.GetKey(KeyCode.J)) { yaw--; }
         yaw=yawAxis.ReadValue<float>();
 
-
-
-        Debug.Log($"F: {forward}, L: {lateral}, V: {vertical}, P:{pitch}, Y:{yaw}, R: {roll}");
+        if (logInputs) Debug.Log($"Raw Input: F: {forward}, L: {lateral}, V: {vertical}, P:{pitch}, Y:{yaw}, R: {roll}");
 
         //resetMultiFrameInputs = Input.GetKey(KeyCode.Mouse2);
     }
@@ -134,11 +139,9 @@ public class ShipMovementProto : MonoBehaviour
 
         float pitchThisFrame = Mathf.Clamp(pitchOverFrames, -1, 1);
         float pitchAcc = pitchThisFrame * pitchAccelPerSec * Time.fixedDeltaTime;
-        /*if (pitchOnMouse)
-        {
-            pitchOverFrames -= pitchThisFrame;
-        }
-        else*/ pitchOverFrames = 0;
+
+        if(enableRelativeMouse) pitchOverFrames -= pitchThisFrame;
+        //pitchOverFrames = 0;
 
         if (pitchThisFrame == 0 && dampIfNotAccelerating)
         {
@@ -149,11 +152,9 @@ public class ShipMovementProto : MonoBehaviour
         //Yaw
         float yawThisFrame = Mathf.Clamp(yawOverFrames, -1, 1);
         float yawAcc = yawThisFrame * yawAccelPerSec * Time.fixedDeltaTime;
-        /*if (yawOnMouse)
-        {
-            yawOverFrames -= yawThisFrame;
-        }
-        else*/ yawOverFrames = 0;
+
+        if (enableRelativeMouse) yawOverFrames -= yawThisFrame;
+        //yawOverFrames = 0;
 
         if (yawThisFrame == 0 && dampIfNotAccelerating)
         {
@@ -161,27 +162,24 @@ public class ShipMovementProto : MonoBehaviour
         }
 
         //Roll
+        
         float rollThisFrame = Mathf.Clamp(rollOverFrames, -1, 1);
         float rollAcc = rollThisFrame * Time.fixedDeltaTime * rollAccelPerSec;
-        /*if (rollOnMouse)
-        {
-            rollOverFrames -= rollThisFrame;
-        }
-        else*/ rollOverFrames = 0;
+        if (enableRelativeMouse) rollOverFrames -= rollThisFrame;
+        //rollOverFrames = 0;
 
         if (rollThisFrame == 0 && dampIfNotAccelerating)
         {
             rollAcc = Mathf.Clamp(-1 * Mathf.Sign(localAngularVelocity.x) * rollAccelPerSec * Time.fixedDeltaTime, -Mathf.Abs(localAngularVelocity.x), Mathf.Abs(localAngularVelocity.x));
         }
-
-        //Assign the new velocity (Could be done easier if I didn't need to clamp it)
-
+        if(logAppliedRotAcc) Debug.Log($"Applied rotation input: P:{pitchThisFrame}, Y:{yawThisFrame}, R: {rollThisFrame}");
+        //Add torque
         rb.AddRelativeTorque(rollAcc, yawAcc, pitchAcc, ForceMode.VelocityChange);
     }
 
     private void ApplyLinearVelChanges(float forward, float lateral, float vertical, bool dampIfNotAccelerating=false)
     {
-        
+        //Rotate our velocity system to local space
         var velocityInDirs = Quaternion.Inverse(rb.rotation) * rb.linearVelocity;
 
         float forwardAccel = 0f;
@@ -200,11 +198,12 @@ public class ShipMovementProto : MonoBehaviour
             {
                 forwardAccel = -Mathf.Min(velocityInDirs.x, Time.fixedDeltaTime * reverseAccelPerSec);
             }
-            if (velocityInDirs.x < 0)//Gotta handle this separate
+            if (velocityInDirs.x < 0)//Gotta handle this separate due to forward and reverse being as they are.
             {
-                forwardAccel = -Mathf.Max(velocityInDirs.x, -Time.fixedDeltaTime * forwardAccelPerSec);//Confusing, NEEDS TESTING. Should work.
+                forwardAccel = -Mathf.Max(velocityInDirs.x, -Time.fixedDeltaTime * forwardAccelPerSec);
             }
         }
+
         //Side accel (Z, left-handed)
         float sideAccel = lateral * Time.fixedDeltaTime * lateralAccelPerSec;
         if (lateral == 0 && dampIfNotAccelerating)
@@ -219,9 +218,8 @@ public class ShipMovementProto : MonoBehaviour
             vertAccel = Mathf.Clamp(-1 * Mathf.Sign(velocityInDirs.y) * Time.fixedDeltaTime * verticalAccelPerSec, -Mathf.Abs(velocityInDirs.y), Mathf.Abs(velocityInDirs.y));
         }
 
-        //TODO: Check if this works as intended based on the velocity limits. Also, implement FA-on.
-
-        //Rotate our velocity system to local space
+        //Debug
+        if (logAppliedLinAcc) Debug.Log($"Applied linear input: F: {forward}, L: {lateral}, V: {vertical}");
 
         //Compute new velocity
         velocityInDirs = new Vector3(
@@ -229,17 +227,13 @@ public class ShipMovementProto : MonoBehaviour
             Mathf.Clamp(velocityInDirs.y + vertAccel, -maxVerticalVel, maxVerticalVel),
             Mathf.Clamp(velocityInDirs.z + sideAccel, -maxLateralVel, maxLateralVel)
             );
+
         //Assign newly calculated velocity vector
         rb.linearVelocity = rb.rotation * velocityInDirs;
     }
     void FixedUpdate()
     {
-        //The inputs sections should be replaced by a function call in the future, same for "Over time" values
-        float pitch = 0, yaw = 0, roll = 0; //Rotations
-        float forward = 0, vertical = 0, lateral = 0; //Translations
-        bool resetMultiFrameInputs = false;
-
-        GetControlInputs(out pitch, out yaw, out roll, out forward, out vertical, out lateral, out resetMultiFrameInputs);
+        GetControlInputs(out float pitch, out float yaw, out float roll, out float forward, out float vertical, out float lateral, out bool resetMultiFrameInputs);
 
         //TEMP: For testing damping
         if (Input.GetKeyDown(KeyCode.Escape))
@@ -255,14 +249,12 @@ public class ShipMovementProto : MonoBehaviour
         }
         else
         {
-            pitchOverFrames += pitch;
-            yawOverFrames += yaw;
-            rollOverFrames += roll;
+            pitchOverFrames = Mathf.Clamp(pitchOverFrames+pitch, -maxMouseExcess, maxMouseExcess); ;
+            yawOverFrames = Mathf.Clamp(yawOverFrames+yaw, -maxMouseExcess, maxMouseExcess);
+            rollOverFrames = Mathf.Clamp(rollOverFrames+roll, -maxMouseExcess, -maxMouseExcess);
         }
 
         ApplyRotationVelChanges(enableDamping);
-
-        //Now the linear velocity!
 
         ApplyLinearVelChanges(forward, lateral, vertical, enableDamping);
     }
