@@ -1664,6 +1664,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 56359291506201547, guid: 8373a9ebe7b9c3d4c8c3821492a80b7e, type: 3}
+      propertyPath: enableRelativeMouse
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2339312328747262192, guid: 8373a9ebe7b9c3d4c8c3821492a80b7e, type: 3}
       propertyPath: m_LocalPosition.x
       value: -2
