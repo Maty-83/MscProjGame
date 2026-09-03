@@ -36,6 +36,7 @@ public class ShipMovementProto : MonoBehaviour
     public bool logInputs = false;
     public bool logAppliedRotAcc = false;
     public bool logAppliedLinAcc = false;
+    public bool logRotationVel = false;
 
 
     private float pitchOverFrames = 0;
@@ -173,6 +174,7 @@ public class ShipMovementProto : MonoBehaviour
             rollAcc = Mathf.Clamp(-1 * Mathf.Sign(localAngularVelocity.x) * rollAccelPerSec * Time.fixedDeltaTime, -Mathf.Abs(localAngularVelocity.x), Mathf.Abs(localAngularVelocity.x));
         }
         if(logAppliedRotAcc) Debug.Log($"Applied rotation input: P:{pitchThisFrame}, Y:{yawThisFrame}, R: {rollThisFrame}");
+        if(logRotationVel) Debug.Log($"Current rotation rate: {localAngularVelocity}");
         //Add torque
         rb.AddRelativeTorque(rollAcc, yawAcc, pitchAcc, ForceMode.VelocityChange);
     }
@@ -251,7 +253,7 @@ public class ShipMovementProto : MonoBehaviour
         {
             pitchOverFrames = Mathf.Clamp(pitchOverFrames+pitch, -maxMouseExcess, maxMouseExcess); ;
             yawOverFrames = Mathf.Clamp(yawOverFrames+yaw, -maxMouseExcess, maxMouseExcess);
-            rollOverFrames = Mathf.Clamp(rollOverFrames+roll, -maxMouseExcess, -maxMouseExcess);
+            rollOverFrames = Mathf.Clamp(rollOverFrames+roll, -maxMouseExcess, maxMouseExcess);
         }
 
         ApplyRotationVelChanges(enableDamping);
