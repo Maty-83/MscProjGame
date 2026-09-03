@@ -52,6 +52,13 @@ public class ShipMovementProto : MonoBehaviour
     private InputAction pitchAxis;
     private InputAction yawAxis;
     private InputAction rollAxis;
+
+    private enum RotationAxis
+    {
+        Roll,
+        Yaw,
+        Pitch
+    }
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -131,49 +138,95 @@ public class ShipMovementProto : MonoBehaviour
 
         //resetMultiFrameInputs = Input.GetKey(KeyCode.Mouse2);
     }
+    private float ReturnRotAcceleration(RotationAxis axis,Vector3 localAngularVelocity,bool dampIfNotAccelerating)
+    {
+        float axisAngularVelocity = 0;
+        float inputOverFrames = 0;
+        float accelPerSec = 0;
+        float axisSpeedLimit = 1;
+        switch (axis)
+        {
+            case RotationAxis.Roll:
+                axisAngularVelocity = localAngularVelocity.x;
+                inputOverFrames = rollOverFrames;
+                accelPerSec = rollAccelPerSec;
+                axisSpeedLimit = maxRollVel;
+                break;
+            case RotationAxis.Yaw:
+                axisAngularVelocity = localAngularVelocity.y;
+                inputOverFrames = yawOverFrames;
+                accelPerSec = yawAccelPerSec;
+                axisSpeedLimit= maxYawVel;
+                break;
+            case RotationAxis.Pitch:
+                axisAngularVelocity = localAngularVelocity.z;
+                inputOverFrames= pitchOverFrames;
+                accelPerSec= pitchAccelPerSec;
+                axisSpeedLimit = maxPitchVel;
+                break;
+            default:
+                Debug.Log("[ERROR]: unknown rotation axis");
+                return 0;
+        }
+        float inputThisFrame = Mathf.Clamp(inputOverFrames, -1, 1);
+        float accel = inputThisFrame * accelPerSec * Time.fixedDeltaTime;
 
+        //Damp setting:
+        if (inputThisFrame == 0 && dampIfNotAccelerating)
+        {
+            accel = Mathf.Clamp(-1 * Mathf.Sign(axisAngularVelocity) * accelPerSec * Time.fixedDeltaTime, -Mathf.Abs(axisAngularVelocity), Mathf.Abs(axisAngularVelocity));
+        }        
+        
+        //If we have relative mouse enabled, reduce the input over frames by how much we're "using up" this frame (If we're at max rotation velocity, the input disappears slowly)
+        switch (axis)
+        {
+            case RotationAxis.Roll:
+                if (enableRelativeMouse) rollOverFrames -= inputThisFrame;                
+                break;
+            case RotationAxis.Yaw:
+                if (enableRelativeMouse) yawOverFrames -= inputThisFrame;
+                break;
+            case RotationAxis.Pitch:
+                if (enableRelativeMouse) pitchOverFrames -= inputThisFrame;
+                break;
+            default:
+                return 0;
+        }
+
+        //Maximum velocity limiter
+        if (Mathf.Abs(axisAngularVelocity + accel) > axisSpeedLimit)
+        {
+            if (Mathf.Abs(axisAngularVelocity) > axisSpeedLimit)
+            {
+                //We now need to counteract the difference between the speed limit and max velocity and damp it down.
+                accel=-1*Mathf.Sign(axisAngularVelocity)*Mathf.Min(accelPerSec * Time.fixedDeltaTime, Mathf.Abs(axisAngularVelocity)-axisSpeedLimit);
+            }
+            else
+            {
+                //We just need to reduce the permitted accel so with axisAngularVelocity it equals the limit
+                accel = Mathf.Sign(accel) * (axisSpeedLimit- Mathf.Abs(axisAngularVelocity));
+                float total = axisAngularVelocity + accel;
+            }
+        }
+
+        return accel;
+    }
     private void ApplyRotationVelChanges(bool dampIfNotAccelerating=false) 
     {
         //TODO: Apply effectors to ship. This is the distinction of the PerFrame input: If PerFrame is active, remove the motion.
 
         Vector3 localAngularVelocity = transform.InverseTransformDirection(rb.angularVelocity); //P=Z, R=X, Y=Y
 
-        float pitchThisFrame = Mathf.Clamp(pitchOverFrames, -1, 1);
-        float pitchAcc = pitchThisFrame * pitchAccelPerSec * Time.fixedDeltaTime;
-
-        if(enableRelativeMouse) pitchOverFrames -= pitchThisFrame;
-        //pitchOverFrames = 0;
-
-        if (pitchThisFrame == 0 && dampIfNotAccelerating)
-        {
-            pitchAcc = Mathf.Clamp(-1 * Mathf.Sign(localAngularVelocity.z) * pitchAccelPerSec * Time.fixedDeltaTime, -Mathf.Abs(localAngularVelocity.z), Mathf.Abs(localAngularVelocity.z));
-        }
-
+        //Pitch
+        float pitchAcc=ReturnRotAcceleration(RotationAxis.Pitch, localAngularVelocity, dampIfNotAccelerating);
 
         //Yaw
-        float yawThisFrame = Mathf.Clamp(yawOverFrames, -1, 1);
-        float yawAcc = yawThisFrame * yawAccelPerSec * Time.fixedDeltaTime;
-
-        if (enableRelativeMouse) yawOverFrames -= yawThisFrame;
-        //yawOverFrames = 0;
-
-        if (yawThisFrame == 0 && dampIfNotAccelerating)
-        {
-            yawAcc = Mathf.Clamp(-1 * Mathf.Sign(localAngularVelocity.y) * yawAccelPerSec * Time.fixedDeltaTime, -Mathf.Abs(localAngularVelocity.y), Mathf.Abs(localAngularVelocity.y));
-        }
+        float yawAcc=ReturnRotAcceleration(RotationAxis.Yaw, localAngularVelocity, dampIfNotAccelerating);
 
         //Roll
-        
-        float rollThisFrame = Mathf.Clamp(rollOverFrames, -1, 1);
-        float rollAcc = rollThisFrame * Time.fixedDeltaTime * rollAccelPerSec;
-        if (enableRelativeMouse) rollOverFrames -= rollThisFrame;
-        //rollOverFrames = 0;
+        float rollAcc=ReturnRotAcceleration(RotationAxis.Roll, localAngularVelocity, dampIfNotAccelerating);
 
-        if (rollThisFrame == 0 && dampIfNotAccelerating)
-        {
-            rollAcc = Mathf.Clamp(-1 * Mathf.Sign(localAngularVelocity.x) * rollAccelPerSec * Time.fixedDeltaTime, -Mathf.Abs(localAngularVelocity.x), Mathf.Abs(localAngularVelocity.x));
-        }
-        if(logAppliedRotAcc) Debug.Log($"Applied rotation input: P:{pitchThisFrame}, Y:{yawThisFrame}, R: {rollThisFrame}");
+        if(logAppliedRotAcc) Debug.Log($"Applied rotation acceleration: P:{pitchAcc}, Y:{yawAcc}, R: {rollAcc}");
         if(logRotationVel) Debug.Log($"Current rotation rate: {localAngularVelocity}");
         //Add torque
         rb.AddRelativeTorque(rollAcc, yawAcc, pitchAcc, ForceMode.VelocityChange);
