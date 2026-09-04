@@ -32,6 +32,7 @@ public class ShipMovementProto : MonoBehaviour
     public float mouseSensitivity = 1; //Multiplier on any mouse inputs.
     public bool enableRelativeMouse = true; //If enabled, causes the inputs linked to the mouse movement to decrease as they are processed.
     public float maxMouseExcess = 250; //Governs between which values pitch/yaw/roll over frames will be clamped
+    public float maxInputToFullThrottle = 250;//Determines much accumulated input is needed to reach full throttle.
     [Header("Debug")]
     public bool logInputs = false;
     public bool logAppliedRotAcc = false;
@@ -84,7 +85,6 @@ public class ShipMovementProto : MonoBehaviour
         rollAxis = currentMap.FindAction("Rotation Roll",true);
         Debug.Log("Reloading input bindings");
     }
-
     private void GetControlInputs(out float pitch, out float yaw, out float roll, out float forward, out float vertical, out float lateral, out bool resetMultiFrameInputs)
     {
         if (currentMap != playerInput.currentActionMap)
@@ -164,7 +164,13 @@ public class ShipMovementProto : MonoBehaviour
             return -Mathf.Min(-velDiff, maxAccNegative);
         }
     }
-
+    /// <summary>
+    /// Returns rotation acceleration for a given axis from globally stored control values
+    /// </summary>
+    /// <param name="axis">Axis of acceleration</param>
+    /// <param name="localAngularVelocity">Vector of locally transformed angular velocity</param>
+    /// <param name="dampIfNotAccelerating">Determines if rotation damping takes place</param>
+    /// <returns>Direct acceleration value for a given rotation axis</returns>
     private float ReturnRotAcceleration(RotationAxis axis,Vector3 localAngularVelocity,bool dampIfNotAccelerating)
     {
         float axisAngularVelocity = 0;
@@ -238,10 +244,12 @@ public class ShipMovementProto : MonoBehaviour
 
         return accel;
     }
+    /// <summary>
+    /// Applies rotational velocity changes depending on the inputs last recorded.
+    /// </summary>
+    /// <param name="dampIfNotAccelerating">Determines if acceleration damping is active</param>
     private void ApplyRotationVelChanges(bool dampIfNotAccelerating=false) 
     {
-        //TODO: Apply effectors to ship. This is the distinction of the PerFrame input: If PerFrame is active, remove the motion.
-
         Vector3 localAngularVelocity = transform.InverseTransformDirection(rb.angularVelocity); //P=Z, R=X, Y=Y
 
         //Pitch
