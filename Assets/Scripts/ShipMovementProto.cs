@@ -138,6 +138,33 @@ public class ShipMovementProto : MonoBehaviour
 
         //resetMultiFrameInputs = Input.GetKey(KeyCode.Mouse2);
     }
+    
+    /// <summary>
+    /// Returns bounded acceleration to a target velocity, from a given velocity
+    /// </summary>
+    /// <param name="targetVelocity">Velocity to reach</param>
+    /// <param name="currentVelocity">Current velocity</param>
+    /// <param name="maxAcc">Maximum velocity change permitted</param>
+    /// <param name="maxAccNegative">Maximum negative velocity change permitted; if negative, uses maxAcc instead.</param>
+    /// <returns>Bounded acceleration to the targeted velocity.</returns>
+    private float GetAccelToTarget(float targetVelocity, float currentVelocity, float maxAcc, float maxAccNegative = -1)
+    {
+        float velDiff=targetVelocity-currentVelocity;
+        if (velDiff == 0) return 0;//No need for anything fancy, if the difference is zero, just don't do anything.
+
+        if (maxAccNegative < 0) maxAccNegative = maxAcc;
+        if (velDiff > 0)
+        {
+            //we accelerate with maxAcc
+            return Mathf.Min(velDiff, maxAcc);
+        }
+        else
+        {
+            //we accelerate with maxAccNegative
+            return -Mathf.Min(-velDiff, maxAccNegative);
+        }
+    }
+
     private float ReturnRotAcceleration(RotationAxis axis,Vector3 localAngularVelocity,bool dampIfNotAccelerating)
     {
         float axisAngularVelocity = 0;
@@ -231,7 +258,6 @@ public class ShipMovementProto : MonoBehaviour
         //Add torque
         rb.AddRelativeTorque(rollAcc, yawAcc, pitchAcc, ForceMode.VelocityChange);
     }
-
     private void ApplyLinearVelChanges(float forward, float lateral, float vertical, bool dampIfNotAccelerating=false)
     {
         //Rotate our velocity system to local space
