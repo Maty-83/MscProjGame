@@ -109,6 +109,8 @@ Initial notes about diploma thesis:
 					>Disadvantage: No way to "clear" input precisely becomes a significantly greater issue than a direct control.
 						>Needs a way to clear these (Already partially implemented): Middle mouse is perfect for this.
 						>Or we can have non-linear curves/deadzone, similar to what is used by controllers to counteract stick drift!
+			>We borrow a term for this from E:D: "Relative mouse"
+					
 					
 		>Throttle control:
 			>If we're damping inputs, keeping a continuous throttle allows us having a player constantly keep the thrust button pressed.
@@ -135,3 +137,21 @@ Initial notes about diploma thesis:
 				>We detect which if any axis is using it and store it that way. Then, using that detected use we can calculate the input.
 			>We also need to expand the "Apply" function with an indirect mode, converting the controls for each axis into approaching a given fraction of maximum.
 			
+			
+		>Refactoring rotation inputs:
+			>Integrates all axes as one function.
+				>Returns acceleration for that physics frame
+			>Means common code combined into one large block
+			>Technical limitations apply, we use switches to assign values to variables where needed
+			>ForceMode.VelocityChange has been extremely useful in re-implementing limits on speed.
+			>By the end, successful emulation of E:D's FA-off movement.
+			>Some control code may need to be ceded to the UI, or said UI be integrated as an overlay for the ship.
+			
+		>Adding "static mouse"+throttlable inputs.
+			>Static mouse for rotation integrated into previous changes
+				>Needs interpreting as throttle input.
+			>Primary concern: velocity-match.
+				>Fairly easy, as things go.
+				>Limit frame code almost an exact replica of speed limiter code from refactor.
+				>BUT: Difficult to use without UI, lack of information
+					>Can be tested via debug-prints though.
