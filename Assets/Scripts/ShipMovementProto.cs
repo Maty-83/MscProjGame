@@ -61,7 +61,6 @@ public class ShipMovementProto : MonoBehaviour
     public float verticalSensitivity = 1.0f;
 
     [Header("Control Settings")]
-    public bool enableRelativeMouse = true; //If enabled, causes the inputs linked to the mouse movement to decrease as they are processed.
     public float maxAccumulation = 250; //Governs between which values pitch/yaw/roll over frames will be clamped
     public float accumulationToFullThrottle = 250;//Determines much accumulated input is needed to reach full throttle.
     [Header("Debug")]
@@ -263,17 +262,16 @@ public class ShipMovementProto : MonoBehaviour
                     if (controlType == AxisControlType.Accumulation || controlType == AxisControlType.AccumulationDamped) rollOverFrames -= inputThisFrame;
                     break;
                 case RotationAxis.Yaw:
-                    if (controlType == AxisControlType.Direct || controlType == AxisControlType.DirectDamped) rollOverFrames = 0;
+                    if (controlType == AxisControlType.Direct || controlType == AxisControlType.DirectDamped) yawOverFrames = 0;
                     if (controlType == AxisControlType.Accumulation || controlType == AxisControlType.AccumulationDamped) yawOverFrames -= inputThisFrame;
                     break;
                 case RotationAxis.Pitch:
-                    if (controlType == AxisControlType.Direct || controlType == AxisControlType.DirectDamped) rollOverFrames = 0;
+                    if (controlType == AxisControlType.Direct || controlType == AxisControlType.DirectDamped) pitchOverFrames = 0;
                     if (controlType == AxisControlType.Accumulation || controlType == AxisControlType.AccumulationDamped) pitchOverFrames -= inputThisFrame;
                     break;
                 default:
                     return 0;
             }
-
             //Maximum velocity limiter
             if (Mathf.Abs(axisAngularVelocity + accel) > axisSpeedLimit)
             {
@@ -309,7 +307,7 @@ public class ShipMovementProto : MonoBehaviour
         //Roll
         float rollAcc=ReturnRotAcceleration(RotationAxis.Roll, localAngularVelocity, rollControlType);
 
-        if(logAppliedRotAcc) Debug.Log($"Applied rotation acceleration: P:{pitchAcc}, Y:{yawAcc}, R: {rollAcc}");
+        if(logAppliedRotAcc) Debug.Log($"Applied rotation input: P:{pitchAcc}, Y:{yawAcc}, R: {rollAcc}");
         if(logRotationVel) Debug.Log($"Current rotation rate: {localAngularVelocity}");
         //Add torque
         rb.AddRelativeTorque(rollAcc, yawAcc, pitchAcc, ForceMode.VelocityChange);

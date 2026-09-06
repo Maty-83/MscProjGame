@@ -1665,8 +1665,68 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 56359291506201547, guid: 8373a9ebe7b9c3d4c8c3821492a80b7e, type: 3}
+      propertyPath: logInputs
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 56359291506201547, guid: 8373a9ebe7b9c3d4c8c3821492a80b7e, type: 3}
+      propertyPath: logRotationVel
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 56359291506201547, guid: 8373a9ebe7b9c3d4c8c3821492a80b7e, type: 3}
+      propertyPath: yawControlType
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 56359291506201547, guid: 8373a9ebe7b9c3d4c8c3821492a80b7e, type: 3}
+      propertyPath: yawSensitivity
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 56359291506201547, guid: 8373a9ebe7b9c3d4c8c3821492a80b7e, type: 3}
+      propertyPath: rollControlType
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 56359291506201547, guid: 8373a9ebe7b9c3d4c8c3821492a80b7e, type: 3}
+      propertyPath: logAppliedLinAcc
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 56359291506201547, guid: 8373a9ebe7b9c3d4c8c3821492a80b7e, type: 3}
+      propertyPath: logAppliedRotAcc
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 56359291506201547, guid: 8373a9ebe7b9c3d4c8c3821492a80b7e, type: 3}
+      propertyPath: pitchControlType
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 56359291506201547, guid: 8373a9ebe7b9c3d4c8c3821492a80b7e, type: 3}
+      propertyPath: pitchSensitivity
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 56359291506201547, guid: 8373a9ebe7b9c3d4c8c3821492a80b7e, type: 3}
+      propertyPath: thrustControlType
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 56359291506201547, guid: 8373a9ebe7b9c3d4c8c3821492a80b7e, type: 3}
+      propertyPath: lateralAccelPerSec
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 56359291506201547, guid: 8373a9ebe7b9c3d4c8c3821492a80b7e, type: 3}
+      propertyPath: lateralControlType
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 56359291506201547, guid: 8373a9ebe7b9c3d4c8c3821492a80b7e, type: 3}
       propertyPath: enableRelativeMouse
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 56359291506201547, guid: 8373a9ebe7b9c3d4c8c3821492a80b7e, type: 3}
+      propertyPath: verticalAccelPerSec
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 56359291506201547, guid: 8373a9ebe7b9c3d4c8c3821492a80b7e, type: 3}
+      propertyPath: verticalControlType
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 874683936366354658, guid: 8373a9ebe7b9c3d4c8c3821492a80b7e, type: 3}
+      propertyPath: m_DefaultActionMap
+      value: 53f0eb8d-3dd7-44ab-baab-8e772e7469f9
       objectReference: {fileID: 0}
     - target: {fileID: 2339312328747262192, guid: 8373a9ebe7b9c3d4c8c3821492a80b7e, type: 3}
       propertyPath: m_LocalPosition.x
