@@ -61,8 +61,6 @@ public class ShipMovementProto : MonoBehaviour
     public float verticalSensitivity = 1.0f;
 
     [Header("Control Settings")]
-    public bool enableDamping = false; //If an input is not pressed, the ship starts decellerating to zero.
-    //TODO: FA should be specifically per-axis?
     public bool enableRelativeMouse = true; //If enabled, causes the inputs linked to the mouse movement to decrease as they are processed.
     public float maxAccumulation = 250; //Governs between which values pitch/yaw/roll over frames will be clamped
     public float accumulationToFullThrottle = 250;//Determines much accumulated input is needed to reach full throttle.
@@ -208,7 +206,7 @@ public class ShipMovementProto : MonoBehaviour
     /// <param name="localAngularVelocity">Vector of locally transformed angular velocity</param>
     /// <param name="dampIfNotAccelerating">Determines if rotation damping takes place</param>
     /// <returns>Direct acceleration value for a given rotation axis</returns>
-    private float ReturnRotAcceleration(RotationAxis axis,Vector3 localAngularVelocity,bool dampIfNotAccelerating)
+    private float ReturnRotAcceleration(RotationAxis axis,Vector3 localAngularVelocity,AxisControlType controlType)
     {
         float axisAngularVelocity = 0;
         float inputOverFrames = 0;
@@ -239,25 +237,31 @@ public class ShipMovementProto : MonoBehaviour
                 return 0;
         }
         float inputThisFrame = Mathf.Clamp(inputOverFrames, -1, 1);
+
+        //TODO: We need the "throttle" control type implemented.
+
         float accel = inputThisFrame * accelPerSec * Time.fixedDeltaTime;
 
         //Damp setting:
-        if (inputThisFrame == 0 && dampIfNotAccelerating)
+        if (inputThisFrame == 0 && (controlType==AxisControlType.DirectDamped||controlType==AxisControlType.AccumulationDamped))
         {
             accel = Mathf.Clamp(-1 * Mathf.Sign(axisAngularVelocity) * accelPerSec * Time.fixedDeltaTime, -Mathf.Abs(axisAngularVelocity), Mathf.Abs(axisAngularVelocity));
-        }        
+        }
         
         //If we have relative mouse enabled, reduce the input over frames by how much we're "using up" this frame (If we're at max rotation velocity, the input disappears slowly)
         switch (axis)
         {
             case RotationAxis.Roll:
-                if (enableRelativeMouse) rollOverFrames -= inputThisFrame;                
+                if (rollControlType == AxisControlType.Direct || rollControlType == AxisControlType.DirectDamped) rollOverFrames = 0;
+                if (rollControlType==AxisControlType.Accumulation || rollControlType==AxisControlType.AccumulationDamped) rollOverFrames -= inputThisFrame;                
                 break;
             case RotationAxis.Yaw:
-                if (enableRelativeMouse) yawOverFrames -= inputThisFrame;
+                if (yawControlType == AxisControlType.Direct || yawControlType == AxisControlType.DirectDamped) rollOverFrames = 0;
+                if (yawControlType == AxisControlType.Accumulation || yawControlType == AxisControlType.AccumulationDamped) yawOverFrames -= inputThisFrame;
                 break;
             case RotationAxis.Pitch:
-                if (enableRelativeMouse) pitchOverFrames -= inputThisFrame;
+                if (yawControlType == AxisControlType.Direct || yawControlType == AxisControlType.DirectDamped) rollOverFrames = 0;
+                if (pitchControlType == AxisControlType.Accumulation || pitchControlType == AxisControlType.AccumulationDamped) pitchOverFrames -= inputThisFrame;
                 break;
             default:
                 return 0;
@@ -285,73 +289,112 @@ public class ShipMovementProto : MonoBehaviour
     /// Applies rotational velocity changes depending on the inputs last recorded.
     /// </summary>
     /// <param name="dampIfNotAccelerating">Determines if acceleration damping is active</param>
-    private void ApplyRotationVelChanges(bool dampIfNotAccelerating=false) 
+    private void ApplyRotationVelChanges() 
     {
         Vector3 localAngularVelocity = transform.InverseTransformDirection(rb.angularVelocity); //P=Z, R=X, Y=Y
 
         //Pitch
-        float pitchAcc=ReturnRotAcceleration(RotationAxis.Pitch, localAngularVelocity, dampIfNotAccelerating);
+        float pitchAcc=ReturnRotAcceleration(RotationAxis.Pitch, localAngularVelocity, pitchControlType);
 
         //Yaw
-        float yawAcc=ReturnRotAcceleration(RotationAxis.Yaw, localAngularVelocity, dampIfNotAccelerating);
+        float yawAcc=ReturnRotAcceleration(RotationAxis.Yaw, localAngularVelocity, yawControlType);
 
         //Roll
-        float rollAcc=ReturnRotAcceleration(RotationAxis.Roll, localAngularVelocity, dampIfNotAccelerating);
+        float rollAcc=ReturnRotAcceleration(RotationAxis.Roll, localAngularVelocity, rollControlType);
 
         if(logAppliedRotAcc) Debug.Log($"Applied rotation acceleration: P:{pitchAcc}, Y:{yawAcc}, R: {rollAcc}");
         if(logRotationVel) Debug.Log($"Current rotation rate: {localAngularVelocity}");
         //Add torque
         rb.AddRelativeTorque(rollAcc, yawAcc, pitchAcc, ForceMode.VelocityChange);
     }
-    private void ApplyLinearVelChanges(float forward, float lateral, float vertical, bool dampIfNotAccelerating=false)
+    private void ApplyLinearVelChanges()
     {
         //Rotate our velocity system to local space
         var velocityInDirs = Quaternion.Inverse(rb.rotation) * rb.linearVelocity;
 
-        float forwardAccel = 0f;
-        if (forward > 0)
+        //Forward/Back axis
+        float thrustAccel = 0f;
+        //TODO: We need the "throttle" control type implemented.
+        float thrustThisFrame = Mathf.Clamp(thrustOverFrames, -1, 1);
+        //Update "over frames" value
+        if (thrustControlType == AxisControlType.Direct || thrustControlType == AxisControlType.DirectDamped)
         {
-            forwardAccel = forward * Time.fixedDeltaTime * forwardAccelPerSec;
+            thrustOverFrames = 0;
         }
-        else if (forward < 0)
+        if(thrustControlType == AxisControlType.Accumulation || thrustControlType == AxisControlType.AccumulationDamped)
         {
-            forwardAccel = forward * Time.fixedDeltaTime * reverseAccelPerSec;
+            thrustOverFrames -= thrustThisFrame;
         }
-        if(forward==0&& dampIfNotAccelerating)
+        //Actual acceleration calculation
+        if (thrustThisFrame > 0)
+        {
+            thrustAccel = thrustThisFrame * Time.fixedDeltaTime * forwardAccelPerSec;
+        }
+        else if (thrustThisFrame < 0)
+        {
+            thrustAccel = thrustThisFrame * Time.fixedDeltaTime * reverseAccelPerSec;
+        }
+        if(thrustThisFrame==0 && (thrustControlType==AxisControlType.DirectDamped ||thrustControlType==AxisControlType.AccumulationDamped))
         {
             //For now, we just use a simple damping as a proof of concept.
             if (velocityInDirs.x > 0)
             {
-                forwardAccel = -Mathf.Min(velocityInDirs.x, Time.fixedDeltaTime * reverseAccelPerSec);
+                thrustAccel = -Mathf.Min(velocityInDirs.x, Time.fixedDeltaTime * reverseAccelPerSec);
             }
             if (velocityInDirs.x < 0)//Gotta handle this separate due to forward and reverse being as they are.
             {
-                forwardAccel = -Mathf.Max(velocityInDirs.x, -Time.fixedDeltaTime * forwardAccelPerSec);
+                thrustAccel = -Mathf.Max(velocityInDirs.x, -Time.fixedDeltaTime * forwardAccelPerSec);
             }
         }
 
+
         //Side accel (Z, left-handed)
-        float sideAccel = lateral * Time.fixedDeltaTime * lateralAccelPerSec;
-        if (lateral == 0 && dampIfNotAccelerating)
+        //TODO: We need the "throttle" control type implemented.
+
+        float lateralThisFrame = Mathf.Clamp(lateralOverFrames, -1, 1);
+        //Update "over frames" value
+        if(lateralControlType== AxisControlType.Direct || lateralControlType == AxisControlType.DirectDamped)
         {
-            sideAccel = Mathf.Clamp(-1 * Mathf.Sign(velocityInDirs.z) * Time.fixedDeltaTime * lateralAccelPerSec, -Mathf.Abs(velocityInDirs.z), Mathf.Abs(velocityInDirs.z));
+            lateralOverFrames = 0;
+        }
+        if (lateralControlType==AxisControlType.Accumulation || lateralControlType == AxisControlType.AccumulationDamped)
+        {
+            lateralOverFrames -= lateralThisFrame;
+        }
+        //Actual acceleration calculation.
+        float latAccel = lateralThisFrame * Time.fixedDeltaTime * lateralAccelPerSec;
+        if (lateralThisFrame == 0 && (lateralControlType == AxisControlType.DirectDamped || lateralControlType == AxisControlType.AccumulationDamped))
+        {
+            latAccel = Mathf.Clamp(-1 * Mathf.Sign(velocityInDirs.z) * Time.fixedDeltaTime * lateralAccelPerSec, -Mathf.Abs(velocityInDirs.z), Mathf.Abs(velocityInDirs.z));
         }
 
         //Vertical accel
-        float vertAccel = vertical * Time.fixedDeltaTime * verticalAccelPerSec;
-        if (vertical == 0 && dampIfNotAccelerating)
+        //TODO: We need the "throttle" control type implemented.
+        float verticalThisFrame=Mathf.Clamp(verticalOverFrames, -1, 1);
+        //Update "over frames" value
+        if(verticalControlType==AxisControlType.Direct || verticalControlType == AxisControlType.DirectDamped)
+        {
+            verticalOverFrames = 0;
+        }
+        if(verticalControlType==AxisControlType.Accumulation || verticalControlType == AxisControlType.AccumulationDamped)
+        {
+            verticalOverFrames -= verticalThisFrame;
+        }
+        //Actual acceleration calculation
+        float vertAccel = verticalThisFrame * Time.fixedDeltaTime * verticalAccelPerSec;
+        if (verticalThisFrame == 0 && (verticalControlType == AxisControlType.DirectDamped || verticalControlType == AxisControlType.AccumulationDamped))
         {
             vertAccel = Mathf.Clamp(-1 * Mathf.Sign(velocityInDirs.y) * Time.fixedDeltaTime * verticalAccelPerSec, -Mathf.Abs(velocityInDirs.y), Mathf.Abs(velocityInDirs.y));
         }
 
         //Debug
-        if (logAppliedLinAcc) Debug.Log($"Applied linear input: F: {forward}, L: {lateral}, V: {vertical}");
+        if (logAppliedLinAcc) Debug.Log($"Applied linear input: F: {thrustThisFrame}, L: {lateralThisFrame}, V: {verticalThisFrame}");
 
         //Compute new velocity
         velocityInDirs = new Vector3(
-            Mathf.Clamp(velocityInDirs.x + forwardAccel, -maxReverseVel, maxVel),
+            Mathf.Clamp(velocityInDirs.x + thrustAccel, -maxReverseVel, maxVel),
             Mathf.Clamp(velocityInDirs.y + vertAccel, -maxVerticalVel, maxVerticalVel),
-            Mathf.Clamp(velocityInDirs.z + sideAccel, -maxLateralVel, maxLateralVel)
+            Mathf.Clamp(velocityInDirs.z + latAccel, -maxLateralVel, maxLateralVel)
             );
         if (velocityInDirs.magnitude > maxVel)
         {
@@ -363,29 +406,35 @@ public class ShipMovementProto : MonoBehaviour
     }
     void FixedUpdate()
     {
-        GetControlInputs(out float pitch, out float yaw, out float roll, out float forward, out float vertical, out float lateral, out bool resetMultiFrameInputs);
+        GetControlInputs(out float pitch, out float yaw, out float roll, out float thrust, out float vertical, out float lateral, out bool resetMultiFrameInputs);
 
         //TEMP: For testing damping
-        if (Input.GetKeyDown(KeyCode.Escape))
+        /*if (Input.GetKeyDown(KeyCode.Escape))
         {
             enableDamping = !enableDamping;
-        }
+        }*/
 
         if (resetMultiFrameInputs)
         {
-            pitchOverFrames = 0;
-            yawOverFrames = 0;
-            rollOverFrames = 0;
+            pitchOverFrames = pitch*pitchSensitivity;
+            yawOverFrames = yaw*yawSensitivity;
+            rollOverFrames = roll*rollSensitivity;
+            thrustOverFrames = thrust*thrustSensitivity;
+            verticalOverFrames = vertical*verticalSensitivity;
+            lateralOverFrames = lateral*lateralSensitivity;
         }
         else
         {
-            pitchOverFrames = Mathf.Clamp(pitchOverFrames+pitch, -maxAccumulation, maxAccumulation); ;
-            yawOverFrames = Mathf.Clamp(yawOverFrames+yaw, -maxAccumulation, maxAccumulation);
-            rollOverFrames = Mathf.Clamp(rollOverFrames+roll, -maxAccumulation, maxAccumulation);
+            pitchOverFrames = Mathf.Clamp(pitchOverFrames+pitch*pitchSensitivity, -maxAccumulation, maxAccumulation); ;
+            yawOverFrames = Mathf.Clamp(yawOverFrames+yaw*yawSensitivity, -maxAccumulation, maxAccumulation);
+            rollOverFrames = Mathf.Clamp(rollOverFrames+roll*rollSensitivity, -maxAccumulation, maxAccumulation);
+            thrustOverFrames = Mathf.Clamp(thrustOverFrames + thrust*thrustSensitivity, -maxAccumulation, maxAccumulation);
+            verticalOverFrames = Mathf.Clamp(verticalOverFrames+vertical*verticalSensitivity, -maxAccumulation, maxAccumulation);
+            lateralOverFrames = Mathf.Clamp(lateralOverFrames+lateral*lateralSensitivity, -maxAccumulation, maxAccumulation);
         }
 
-        ApplyRotationVelChanges(enableDamping);
+        ApplyRotationVelChanges();
 
-        ApplyLinearVelChanges(forward, lateral, vertical, enableDamping);
+        ApplyLinearVelChanges();
     }
 }

@@ -173,6 +173,8 @@ Initial notes about diploma thesis:
 				>Three main types of inputs:
 					>Direct: Inputs are given per-frame, on interval [-1,1]
 						>Essentially clamped accumulator, so defaults to it.
+						>Intended to be used primarily with keyboard controls, as it works perfectly with digital keyboards.
+							>Also useful for analog ones by extent, with greater precision allowed.
 					>Accumulator: Accumulates for how many physics frames the input should be executed based on length of held input. (Every frame we add sensitivity*axis input to the total, which is clamped to some reasonable value)
 						>Useful especially for mouse movement, where to precisely end up at a given speed, we now only measure total distance, not time spent moving the mouse.
 							>Much easier for most humans.
@@ -180,5 +182,8 @@ Initial notes about diploma thesis:
 					>Throttle:
 						>How much input accumulates determines the speed we try to match.
 						>So if we say our throttle is 0.3 of the max accumulation, the throttle doesn't decay. Our ship tries to match its velocity in the given axis to 0.3*maximum velocity in that axis.
+						>Very useful as a default damped movement for the mouse, as we specify velocity by mouse offset
+						>Also useful in "throttle" analogy for atmospheric aircraft, simulates HOTAS throttle.
+						>One note: If accumulation to full throttle is set very low compared to max accumulation, simulates mouse-offset direct controls via mouse too.
 				>Use enum which specifies type+Damping
 				>Throttle already damps, doesn't need it
