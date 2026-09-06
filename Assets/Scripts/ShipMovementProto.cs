@@ -5,14 +5,18 @@ using UnityEngine.InputSystem;
 using static UnityEditor.Searcher.SearcherWindow.Alignment;
 /// <summary>
 /// Specifies control types for controla axes. 
-/// Direct means a clamped -1/+1 accumulation
+/// Direct means a clamped -1/+1 accumulation (Sensitivity here adjusts curve)
+/// Direct Damped will slow a given axis to zero without input
 /// Accumulation will "overflow" inputs and execute until the total time of input is reached (Time in physics frames)
-/// Throttle will convert accumulation into a throttle type, where we change velocity until a given percent of max speed.
+/// Accumulation Damped also slows to 0 once accumulation of inputs is at 0
+/// Throttle will convert accumulation into a throttle type, where we change velocity until a given percent of max speed. It essentially damps to the throttle level*max velocity.
 /// </summary>
 public enum AxisControlType
 {
     Direct,
+    DirectDamped,
     Accumulation,
+    AccumulationDamped,
     Throttle
 
 }
@@ -21,29 +25,47 @@ public class ShipMovementProto : MonoBehaviour
     [Header("Pitch")]
     public float pitchAccelPerSec = 1.0f;//Pitch acceleration per second
     public float maxPitchVel = 1.0f;//Max Pitch speed, Rad/Sec
+    public AxisControlType pitchControlType = AxisControlType.Direct;
+    public float pitchSensitivity = 1.0f;
+
     [Header("Yaw")]
     public float yawAccelPerSec = 0.5f;
     public float maxYawVel = 1.0f;//Max Yaw speed, rad/sec
+    public AxisControlType yawControlType = AxisControlType.Direct;
+    public float yawSensitivity = 1.0f;
+
     [Header("Roll")]
     public float rollAccelPerSec = 1.0f;
     public float maxRollVel = 1.0f;//Max Roll Speed, rad/sec
+    public AxisControlType rollControlType = AxisControlType.Direct;
+    public float rollSensitivity = 1.0f;
+
     [Header("Thrust")]
     public float forwardAccelPerSec = 40f;
     public float maxVel = 200; //FA-off movement: Max speed limit. FA-on movement: Max forward velocity.
     public float reverseAccelPerSec = 20f;
     public float maxReverseVel = 100; //FA-on: Max reverse velocity.
+    public AxisControlType thrustControlType=AxisControlType.Direct;
+    public float thrustSensitivity = 1.0f;
+
     [Header("Lateral")]
     public float lateralAccelPerSec = 10f;
     public float maxLateralVel = 100; //FA-on movement: Max Lateral velocity
+    public AxisControlType lateralControlType= AxisControlType.Direct;
+    public float lateralSensitivity = 1.0f;
+
     [Header("Vertical")]
     public float verticalAccelPerSec = 10f;
     public float maxVerticalVel = 100; //FA-on movement: Max vertical velocity
+    public AxisControlType verticalControlType = AxisControlType.Direct;
+    public float verticalSensitivity = 1.0f;
+
     [Header("Control Settings")]
     public bool enableDamping = false; //If an input is not pressed, the ship starts decellerating to zero.
-    //TODO: FA should be specifically per-axis
+    //TODO: FA should be specifically per-axis?
     public bool enableRelativeMouse = true; //If enabled, causes the inputs linked to the mouse movement to decrease as they are processed.
-    public float maxMouseExcess = 250; //Governs between which values pitch/yaw/roll over frames will be clamped
-    public float maxInputToFullThrottle = 250;//Determines much accumulated input is needed to reach full throttle.
+    public float maxAccumulation = 250; //Governs between which values pitch/yaw/roll over frames will be clamped
+    public float accumulationToFullThrottle = 250;//Determines much accumulated input is needed to reach full throttle.
     [Header("Debug")]
     public bool logInputs = false;
     public bool logAppliedRotAcc = false;
@@ -54,6 +76,10 @@ public class ShipMovementProto : MonoBehaviour
     private float pitchOverFrames = 0;
     private float yawOverFrames = 0;
     private float rollOverFrames = 0;
+
+    private float thrustOverFrames = 0;
+    private float verticalOverFrames = 0;
+    private float lateralOverFrames = 0;
 
     private Rigidbody rb;
     private PlayerInput playerInput;
@@ -353,9 +379,9 @@ public class ShipMovementProto : MonoBehaviour
         }
         else
         {
-            pitchOverFrames = Mathf.Clamp(pitchOverFrames+pitch, -maxMouseExcess, maxMouseExcess); ;
-            yawOverFrames = Mathf.Clamp(yawOverFrames+yaw, -maxMouseExcess, maxMouseExcess);
-            rollOverFrames = Mathf.Clamp(rollOverFrames+roll, -maxMouseExcess, maxMouseExcess);
+            pitchOverFrames = Mathf.Clamp(pitchOverFrames+pitch, -maxAccumulation, maxAccumulation); ;
+            yawOverFrames = Mathf.Clamp(yawOverFrames+yaw, -maxAccumulation, maxAccumulation);
+            rollOverFrames = Mathf.Clamp(rollOverFrames+roll, -maxAccumulation, maxAccumulation);
         }
 
         ApplyRotationVelChanges(enableDamping);

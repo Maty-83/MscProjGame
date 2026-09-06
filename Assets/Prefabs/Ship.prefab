@@ -5091,24 +5091,38 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ShipMovementProto
   pitchAccelPerSec: 1
   maxPitchVel: 1
-  pitchOnMouse: 0
+  pitchControlType: 0
+  pitchSensitivity: 1
   yawAccelPerSec: 0.5
   maxYawVel: 1
-  yawOnMouse: 0
+  yawControlType: 0
+  yawSensitivity: 1
   rollAccelPerSec: 1
   maxRollVel: 1
-  rollOnMouse: 0
+  rollControlType: 0
+  rollSensitivity: 1
   forwardAccelPerSec: 40
   maxVel: 200
   reverseAccelPerSec: 20
   maxReverseVel: 100
+  thrustControlType: 0
+  thrustSensitivity: 1
   lateralAccelPerSec: 10
   maxLateralVel: 100
+  lateralControlType: 0
+  lateralSensitivity: 1
   verticalAccelPerSec: 10
   maxVerticalVel: 100
+  verticalControlType: 0
+  verticalSensitivity: 1
   enableDamping: 0
-  perFrameInput: 0
-  mouseDeltaMult: 1
+  enableRelativeMouse: 1
+  maxMouseExcess: 250
+  maxInputToFullThrottle: 250
+  logInputs: 0
+  logAppliedRotAcc: 0
+  logAppliedLinAcc: 0
+  logRotationVel: 0
 --- !u!1001 &2881267292678735643
 PrefabInstance:
   m_ObjectHideFlags: 0
