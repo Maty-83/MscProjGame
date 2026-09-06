@@ -206,7 +206,7 @@ public class ShipMovementProto : MonoBehaviour
     /// <param name="localAngularVelocity">Vector of locally transformed angular velocity</param>
     /// <param name="dampIfNotAccelerating">Determines if rotation damping takes place</param>
     /// <returns>Direct acceleration value for a given rotation axis</returns>
-    private float ReturnRotAcceleration(RotationAxis axis,Vector3 localAngularVelocity,AxisControlType controlType)
+    private float ReturnRotAcceleration(RotationAxis axis, Vector3 localAngularVelocity, AxisControlType controlType)
     {
         float axisAngularVelocity = 0;
         float inputOverFrames = 0;
@@ -224,12 +224,12 @@ public class ShipMovementProto : MonoBehaviour
                 axisAngularVelocity = localAngularVelocity.y;
                 inputOverFrames = yawOverFrames;
                 accelPerSec = yawAccelPerSec;
-                axisSpeedLimit= maxYawVel;
+                axisSpeedLimit = maxYawVel;
                 break;
             case RotationAxis.Pitch:
                 axisAngularVelocity = localAngularVelocity.z;
-                inputOverFrames= pitchOverFrames;
-                accelPerSec= pitchAccelPerSec;
+                inputOverFrames = pitchOverFrames;
+                accelPerSec = pitchAccelPerSec;
                 axisSpeedLimit = maxPitchVel;
                 break;
             default:
@@ -238,51 +238,58 @@ public class ShipMovementProto : MonoBehaviour
         }
         float inputThisFrame = Mathf.Clamp(inputOverFrames, -1, 1);
 
-        //TODO: We need the "throttle" control type implemented.
-
-        float accel = inputThisFrame * accelPerSec * Time.fixedDeltaTime;
-
-        //Damp setting:
-        if (inputThisFrame == 0 && (controlType==AxisControlType.DirectDamped||controlType==AxisControlType.AccumulationDamped))
+        //Throttle Control uses a completely different mechanism than everything else.
+        float accel = 0;
+        if (controlType == AxisControlType.Throttle)
         {
-            accel = Mathf.Clamp(-1 * Mathf.Sign(axisAngularVelocity) * accelPerSec * Time.fixedDeltaTime, -Mathf.Abs(axisAngularVelocity), Mathf.Abs(axisAngularVelocity));
+            float targetVelocity = Mathf.Clamp(inputOverFrames / accumulationToFullThrottle, -1, 1)*axisSpeedLimit;
+            accel=GetAccelToTarget(targetVelocity, axisAngularVelocity, accelPerSec*Time.fixedDeltaTime);
         }
-        
-        //If we have relative mouse enabled, reduce the input over frames by how much we're "using up" this frame (If we're at max rotation velocity, the input disappears slowly)
-        switch (axis)
+        else
         {
-            case RotationAxis.Roll:
-                if (rollControlType == AxisControlType.Direct || rollControlType == AxisControlType.DirectDamped) rollOverFrames = 0;
-                if (rollControlType==AxisControlType.Accumulation || rollControlType==AxisControlType.AccumulationDamped) rollOverFrames -= inputThisFrame;                
-                break;
-            case RotationAxis.Yaw:
-                if (yawControlType == AxisControlType.Direct || yawControlType == AxisControlType.DirectDamped) rollOverFrames = 0;
-                if (yawControlType == AxisControlType.Accumulation || yawControlType == AxisControlType.AccumulationDamped) yawOverFrames -= inputThisFrame;
-                break;
-            case RotationAxis.Pitch:
-                if (yawControlType == AxisControlType.Direct || yawControlType == AxisControlType.DirectDamped) rollOverFrames = 0;
-                if (pitchControlType == AxisControlType.Accumulation || pitchControlType == AxisControlType.AccumulationDamped) pitchOverFrames -= inputThisFrame;
-                break;
-            default:
-                return 0;
-        }
+            accel = inputThisFrame * accelPerSec * Time.fixedDeltaTime;
 
-        //Maximum velocity limiter
-        if (Mathf.Abs(axisAngularVelocity + accel) > axisSpeedLimit)
-        {
-            if (Mathf.Abs(axisAngularVelocity) > axisSpeedLimit)
+            //Damp setting:
+            if (inputThisFrame == 0 && (controlType == AxisControlType.DirectDamped || controlType == AxisControlType.AccumulationDamped))
             {
-                //We now need to counteract the difference between the speed limit and max velocity and damp it down.
-                accel=-1*Mathf.Sign(axisAngularVelocity)*Mathf.Min(accelPerSec * Time.fixedDeltaTime, Mathf.Abs(axisAngularVelocity)-axisSpeedLimit);
+                accel = Mathf.Clamp(-1 * Mathf.Sign(axisAngularVelocity) * accelPerSec * Time.fixedDeltaTime, -Mathf.Abs(axisAngularVelocity), Mathf.Abs(axisAngularVelocity));
             }
-            else
+
+            //If we have relative mouse enabled, reduce the input over frames by how much we're "using up" this frame (If we're at max rotation velocity, the input disappears slowly)
+            switch (axis)
             {
-                //We just need to reduce the permitted accel so with axisAngularVelocity it equals the limit
-                accel = Mathf.Sign(accel) * (axisSpeedLimit- Mathf.Abs(axisAngularVelocity));
-                float total = axisAngularVelocity + accel;
+                case RotationAxis.Roll:
+                    if (controlType == AxisControlType.Direct || controlType == AxisControlType.DirectDamped) rollOverFrames = 0;
+                    if (controlType == AxisControlType.Accumulation || controlType == AxisControlType.AccumulationDamped) rollOverFrames -= inputThisFrame;
+                    break;
+                case RotationAxis.Yaw:
+                    if (controlType == AxisControlType.Direct || controlType == AxisControlType.DirectDamped) rollOverFrames = 0;
+                    if (controlType == AxisControlType.Accumulation || controlType == AxisControlType.AccumulationDamped) yawOverFrames -= inputThisFrame;
+                    break;
+                case RotationAxis.Pitch:
+                    if (controlType == AxisControlType.Direct || controlType == AxisControlType.DirectDamped) rollOverFrames = 0;
+                    if (controlType == AxisControlType.Accumulation || controlType == AxisControlType.AccumulationDamped) pitchOverFrames -= inputThisFrame;
+                    break;
+                default:
+                    return 0;
+            }
+
+            //Maximum velocity limiter
+            if (Mathf.Abs(axisAngularVelocity + accel) > axisSpeedLimit)
+            {
+                if (Mathf.Abs(axisAngularVelocity) > axisSpeedLimit)
+                {
+                    //We now need to counteract the difference between the speed limit and max velocity and damp it down.
+                    accel = -1 * Mathf.Sign(axisAngularVelocity) * Mathf.Min(accelPerSec * Time.fixedDeltaTime, Mathf.Abs(axisAngularVelocity) - axisSpeedLimit);
+                }
+                else
+                {
+                    //We just need to reduce the permitted accel so with axisAngularVelocity it equals the limit
+                    accel = Mathf.Sign(accel) * (axisSpeedLimit - Mathf.Abs(axisAngularVelocity));
+                    float total = axisAngularVelocity + accel;
+                }
             }
         }
-
         return accel;
     }
     /// <summary>
@@ -314,77 +321,115 @@ public class ShipMovementProto : MonoBehaviour
 
         //Forward/Back axis
         float thrustAccel = 0f;
-        //TODO: We need the "throttle" control type implemented.
-        float thrustThisFrame = Mathf.Clamp(thrustOverFrames, -1, 1);
-        //Update "over frames" value
-        if (thrustControlType == AxisControlType.Direct || thrustControlType == AxisControlType.DirectDamped)
+        //"Throttle" control type.
+        float thrustThisFrame = 0;
+        if (thrustControlType == AxisControlType.Throttle) 
         {
-            thrustOverFrames = 0;
-        }
-        if(thrustControlType == AxisControlType.Accumulation || thrustControlType == AxisControlType.AccumulationDamped)
-        {
-            thrustOverFrames -= thrustThisFrame;
-        }
-        //Actual acceleration calculation
-        if (thrustThisFrame > 0)
-        {
-            thrustAccel = thrustThisFrame * Time.fixedDeltaTime * forwardAccelPerSec;
-        }
-        else if (thrustThisFrame < 0)
-        {
-            thrustAccel = thrustThisFrame * Time.fixedDeltaTime * reverseAccelPerSec;
-        }
-        if(thrustThisFrame==0 && (thrustControlType==AxisControlType.DirectDamped ||thrustControlType==AxisControlType.AccumulationDamped))
-        {
-            //For now, we just use a simple damping as a proof of concept.
-            if (velocityInDirs.x > 0)
+            float targetPercent = Mathf.Clamp(thrustOverFrames / accumulationToFullThrottle,-1,1);
+            float target;
+            if(targetPercent < 0)
             {
-                thrustAccel = -Mathf.Min(velocityInDirs.x, Time.fixedDeltaTime * reverseAccelPerSec);
+                target = targetPercent * maxReverseVel;
             }
-            if (velocityInDirs.x < 0)//Gotta handle this separate due to forward and reverse being as they are.
+            else
             {
-                thrustAccel = -Mathf.Max(velocityInDirs.x, -Time.fixedDeltaTime * forwardAccelPerSec);
+                target = targetPercent * maxVel;
+            }
+            thrustAccel = GetAccelToTarget(target, velocityInDirs.x, forwardAccelPerSec*Time.fixedDeltaTime, reverseAccelPerSec*Time.fixedDeltaTime);
+            thrustThisFrame = targetPercent;
+        }
+        else {
+            thrustThisFrame = Mathf.Clamp(thrustOverFrames, -1, 1);
+            //Update "over frames" value
+            if (thrustControlType == AxisControlType.Direct || thrustControlType == AxisControlType.DirectDamped)
+            {
+                thrustOverFrames = 0;
+            }
+            if (thrustControlType == AxisControlType.Accumulation || thrustControlType == AxisControlType.AccumulationDamped)
+            {
+                thrustOverFrames -= thrustThisFrame;
+            }
+            //Actual acceleration calculation
+            if (thrustThisFrame > 0)
+            {
+                thrustAccel = thrustThisFrame * Time.fixedDeltaTime * forwardAccelPerSec;
+            }
+            else if (thrustThisFrame < 0)
+            {
+                thrustAccel = thrustThisFrame * Time.fixedDeltaTime * reverseAccelPerSec;
+            }
+            if (thrustThisFrame == 0 && (thrustControlType == AxisControlType.DirectDamped || thrustControlType == AxisControlType.AccumulationDamped))
+            {
+                //For now, we just use a simple damping as a proof of concept.
+                if (velocityInDirs.x > 0)
+                {
+                    thrustAccel = -Mathf.Min(velocityInDirs.x, Time.fixedDeltaTime * reverseAccelPerSec);
+                }
+                if (velocityInDirs.x < 0)//Gotta handle this separate due to forward and reverse being as they are.
+                {
+                    thrustAccel = -Mathf.Max(velocityInDirs.x, -Time.fixedDeltaTime * forwardAccelPerSec);
+                }
             }
         }
-
 
         //Side accel (Z, left-handed)
-        //TODO: We need the "throttle" control type implemented.
-
-        float lateralThisFrame = Mathf.Clamp(lateralOverFrames, -1, 1);
-        //Update "over frames" value
-        if(lateralControlType== AxisControlType.Direct || lateralControlType == AxisControlType.DirectDamped)
+        float latAccel=0;
+        float lateralThisFrame = 0;
+        //"Throttle" control type
+        if (lateralControlType == AxisControlType.Throttle)
         {
-            lateralOverFrames = 0;
+            float targetPercent = Mathf.Clamp(lateralOverFrames / accumulationToFullThrottle, -1, 1);
+            latAccel = GetAccelToTarget(targetPercent * maxLateralVel, velocityInDirs.z, lateralAccelPerSec * Time.fixedDeltaTime);
+            lateralThisFrame = targetPercent;
         }
-        if (lateralControlType==AxisControlType.Accumulation || lateralControlType == AxisControlType.AccumulationDamped)
+        else
         {
-            lateralOverFrames -= lateralThisFrame;
-        }
-        //Actual acceleration calculation.
-        float latAccel = lateralThisFrame * Time.fixedDeltaTime * lateralAccelPerSec;
-        if (lateralThisFrame == 0 && (lateralControlType == AxisControlType.DirectDamped || lateralControlType == AxisControlType.AccumulationDamped))
-        {
-            latAccel = Mathf.Clamp(-1 * Mathf.Sign(velocityInDirs.z) * Time.fixedDeltaTime * lateralAccelPerSec, -Mathf.Abs(velocityInDirs.z), Mathf.Abs(velocityInDirs.z));
+            lateralThisFrame = Mathf.Clamp(lateralOverFrames, -1, 1);
+            //Update "over frames" value
+            if (lateralControlType == AxisControlType.Direct || lateralControlType == AxisControlType.DirectDamped)
+            {
+                lateralOverFrames = 0;
+            }
+            if (lateralControlType == AxisControlType.Accumulation || lateralControlType == AxisControlType.AccumulationDamped)
+            {
+                lateralOverFrames -= lateralThisFrame;
+            }
+            //Actual acceleration calculation.
+            latAccel = lateralThisFrame * Time.fixedDeltaTime * lateralAccelPerSec;
+            if (lateralThisFrame == 0 && (lateralControlType == AxisControlType.DirectDamped || lateralControlType == AxisControlType.AccumulationDamped))
+            {
+                latAccel = Mathf.Clamp(-1 * Mathf.Sign(velocityInDirs.z) * Time.fixedDeltaTime * lateralAccelPerSec, -Mathf.Abs(velocityInDirs.z), Mathf.Abs(velocityInDirs.z));
+            }
         }
 
         //Vertical accel
-        //TODO: We need the "throttle" control type implemented.
-        float verticalThisFrame=Mathf.Clamp(verticalOverFrames, -1, 1);
-        //Update "over frames" value
-        if(verticalControlType==AxisControlType.Direct || verticalControlType == AxisControlType.DirectDamped)
+        float vertAccel = 0;
+        float verticalThisFrame = 0;
+        //Throttle control
+        if (verticalControlType == AxisControlType.Throttle)
         {
-            verticalOverFrames = 0;
+            float targetPercent = Mathf.Clamp(verticalOverFrames / accumulationToFullThrottle, -1, 1);
+            vertAccel = GetAccelToTarget(targetPercent * maxVerticalVel, velocityInDirs.y, verticalAccelPerSec * Time.fixedDeltaTime);
+            verticalThisFrame = targetPercent;
         }
-        if(verticalControlType==AxisControlType.Accumulation || verticalControlType == AxisControlType.AccumulationDamped)
+        else
         {
-            verticalOverFrames -= verticalThisFrame;
-        }
-        //Actual acceleration calculation
-        float vertAccel = verticalThisFrame * Time.fixedDeltaTime * verticalAccelPerSec;
-        if (verticalThisFrame == 0 && (verticalControlType == AxisControlType.DirectDamped || verticalControlType == AxisControlType.AccumulationDamped))
-        {
-            vertAccel = Mathf.Clamp(-1 * Mathf.Sign(velocityInDirs.y) * Time.fixedDeltaTime * verticalAccelPerSec, -Mathf.Abs(velocityInDirs.y), Mathf.Abs(velocityInDirs.y));
+            verticalThisFrame = Mathf.Clamp(verticalOverFrames, -1, 1);
+            //Update "over frames" value
+            if (verticalControlType == AxisControlType.Direct || verticalControlType == AxisControlType.DirectDamped)
+            {
+                verticalOverFrames = 0;
+            }
+            if (verticalControlType == AxisControlType.Accumulation || verticalControlType == AxisControlType.AccumulationDamped)
+            {
+                verticalOverFrames -= verticalThisFrame;
+            }
+            //Actual acceleration calculation
+            vertAccel = verticalThisFrame * Time.fixedDeltaTime * verticalAccelPerSec;
+            if (verticalThisFrame == 0 && (verticalControlType == AxisControlType.DirectDamped || verticalControlType == AxisControlType.AccumulationDamped))
+            {
+                vertAccel = Mathf.Clamp(-1 * Mathf.Sign(velocityInDirs.y) * Time.fixedDeltaTime * verticalAccelPerSec, -Mathf.Abs(velocityInDirs.y), Mathf.Abs(velocityInDirs.y));
+            }
         }
 
         //Debug
