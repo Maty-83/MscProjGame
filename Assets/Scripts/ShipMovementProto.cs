@@ -3,7 +3,19 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using static UnityEditor.Searcher.SearcherWindow.Alignment;
+/// <summary>
+/// Specifies control types for controla axes. 
+/// Direct means a clamped -1/+1 accumulation
+/// Accumulation will "overflow" inputs and execute until the total time of input is reached (Time in physics frames)
+/// Throttle will convert accumulation into a throttle type, where we change velocity until a given percent of max speed.
+/// </summary>
+public enum AxisControlType
+{
+    Direct,
+    Accumulation,
+    Throttle
 
+}
 public class ShipMovementProto : MonoBehaviour
 {
     [Header("Pitch")]
@@ -29,7 +41,6 @@ public class ShipMovementProto : MonoBehaviour
     [Header("Control Settings")]
     public bool enableDamping = false; //If an input is not pressed, the ship starts decellerating to zero.
     //TODO: FA should be specifically per-axis
-    public float mouseSensitivity = 1; //Multiplier on any mouse inputs.
     public bool enableRelativeMouse = true; //If enabled, causes the inputs linked to the mouse movement to decrease as they are processed.
     public float maxMouseExcess = 250; //Governs between which values pitch/yaw/roll over frames will be clamped
     public float maxInputToFullThrottle = 250;//Determines much accumulated input is needed to reach full throttle.
@@ -316,6 +327,10 @@ public class ShipMovementProto : MonoBehaviour
             Mathf.Clamp(velocityInDirs.y + vertAccel, -maxVerticalVel, maxVerticalVel),
             Mathf.Clamp(velocityInDirs.z + sideAccel, -maxLateralVel, maxLateralVel)
             );
+        if (velocityInDirs.magnitude > maxVel)
+        {
+            velocityInDirs = (velocityInDirs / velocityInDirs.magnitude) * maxVel;//Normalize the vector to max speed. I'd rather do it this way as it's less confusing.
+        }
 
         //Assign newly calculated velocity vector
         rb.linearVelocity = rb.rotation * velocityInDirs;
