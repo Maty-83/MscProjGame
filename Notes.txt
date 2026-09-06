@@ -155,3 +155,30 @@ Initial notes about diploma thesis:
 				>Limit frame code almost an exact replica of speed limiter code from refactor.
 				>BUT: Difficult to use without UI, lack of information
 					>Can be tested via debug-prints though.
+					
+		>Notes on fixes to velocity, etc.
+			>I aggressively clamp maximum velocity every frame instead of nicely slow it down.
+				>Prevents exceeding the velocity with any means, setting a speed limit for the player
+				>Since this is done on the whole vector, means accelerating in multiple axes won't allow for faster ships.
+					>Question here on gameplay: Should acceleration be allowed to be faster in that manner?
+						>Gameplay-wise it's a weird skill-based dilemma between what I want
+					
+		>Design of publically selectable variables for control inputs
+			>Maximum acceleration and velocity in a given axis
+				>For tuning the handling model and POTENTIALLY changing this with effects in-game (Long ways off, probably not in thesis. But I wanna continue work on the game after anyway.)
+			>Input sensitivity:
+				>Multiplier on axis input.
+			>Input types:Three main types+Damping
+				>Damping: Should we automatically decellerate to 0 w/o other input?
+				>Three main types of inputs:
+					>Direct: Inputs are given per-frame, on interval [-1,1]
+						>Essentially clamped accumulator, so defaults to it.
+					>Accumulator: Accumulates for how many physics frames the input should be executed based on length of held input. (Every frame we add sensitivity*axis input to the total, which is clamped to some reasonable value)
+						>Useful especially for mouse movement, where to precisely end up at a given speed, we now only measure total distance, not time spent moving the mouse.
+							>Much easier for most humans.
+						>Naturally decays
+					>Throttle:
+						>How much input accumulates determines the speed we try to match.
+						>So if we say our throttle is 0.3 of the max accumulation, the throttle doesn't decay. Our ship tries to match its velocity in the given axis to 0.3*maximum velocity in that axis.
+				>Use enum which specifies type+Damping
+				>Throttle already damps, doesn't need it
