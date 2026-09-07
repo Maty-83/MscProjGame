@@ -187,3 +187,28 @@ Initial notes about diploma thesis:
 						>One note: If accumulation to full throttle is set very low compared to max accumulation, simulates mouse-offset direct controls via mouse too.
 				>Use enum which specifies type+Damping
 				>Throttle already damps, doesn't need it
+		
+	>UI Design Considerations.
+		>UI needs to be a clear and present show of what's happenning to the ship and where to go.
+		>Nav-ball is great. (Concept from E:D. Essentially a "Ball" offset from a fixed point by a small magnitude vector with direction to next checkpoint. The ball always faces towards the centre with the inwards pointing side having a different color to the outwards facing side, making it so one can recognize the direction it's pointing at a glance.
+		>We want the player to have full information access about the ship directly from the UI.
+			>Every axis speed should be displayed.
+			>Each speed axis should be easily intuited
+				>Use picture information in addition to numbers!
+				>From this comes a major design idea: Make the UI elements look like the motion they're performing
+					>Near-circular gauge for roll
+					>Vertical gauges for pitch and vertical thrust each.
+					>Horizontal gauges for yaw and lateral
+					>Thrust gauge should use perspective and "feel" like it's going forward and back.
+						>It should also be large, as the primary facilitator of movement!
+				>Incidentally, this also answers how throttle should be displayed (Just add a tab that gets affixed to the correct part of the bar for a given axis!)
+			>We'll also want (Likely a purely numeric) total speed indicator in the middle.
+		
+		>For mouse controls we'll also likely want one very specific thing: Centre of screen arrows showing mouse offset.
+			>Again, helps visualize how the ship will behave, as we'll be hiding the mouse eventually)
+			
+		>All of this will be attached to the ship, not the camera.
+			>Static point of reference for future screenshake effects
+			>Any look-cam we add or any camera offset tricks based on current acceleration will look WAY better that way.
+		
+		>Personal note: This UI feels like a weird mix of Trackmania UI and E:D UI. I like it! All the readouts will give it its own style, while pointing to those.
