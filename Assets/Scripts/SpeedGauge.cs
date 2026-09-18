@@ -51,6 +51,66 @@ public class SpeedGauge : MonoBehaviour
                 return 0;
         }
     }
+    private float GetVelocity()
+    {
+        Rigidbody rb = ShipMovementScript.GetComponent<Rigidbody>();
+        Vector3 velocityInDirs = Quaternion.Inverse(rb.rotation) * rb.linearVelocity;
+        Vector3 localAngularVelocity = transform.InverseTransformDirection(rb.angularVelocity);
+        switch (gaugeAxis)
+        {
+            case GaugeAxis.Forward:
+                return velocityInDirs.x;
+            case GaugeAxis.Vertical:
+                return velocityInDirs.y;
+            case GaugeAxis.Lateral:
+                return velocityInDirs.z;
+            case GaugeAxis.Pitch:
+                return localAngularVelocity.z;
+            case GaugeAxis.Yaw:
+                return localAngularVelocity.y;
+            case GaugeAxis.Roll:
+                return localAngularVelocity.x;
+            case GaugeAxis.TotalVelocity:
+                return velocityInDirs.magnitude;
+            default:
+                Debug.Log("[ERROR]: unknown gauge axis");
+                return 0;
+        }
+    }
+    private void GetMaxVelocities(out float max, out float min)
+    {
+        max= 0;
+        min = 0;
+        switch (gaugeAxis)
+        {
+            case GaugeAxis.Forward:
+                max = ShipMovementScript.maxVel;
+                min = ShipMovementScript.maxReverseVel;
+                break;
+            case GaugeAxis.Vertical:
+                max = ShipMovementScript.maxVerticalVel;
+                break;
+            case GaugeAxis.Lateral:
+                max = ShipMovementScript.maxLateralVel;
+                break;
+            case GaugeAxis.Pitch:
+                max = ShipMovementScript.maxPitchVel;
+                break;
+            case GaugeAxis.Yaw:
+                max= ShipMovementScript.maxYawVel;
+                break;
+            case GaugeAxis.Roll:
+                max= ShipMovementScript.maxRollVel;
+                break;
+            case GaugeAxis.TotalVelocity:
+                max = ShipMovementScript.maxVel;
+                break;
+            default:
+                Debug.Log("[ERROR]: unknown gauge axis");
+                return;
+        }
+        if (min == 0) min = -max;
+    }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -63,4 +123,5 @@ public class SpeedGauge : MonoBehaviour
     {
         
     }
+
 }
