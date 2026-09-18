@@ -212,3 +212,13 @@ Initial notes about diploma thesis:
 			>Any look-cam we add or any camera offset tricks based on current acceleration will look WAY better that way.
 		
 		>Personal note: This UI feels like a weird mix of Trackmania UI and E:D UI. I like it! All the readouts will give it its own style, while pointing to those.
+	
+	>UI design:
+		>Marred by being ill (Still ill as of writing)
+		>Moving a bit tho.
+		>First challenge: Hook up to the player input system.
+			>This will show the player how much thrust they're using on a given axis.
+			>Indicates what individual axes are currently doing
+				>Could be useful for Accumulation and Throttle modes of control, as the player input isn't directly related to the ship there.
+			>May still get cut, but for now it should exist in early player testing.
+			>Needed a public param w/ private set for the last frame inputs.
