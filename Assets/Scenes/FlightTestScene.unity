@@ -1674,7 +1674,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 56359291506201547, guid: 8373a9ebe7b9c3d4c8c3821492a80b7e, type: 3}
       propertyPath: yawControlType
-      value: 4
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 56359291506201547, guid: 8373a9ebe7b9c3d4c8c3821492a80b7e, type: 3}
       propertyPath: yawSensitivity
@@ -1694,7 +1694,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 56359291506201547, guid: 8373a9ebe7b9c3d4c8c3821492a80b7e, type: 3}
       propertyPath: pitchControlType
-      value: 4
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 56359291506201547, guid: 8373a9ebe7b9c3d4c8c3821492a80b7e, type: 3}
       propertyPath: pitchSensitivity
