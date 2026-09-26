@@ -3495,7 +3495,7 @@ GameObject:
   - component: {fileID: 3237701278617990001}
   - component: {fileID: 5115854439740142021}
   m_Layer: 0
-  m_Name: Pitch_Speed
+  m_Name: Yaw_Speed
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
