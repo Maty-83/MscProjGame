@@ -4178,6 +4178,7 @@ MonoBehaviour:
   ShipMovementScript: {fileID: 0}
   gaugeAxis: 2
   SpeedTextUI: {fileID: 5115854439740142021}
+  AccelTextUI: {fileID: 9057689629131094342}
 --- !u!1 &8293339973290852425
 GameObject:
   m_ObjectHideFlags: 0
