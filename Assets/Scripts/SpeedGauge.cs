@@ -150,14 +150,16 @@ public class SpeedGauge : MonoBehaviour
         var blipsPerDir = (blips.Count - 2) / 2;//Amount of blips on each side we split to show rough percentage visually.
         float blipFraction = 1f / blipsPerDir;
         int curHead = 0;//which one do we start at?
+
         if (inputFraction > 0)
         {
-            curHead=(blips.Count/2)-1;//We go to 1/2 and then 1 lower due to count and indexing beign offset. So at 12 or 13 we go to 6, -1=5 which is the correct index.
+            curHead = (blips.Count + 1) / 2;//We go to 1/2 of blips +1. At 12, this means 13/2=6 in int, which is correct. At 14, 14/2=7, which is also correct, since index 6 is central
         }
         if (inputFraction < 0)
         {
-            curHead=(blips.Count+1)/2;//We go to 1/2 of blips +1. At 12, this means 13/2=6 in int, which is correct. At 14, 14/2=7, which is also correct, since index 6 is central
+            curHead=(blips.Count/2)-1;//We go to 1/2 and then 1 lower due to count and indexing beign offset. So at 12 or 13 we go to 6, -1=5 which is the correct index.
         }
+
         float modifiedInput=Mathf.Abs(inputFraction);
         //TODO: Calculate the fractions per each blip and light them up properly.
         for (int i = 0; i < blipsPerDir; i++)
@@ -189,7 +191,6 @@ public class SpeedGauge : MonoBehaviour
             col.a = AlphaUpperBound;
             blips[0].color = col;
         }
-
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -213,6 +214,6 @@ public class SpeedGauge : MonoBehaviour
         SetGaugeFromPercent(SpeedIndicatorBlips, speedFraction);
         SetGaugeFromPercent(AccelerationIndicatorBlips, accPercent);
         SpeedTextUI.text = vel.ToString("F0");
+        //TODO: Throttle pin movement
     }
-
 }
