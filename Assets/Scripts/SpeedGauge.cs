@@ -111,7 +111,7 @@ public class SpeedGauge : MonoBehaviour
                 Debug.Log("[ERROR]: unknown gauge axis");
                 return;
         }
-        if (min == 0) min = -max;
+        if (min == 0) min = max;
     }
     /// <summary>
     /// Sets UI blips based on given input fraction from interval [-1,1]. If the list is odd, the central blip always stays lit unless fraction is precisely zero.
@@ -148,18 +148,33 @@ public class SpeedGauge : MonoBehaviour
         }
 
         var blipsPerDir = (blips.Count - 2) / 2;//Amount of blips on each side we split to show rough percentage visually.
-
+        float blipFraction = 1f / blipsPerDir;
+        int curHead = 0;//which one do we start at?
+        if (inputFraction > 0)
+        {
+            curHead=(blips.Count/2)-1;//We go to 1/2 and then 1 lower due to count and indexing beign offset. So at 12 or 13 we go to 6, -1=5 which is the correct index.
+        }
+        if (inputFraction < 0)
+        {
+            curHead=(blips.Count+1)/2;//We go to 1/2 of blips +1. At 12, this means 13/2=6 in int, which is correct. At 14, 14/2=7, which is also correct, since index 6 is central
+        }
+        float modifiedInput=Mathf.Abs(inputFraction);
         //TODO: Calculate the fractions per each blip and light them up properly.
         for (int i = 0; i < blipsPerDir; i++)
         {
+            if (modifiedInput <= 0) break;
+            var col = blips[curHead].color;
+            col.a = AlphaUpperBound;
+            blips[curHead].color = col;
             if (inputFraction > 0)
             {
-
+                curHead++;
             }
             if (inputFraction < 0)
             {
-
+                curHead--;
             }
+            modifiedInput -= blipFraction;
         }
         //Finally, only if input>0.999 or input<-0.999 do we light up the final one on that side
         if (inputFraction > 0.999f)
@@ -186,7 +201,18 @@ public class SpeedGauge : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        GetMaxVelocities(out float maxVel, out float minVel);
+        float vel = GetVelocity();
+        float accPercent = GetLastFrameAccPercent();
+
+        float speedFraction = vel / maxVel;
+        if (vel < 0)
+        {
+            speedFraction = vel / minVel;
+        }
+        SetGaugeFromPercent(SpeedIndicatorBlips, speedFraction);
+        SetGaugeFromPercent(AccelerationIndicatorBlips, accPercent);
+        SpeedTextUI.text = vel.ToString("F0");
     }
 
 }
