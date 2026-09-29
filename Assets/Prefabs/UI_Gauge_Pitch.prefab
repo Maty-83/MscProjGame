@@ -4471,7 +4471,7 @@ MonoBehaviour:
   - {fileID: 7982547101452669571}
   ThrottlePin: {fileID: 5035778699993548114}
   ShipMovementScript: {fileID: 0}
-  gaugeAxis: 5
+  gaugeAxis: 3
   SpeedTextUI: {fileID: 5115854439740142021}
   AccelTextUI: {fileID: 9057689629131094342}
 --- !u!1 &8102562122109795034
