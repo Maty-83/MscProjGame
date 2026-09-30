@@ -4425,8 +4425,9 @@ MonoBehaviour:
   AccelerationIndicatorBlips: []
   ThrottlePin: {fileID: 8023223390547928735}
   ShipMovementScript: {fileID: 0}
-  gaugeType: 0
-  gaugeAxis: 5
+  gaugeAxis: 4
+  SpeedTextUI: {fileID: 5115854439740142021}
+  PercentInputUI: {fileID: 9057689629131094342}
 --- !u!1 &8102562122109795034
 GameObject:
   m_ObjectHideFlags: 0

@@ -30,7 +30,7 @@ public class SpeedGauge : MonoBehaviour
     /*public GaugeType gaugeType;*/
     public GaugeAxis gaugeAxis;
     public TMP_Text SpeedTextUI;
-    public TMP_Text AccelTextUI;
+    public TMP_Text PercentInputUI;
     private float GetLastFrameAccPercent()
     {
         switch (gaugeAxis)
@@ -215,7 +215,7 @@ public class SpeedGauge : MonoBehaviour
         SetGaugeFromPercent(SpeedIndicatorBlips, speedFraction);
         SetGaugeFromPercent(AccelerationIndicatorBlips, accPercent);
         SpeedTextUI.text = vel.ToString("F0");
-        AccelTextUI.text = $"{accPercent.ToString("F0")}%";
+        PercentInputUI.text = $"{accPercent.ToString("F0")}%";
         //TODO: Throttle pin movement
     }
 }
