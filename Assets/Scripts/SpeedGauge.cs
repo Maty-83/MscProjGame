@@ -31,6 +31,7 @@ public class SpeedGauge : MonoBehaviour
     public GaugeAxis gaugeAxis;
     public TMP_Text SpeedTextUI;
     public TMP_Text PercentInputUI;
+    private Vector3 CentralAccPinOffset;
     private float GetLastFrameAccPercent()
     {
         switch (gaugeAxis)
@@ -129,7 +130,7 @@ public class SpeedGauge : MonoBehaviour
             return;
         }
         //First, set alpha of all blips to lower bound.
-        for(int i = 0; i < blips.Count; i++)
+        for (int i = 0; i < blips.Count; i++)
         {
             var color = blips[i].color;
             color.a = AlphaLowerBound;
@@ -158,10 +159,10 @@ public class SpeedGauge : MonoBehaviour
         }
         if (inputFraction < 0)
         {
-            curHead=(blips.Count/2)-1;//We go to 1/2 and then 1 lower due to count and indexing beign offset. So at 12 or 13 we go to 6, -1=5 which is the correct index.
+            curHead = (blips.Count / 2) - 1;//We go to 1/2 and then 1 lower due to count and indexing beign offset. So at 12 or 13 we go to 6, -1=5 which is the correct index.
         }
 
-        float modifiedInput=Mathf.Abs(inputFraction);
+        float modifiedInput = Mathf.Abs(inputFraction);
         //TODO: Calculate the fractions per each blip and light them up properly.
         for (int i = 0; i < blipsPerDir; i++)
         {
@@ -194,10 +195,38 @@ public class SpeedGauge : MonoBehaviour
         }
     }
 
+    private void SetThrustPinPos(float inputFraction)
+    {
+        //TODO: This is messy, but at least shows
+        if (inputFraction > 0.999f)
+        {
+            ThrottlePin.transform.position = SpeedIndicatorBlips[SpeedIndicatorBlips.Count - 1].transform.position + new Vector3(0.02f, 0.02f,0f)+CentralAccPinOffset;
+            return;
+        }
+        if (inputFraction < -0.999f)
+        {
+            ThrottlePin.transform.position = SpeedIndicatorBlips[0].transform.position + new Vector3(-0.02f, 0.02f, 0f)+CentralAccPinOffset;
+            return;
+        }
+        //Now we need to figure out the rest, done by tweening the position.
+        //Map the numbers
+        float perEntryFrac = 2f / SpeedIndicatorBlips.Count;
+        //Now that we have this, we can easily get the number by dividing inputFraction+1 by perEntryFrac
+        float precisePos = (inputFraction + 1) / perEntryFrac;
+        //With that, we can now simply tween.
+        Vector3 Pos = SpeedIndicatorBlips[(int)precisePos].transform.position * (1 - (precisePos%1)) + SpeedIndicatorBlips[(int)precisePos + 1].transform.position * (precisePos % 1)+CentralAccPinOffset;
+    }
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+        //This is dirty and will break outside its specific use limit, but the goal is functionality first and general code second.
+        Vector3 centralPos = SpeedIndicatorBlips[SpeedIndicatorBlips.Count / 2].transform.position;
+        if (SpeedIndicatorBlips.Count % 2 == 1)
+        {
+            centralPos = SpeedIndicatorBlips[SpeedIndicatorBlips.Count / 2].transform.position / 2 + SpeedIndicatorBlips[(SpeedIndicatorBlips.Count / 2) + 1].transform.position / 2;
+        }
+        CentralAccPinOffset = ThrottlePin.transform.position-centralPos;
     }
 
     // Update is called once per frame
@@ -216,6 +245,6 @@ public class SpeedGauge : MonoBehaviour
         SetGaugeFromPercent(AccelerationIndicatorBlips, accPercent);
         SpeedTextUI.text = vel.ToString("F0");
         PercentInputUI.text = $"{accPercent.ToString("F0")}%";
-        //TODO: Throttle pin movement
+        SetThrustPinPos(accPercent);
     }
 }
