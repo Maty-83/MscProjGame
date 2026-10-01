@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2007248564594885942}
   - component: {fileID: 4211914387317786026}
   m_Layer: 0
-  m_Name: Acc_Blip (-4)
+  m_Name: Acc_Blip (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -85,7 +85,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3779928412075981097}
   m_Layer: 0
-  m_Name: Helper_Rot (-9)
+  m_Name: Helper_Rot (9)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -120,7 +120,7 @@ GameObject:
   - component: {fileID: 740327887493098574}
   - component: {fileID: 3109428448499961668}
   m_Layer: 0
-  m_Name: Acc_Blip (2)
+  m_Name: Acc_Blip (-2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -195,7 +195,7 @@ GameObject:
   - component: {fileID: 9164042284006467572}
   - component: {fileID: 7391576191990407585}
   m_Layer: 0
-  m_Name: Speed_Blip (3)
+  m_Name: Speed_Blip (-3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -270,7 +270,7 @@ GameObject:
   - component: {fileID: 6948992150685022453}
   - component: {fileID: 4824897251227734555}
   m_Layer: 0
-  m_Name: Speed_Blip (-5)
+  m_Name: Speed_Blip (5)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -345,7 +345,7 @@ GameObject:
   - component: {fileID: 7581941034608863192}
   - component: {fileID: 6663421422565143175}
   m_Layer: 0
-  m_Name: Speed_Blip (11)
+  m_Name: Speed_Blip (-11)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -418,7 +418,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8567989833137193474}
   m_Layer: 0
-  m_Name: Helper_Rot (9)
+  m_Name: Helper_Rot (-9)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -453,7 +453,7 @@ GameObject:
   - component: {fileID: 1667167066409650499}
   - component: {fileID: 1385485845419226111}
   m_Layer: 0
-  m_Name: Speed_Blip (10)
+  m_Name: Speed_Blip (-10)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -528,7 +528,7 @@ GameObject:
   - component: {fileID: 3404641784123758148}
   - component: {fileID: 4576550077327708193}
   m_Layer: 0
-  m_Name: Speed_Blip (-10)
+  m_Name: Speed_Blip (10)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -603,7 +603,7 @@ GameObject:
   - component: {fileID: 9126594210872486784}
   - component: {fileID: 3785233850437202585}
   m_Layer: 0
-  m_Name: Speed_Blip (5)
+  m_Name: Speed_Blip (-5)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -678,7 +678,7 @@ GameObject:
   - component: {fileID: 4511862590931560078}
   - component: {fileID: 5620359388125451515}
   m_Layer: 0
-  m_Name: Speed_Blip (-4)
+  m_Name: Speed_Blip (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -753,7 +753,7 @@ GameObject:
   - component: {fileID: 3115078627321044278}
   - component: {fileID: 5608175338104768484}
   m_Layer: 0
-  m_Name: Speed_Blip (4)
+  m_Name: Speed_Blip (-4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -826,7 +826,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8661325093482360858}
   m_Layer: 0
-  m_Name: Helper_Rot (-2)
+  m_Name: Helper_Rot (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -861,7 +861,7 @@ GameObject:
   - component: {fileID: 4960828284842863183}
   - component: {fileID: 8047459162097201245}
   m_Layer: 0
-  m_Name: Acc_Blip (1)
+  m_Name: Acc_Blip (-1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1073,7 +1073,7 @@ GameObject:
   - component: {fileID: 5180579392741937853}
   - component: {fileID: 5418601575281151603}
   m_Layer: 0
-  m_Name: Acc_Blip (4)
+  m_Name: Acc_Blip (-4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1148,7 +1148,7 @@ GameObject:
   - component: {fileID: 8775277997370185586}
   - component: {fileID: 8318003993388363295}
   m_Layer: 0
-  m_Name: Speed_Blip (-8)
+  m_Name: Speed_Blip (8)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1223,7 +1223,7 @@ GameObject:
   - component: {fileID: 8921766934574657647}
   - component: {fileID: 59174660470843759}
   m_Layer: 0
-  m_Name: Speed_Blip (9)
+  m_Name: Speed_Blip (-9)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1298,7 +1298,7 @@ GameObject:
   - component: {fileID: 5662604506958556450}
   - component: {fileID: 4267368999174227941}
   m_Layer: 0
-  m_Name: Speed_Blip (-3)
+  m_Name: Speed_Blip (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1373,7 +1373,7 @@ GameObject:
   - component: {fileID: 1792801336557276017}
   - component: {fileID: 5023666735441451452}
   m_Layer: 0
-  m_Name: Acc_Blip (-10)
+  m_Name: Acc_Blip (10)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1448,7 +1448,7 @@ GameObject:
   - component: {fileID: 5732838145529225594}
   - component: {fileID: 9165147968255409316}
   m_Layer: 0
-  m_Name: Speed_Blip (-7)
+  m_Name: Speed_Blip (7)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1523,7 +1523,7 @@ GameObject:
   - component: {fileID: 7771976091234243732}
   - component: {fileID: 1832005216435595372}
   m_Layer: 0
-  m_Name: Acc_Blip (11)
+  m_Name: Acc_Blip (-11)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1596,7 +1596,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6011257320620348342}
   m_Layer: 0
-  m_Name: Helper_Rot (11)
+  m_Name: Helper_Rot (-11)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1631,7 +1631,7 @@ GameObject:
   - component: {fileID: 5824431611128144634}
   - component: {fileID: 5205680121719516778}
   m_Layer: 0
-  m_Name: Acc_Blip (10)
+  m_Name: Acc_Blip (-10)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1706,7 +1706,7 @@ GameObject:
   - component: {fileID: 8026336153499011966}
   - component: {fileID: 561085319047609955}
   m_Layer: 0
-  m_Name: Speed_Blip (8)
+  m_Name: Speed_Blip (-8)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1816,7 +1816,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7430247333381742024}
   m_Layer: 0
-  m_Name: Helper_Rot (10)
+  m_Name: Helper_Rot (-10)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1851,7 +1851,7 @@ GameObject:
   - component: {fileID: 6747683742803492235}
   - component: {fileID: 4152811367946688246}
   m_Layer: 0
-  m_Name: Speed_Blip (2)
+  m_Name: Speed_Blip (-2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1959,7 +1959,7 @@ GameObject:
   - component: {fileID: 9057615739669605183}
   - component: {fileID: 5495335648558881101}
   m_Layer: 0
-  m_Name: Speed_Blip (-6)
+  m_Name: Speed_Blip (6)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2032,7 +2032,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2365122773024839693}
   m_Layer: 0
-  m_Name: Helper_Rot (7)
+  m_Name: Helper_Rot (-7)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2067,7 +2067,7 @@ GameObject:
   - component: {fileID: 8089319991906095033}
   - component: {fileID: 5010357326337094804}
   m_Layer: 0
-  m_Name: Speed_Blip (-9)
+  m_Name: Speed_Blip (9)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2140,7 +2140,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6767309414566617187}
   m_Layer: 0
-  m_Name: Helper_Rot (3)
+  m_Name: Helper_Rot (-3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2175,7 +2175,7 @@ GameObject:
   - component: {fileID: 605075036346270103}
   - component: {fileID: 3574692521370452952}
   m_Layer: 0
-  m_Name: Acc_Blip (-6)
+  m_Name: Acc_Blip (6)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2250,7 +2250,7 @@ GameObject:
   - component: {fileID: 531765442031833444}
   - component: {fileID: 8576083554762301764}
   m_Layer: 0
-  m_Name: Acc_Blip (9)
+  m_Name: Acc_Blip (-9)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2323,7 +2323,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5629726720442907459}
   m_Layer: 0
-  m_Name: Helper_Rot (1)
+  m_Name: Helper_Rot (-1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2720,7 +2720,7 @@ GameObject:
   - component: {fileID: 5248944369900614262}
   - component: {fileID: 2622777614833705303}
   m_Layer: 0
-  m_Name: Acc_Blip (6)
+  m_Name: Acc_Blip (-6)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2795,7 +2795,7 @@ GameObject:
   - component: {fileID: 981343187707519847}
   - component: {fileID: 4729703021655706758}
   m_Layer: 0
-  m_Name: Acc_Blip (8)
+  m_Name: Acc_Blip (-8)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2868,7 +2868,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8919719195234186659}
   m_Layer: 0
-  m_Name: Helper_Rot (5)
+  m_Name: Helper_Rot (-5)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2903,7 +2903,7 @@ GameObject:
   - component: {fileID: 7242426177145409763}
   - component: {fileID: 856307533965396231}
   m_Layer: 0
-  m_Name: Speed_Blip (6)
+  m_Name: Speed_Blip (-6)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2976,7 +2976,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3479990410738646646}
   m_Layer: 0
-  m_Name: Helper_Rot (-10)
+  m_Name: Helper_Rot (10)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3043,7 +3043,7 @@ GameObject:
   - component: {fileID: 2368070933893414803}
   - component: {fileID: 487495996884943016}
   m_Layer: 0
-  m_Name: Acc_Blip (-2)
+  m_Name: Acc_Blip (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3116,7 +3116,7 @@ GameObject:
   m_Component:
   - component: {fileID: 9075337465168022856}
   m_Layer: 0
-  m_Name: Helper_Rot (-11)
+  m_Name: Helper_Rot (11)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3151,7 +3151,7 @@ GameObject:
   - component: {fileID: 5910293680637335061}
   - component: {fileID: 7793040922141454887}
   m_Layer: 0
-  m_Name: Acc_Blip (5)
+  m_Name: Acc_Blip (-5)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3224,7 +3224,7 @@ GameObject:
   m_Component:
   - component: {fileID: 771173973521810757}
   m_Layer: 0
-  m_Name: Helper_Rot (-8)
+  m_Name: Helper_Rot (8)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3257,7 +3257,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8167831845952752964}
   m_Layer: 0
-  m_Name: Helper_Rot (-3)
+  m_Name: Helper_Rot (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3290,7 +3290,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5139537627229172770}
   m_Layer: 0
-  m_Name: Helper_Rot (-4)
+  m_Name: Helper_Rot (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3325,7 +3325,7 @@ GameObject:
   - component: {fileID: 3342802186301450332}
   - component: {fileID: 7946402454700877254}
   m_Layer: 0
-  m_Name: Speed_Blip (-11)
+  m_Name: Speed_Blip (11)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3537,7 +3537,7 @@ GameObject:
   - component: {fileID: 695241832020586798}
   - component: {fileID: 7626525560584501637}
   m_Layer: 0
-  m_Name: Acc_Blip (-9)
+  m_Name: Acc_Blip (9)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3612,7 +3612,7 @@ GameObject:
   - component: {fileID: 5758302795621975918}
   - component: {fileID: 2605897672842350141}
   m_Layer: 0
-  m_Name: Acc_Blip (-1)
+  m_Name: Acc_Blip (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3687,7 +3687,7 @@ GameObject:
   - component: {fileID: 7255116699190622707}
   - component: {fileID: 3765544989321548247}
   m_Layer: 0
-  m_Name: Acc_Blip (-5)
+  m_Name: Acc_Blip (5)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3760,7 +3760,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6248063463351190639}
   m_Layer: 0
-  m_Name: Helper_Rot (2)
+  m_Name: Helper_Rot (-2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3795,7 +3795,7 @@ GameObject:
   - component: {fileID: 957026502048131701}
   - component: {fileID: 8780181253778766283}
   m_Layer: 0
-  m_Name: Speed_Blip (7)
+  m_Name: Speed_Blip (-7)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3868,7 +3868,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3157799826367637946}
   m_Layer: 0
-  m_Name: Helper_Rot (-7)
+  m_Name: Helper_Rot (7)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3901,7 +3901,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8150158729592485232}
   m_Layer: 0
-  m_Name: Helper_Rot (-6)
+  m_Name: Helper_Rot (6)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3934,7 +3934,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4590318511751814922}
   m_Layer: 0
-  m_Name: Helper_Rot (-5)
+  m_Name: Helper_Rot (5)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3969,7 +3969,7 @@ GameObject:
   - component: {fileID: 412105182434890766}
   - component: {fileID: 2353655464789740989}
   m_Layer: 0
-  m_Name: Acc_Blip (3)
+  m_Name: Acc_Blip (-3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4175,58 +4175,59 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SpeedGauge
   SpeedIndicatorBlips:
-  - {fileID: 7946402454700877254}
-  - {fileID: 4576550077327708193}
-  - {fileID: 5010357326337094804}
-  - {fileID: 8318003993388363295}
-  - {fileID: 9165147968255409316}
-  - {fileID: 5495335648558881101}
-  - {fileID: 4824897251227734555}
-  - {fileID: 5620359388125451515}
-  - {fileID: 4267368999174227941}
-  - {fileID: 1849240832473504913}
-  - {fileID: 2220149752844451614}
-  - {fileID: 660108924037833039}
-  - {fileID: 4335474602910697403}
-  - {fileID: 4152811367946688246}
-  - {fileID: 7391576191990407585}
-  - {fileID: 5608175338104768484}
-  - {fileID: 3785233850437202585}
-  - {fileID: 856307533965396231}
-  - {fileID: 8780181253778766283}
-  - {fileID: 561085319047609955}
-  - {fileID: 59174660470843759}
-  - {fileID: 1385485845419226111}
   - {fileID: 6663421422565143175}
+  - {fileID: 1385485845419226111}
+  - {fileID: 59174660470843759}
+  - {fileID: 561085319047609955}
+  - {fileID: 8780181253778766283}
+  - {fileID: 856307533965396231}
+  - {fileID: 3785233850437202585}
+  - {fileID: 5608175338104768484}
+  - {fileID: 7391576191990407585}
+  - {fileID: 4152811367946688246}
+  - {fileID: 4335474602910697403}
+  - {fileID: 660108924037833039}
+  - {fileID: 2220149752844451614}
+  - {fileID: 1849240832473504913}
+  - {fileID: 4267368999174227941}
+  - {fileID: 5620359388125451515}
+  - {fileID: 4824897251227734555}
+  - {fileID: 5495335648558881101}
+  - {fileID: 9165147968255409316}
+  - {fileID: 8318003993388363295}
+  - {fileID: 5010357326337094804}
+  - {fileID: 4576550077327708193}
+  - {fileID: 7946402454700877254}
   AccelerationIndicatorBlips:
-  - {fileID: 1606344088602839495}
-  - {fileID: 5023666735441451452}
-  - {fileID: 7626525560584501637}
-  - {fileID: 1802737236033972020}
-  - {fileID: 6430214710833927448}
-  - {fileID: 3574692521370452952}
-  - {fileID: 3765544989321548247}
-  - {fileID: 4211914387317786026}
-  - {fileID: 7081588036958148066}
-  - {fileID: 487495996884943016}
-  - {fileID: 2605897672842350141}
-  - {fileID: 7906617467433806052}
-  - {fileID: 8047459162097201245}
-  - {fileID: 3109428448499961668}
-  - {fileID: 2353655464789740989}
-  - {fileID: 5418601575281151603}
-  - {fileID: 7793040922141454887}
-  - {fileID: 2622777614833705303}
-  - {fileID: 5694295119967274630}
-  - {fileID: 4729703021655706758}
-  - {fileID: 8576083554762301764}
-  - {fileID: 5205680121719516778}
   - {fileID: 1832005216435595372}
+  - {fileID: 5205680121719516778}
+  - {fileID: 8576083554762301764}
+  - {fileID: 4729703021655706758}
+  - {fileID: 5694295119967274630}
+  - {fileID: 2622777614833705303}
+  - {fileID: 7793040922141454887}
+  - {fileID: 5418601575281151603}
+  - {fileID: 2353655464789740989}
+  - {fileID: 3109428448499961668}
+  - {fileID: 8047459162097201245}
+  - {fileID: 7906617467433806052}
+  - {fileID: 2605897672842350141}
+  - {fileID: 487495996884943016}
+  - {fileID: 7081588036958148066}
+  - {fileID: 4211914387317786026}
+  - {fileID: 3765544989321548247}
+  - {fileID: 3574692521370452952}
+  - {fileID: 6430214710833927448}
+  - {fileID: 1802737236033972020}
+  - {fileID: 7626525560584501637}
+  - {fileID: 5023666735441451452}
+  - {fileID: 1606344088602839495}
   ThrottlePin: {fileID: 3587519017464592237}
   ShipMovementScript: {fileID: 0}
   gaugeAxis: 5
   SpeedTextUI: {fileID: 5115854439740142021}
   PercentInputUI: {fileID: 9057689629131094342}
+  minimumGaugeSensitivity: 0.01
 --- !u!1 &8210550613941531908
 GameObject:
   m_ObjectHideFlags: 0
@@ -4239,7 +4240,7 @@ GameObject:
   - component: {fileID: 2242946760272964420}
   - component: {fileID: 1802737236033972020}
   m_Layer: 0
-  m_Name: Acc_Blip (-8)
+  m_Name: Acc_Blip (8)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4314,7 +4315,7 @@ GameObject:
   - component: {fileID: 1587203507535138519}
   - component: {fileID: 7081588036958148066}
   m_Layer: 0
-  m_Name: Acc_Blip (-3)
+  m_Name: Acc_Blip (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4389,7 +4390,7 @@ GameObject:
   - component: {fileID: 1419350090497770179}
   - component: {fileID: 1849240832473504913}
   m_Layer: 0
-  m_Name: Speed_Blip (-2)
+  m_Name: Speed_Blip (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4462,7 +4463,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3153538412454935818}
   m_Layer: 0
-  m_Name: Helper_Rot (4)
+  m_Name: Helper_Rot (-4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4497,7 +4498,7 @@ GameObject:
   - component: {fileID: 1372802539920537458}
   - component: {fileID: 2220149752844451614}
   m_Layer: 0
-  m_Name: Speed_Blip (-1)
+  m_Name: Speed_Blip (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4572,7 +4573,7 @@ GameObject:
   - component: {fileID: 1231856951522830947}
   - component: {fileID: 6430214710833927448}
   m_Layer: 0
-  m_Name: Acc_Blip (-7)
+  m_Name: Acc_Blip (7)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4645,7 +4646,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8668476936699070024}
   m_Layer: 0
-  m_Name: Helper_Rot (-1)
+  m_Name: Helper_Rot (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4678,7 +4679,7 @@ GameObject:
   m_Component:
   - component: {fileID: 658575615470338959}
   m_Layer: 0
-  m_Name: Helper_Rot (6)
+  m_Name: Helper_Rot (-6)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4788,7 +4789,7 @@ GameObject:
   - component: {fileID: 7218592696741881184}
   - component: {fileID: 4335474602910697403}
   m_Layer: 0
-  m_Name: Speed_Blip (1)
+  m_Name: Speed_Blip (-1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4861,7 +4862,7 @@ GameObject:
   m_Component:
   - component: {fileID: 781661810856127863}
   m_Layer: 0
-  m_Name: Helper_Rot (8)
+  m_Name: Helper_Rot (-8)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4896,7 +4897,7 @@ GameObject:
   - component: {fileID: 6130340955838289944}
   - component: {fileID: 1606344088602839495}
   m_Layer: 0
-  m_Name: Acc_Blip (-11)
+  m_Name: Acc_Blip (11)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4971,7 +4972,7 @@ GameObject:
   - component: {fileID: 7488920879814902532}
   - component: {fileID: 5694295119967274630}
   m_Layer: 0
-  m_Name: Acc_Blip (7)
+  m_Name: Acc_Blip (-7)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

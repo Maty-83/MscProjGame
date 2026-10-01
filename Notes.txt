@@ -236,10 +236,10 @@ Initial notes about diploma thesis:
         //FIXED: Inverted logic statement (oops). I was taking the average at the wrong time.
 
         //Velocity fluctuations cause low blips to flicker
-        //Fixed: Set a minimum sensitivity level (By default, say 1%?)
+        //FIXED: Set a minimum sensitivity level (By default, say 1%?)
 
 		//Yaw and Roll gauges are inverted
-        //TODO: Easiest is to just modify the prefab by swapping order of items in the list.
+        //FIXED: Easiest is to just modify the prefab by swapping order of items in the list.
 		
         //Pin doesn't tween, only does 100% and 0% pos
         //TODO: Inspect code. Seems code works, but transforms are the issue.. Also gives index out of range exception when maxing out.
@@ -255,3 +255,8 @@ Initial notes about diploma thesis:
 			
 	>TODOs:
 		>Introducing that code for fixing insufficient thrust axis sensitivity?
+		
+		>Flicker caused by direct motion when moving on a cardinal axis with a mouse
+        //Best to consult on this
+		
+		>Central UI needs a different gauge mode for both the speedo and the thrust pin.

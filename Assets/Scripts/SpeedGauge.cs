@@ -32,6 +32,9 @@ public class SpeedGauge : MonoBehaviour
     public TMP_Text SpeedTextUI;
     public TMP_Text PercentInputUI;
     public float minimumGaugeSensitivity = 0.01f;//Minimum percentage input for the gauge to show. Prevents flicker.
+
+    public Vector3 LocalThrottlePinRotAt100Percent = Vector3.zero; //Here
+
     private Vector3 CentralAccPinOffset;
     
     private float GetLastFrameAccPercent()
@@ -253,20 +256,8 @@ public class SpeedGauge : MonoBehaviour
 
         //Bugs found:
         //Insufficient Thrust axis sensitivity to use maximum acceleration in negative axis (Code or manual sensitivity change should be done)
-        //BYPASSED by reducing accumulation maxima to percent-based. Best would be to introduce doce so minimum accumulation equals per-physics-frame percent acceleration to max.
+        //BYPASSED by reducing accumulation maxima to percent-based. Best would be to introduce code so minimum accumulation equals per-physics-frame percent acceleration to max.
         //TODO: This should be solved with code, as it lets players be dumb otherwise.
-
-        //Speed is broken for rotations, since we use too little fractional
-        //FIXED: Add a conditional switch for velocity change, convert from rad/s to deg/s
-
-        //Off-by-one error for the thrust pin
-        //FIXED: Inverted logic statement (oops). I was taking the average at the wrong time.
-
-        //Velocity fluctuations cause low blips to flicker
-        //FIXED: Set a minimum sensitivity level (By default, say 1%?)
-
-        //Yaw and Roll gauges are inverted
-        //TODO: Easiest is to just modify the prefab by swapping order of items in the list.
 
         //Pin doesn't tween, only does 100% and 0% pos
         //TODO: Inspect code. Seems code works, but transforms are the issue.. Also gives index out of range exception when maxing out.
