@@ -202,21 +202,22 @@ public class SpeedGauge : MonoBehaviour
         //TODO: This is messy, but at least shows
         if (inputFraction > 0.999f)
         {
-            ThrottlePin.transform.position = SpeedIndicatorBlips[SpeedIndicatorBlips.Count - 1].transform.position +CentralAccPinOffset;
+            ThrottlePin.transform.position = SpeedIndicatorBlips[SpeedIndicatorBlips.Count - 1].transform.position + CentralAccPinOffset;
             return;
         }
         if (inputFraction < -0.999f)
         {
-            ThrottlePin.transform.position = SpeedIndicatorBlips[0].transform.position +CentralAccPinOffset;
+            ThrottlePin.transform.position = SpeedIndicatorBlips[0].transform.position + CentralAccPinOffset;
             return;
         }
         //Now we need to figure out the rest, done by tweening the position.
         //Map the numbers
-        float perEntryFrac = 2f / SpeedIndicatorBlips.Count;
+        float perEntryFrac = 2f / (SpeedIndicatorBlips.Count-1);
         //Now that we have this, we can easily get the number by dividing inputFraction+1 by perEntryFrac
-        float precisePos = (inputFraction + 1) / perEntryFrac;
+        float precisePos = ((inputFraction + 1) / perEntryFrac);
         //With that, we can now simply tween.
-        Vector3 Pos = SpeedIndicatorBlips[(int)precisePos].transform.position * (1 - (precisePos%1)) + SpeedIndicatorBlips[(int)precisePos + 1].transform.position * (precisePos % 1)+CentralAccPinOffset;
+        Vector3 pos = SpeedIndicatorBlips[(int)precisePos].transform.position * (1 - (precisePos % 1)) + SpeedIndicatorBlips[(int)precisePos + 1].transform.position * (precisePos % 1) + CentralAccPinOffset;
+        ThrottlePin.transform.position = pos;
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -260,7 +261,7 @@ public class SpeedGauge : MonoBehaviour
         //TODO: This should be solved with code, as it lets players be dumb otherwise.
 
         //Pin doesn't tween, only does 100% and 0% pos
-        //TODO: Inspect code. Seems code works, but transforms are the issue.. Also gives index out of range exception when maxing out.
+        //FIXED: Off-by-one error coupled with missing a line of code.
 
         //Pin is broken for roll due to rotation being involved.
         //TODO: Simplest way to fix it is to introduce a "Rotation at 100%" variable, which affects rotation ONLY for roll. Won't be perfect when tweening, but I want a working UI first.
