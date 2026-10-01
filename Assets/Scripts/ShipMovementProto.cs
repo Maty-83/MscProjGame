@@ -61,8 +61,8 @@ public class ShipMovementProto : MonoBehaviour
     public float verticalSensitivity = 1.0f;
 
     [Header("Control Settings")]
-    public float maxAccumulation = 250; //Governs between which values pitch/yaw/roll over frames will be clamped
-    public float accumulationToFullThrottle = 250;//Determines much accumulated input is needed to reach full throttle.
+    public float maxAccumulation = 100; //Governs between which values pitch/yaw/roll over frames will be clamped
+    public float accumulationToFullThrottle = 100;//Determines much accumulated input is needed to reach full throttle.
     [Header("Debug")]
     public bool logInputs = false;
     public bool logAppliedRotAcc = false;
@@ -334,17 +334,7 @@ public class ShipMovementProto : MonoBehaviour
     }
     private void SetLastFrameLinAccel(float thrustAcc, float vertAcc, float latAcc)
     {
-        float MFA = forwardAccelPerSec * Time.fixedDeltaTime;
-        float MRA = reverseAccelPerSec * Time.fixedDeltaTime;
-        float MVA= verticalAccelPerSec * Time.fixedDeltaTime;
-        float MLA = lateralAccelPerSec * Time.fixedDeltaTime;
-
-        float thrustAccActual = thrustAcc / MFA;
-        if (thrustAcc < 0)
-        {
-            thrustAccActual = thrustAcc / MRA;
-        }
-        LastFrameInputPercentLinear = new Vector3(thrustAccActual, vertAcc / MVA, latAcc / MLA);
+        LastFrameInputPercentLinear = new Vector3(thrustAcc, vertAcc, latAcc);
     }
     private void ApplyLinearVelChanges()
     {
@@ -478,7 +468,8 @@ public class ShipMovementProto : MonoBehaviour
         {
             velocityInDirs = (velocityInDirs / velocityInDirs.magnitude) * maxVel;//Normalize the vector to max speed. I'd rather do it this way as it's less confusing.
         }
-        SetLastFrameLinAccel(thrustAccel, vertAccel, latAccel);
+        SetLastFrameLinAccel(thrustThisFrame, verticalThisFrame, lateralThisFrame);
+        //SetLastFrameLinAccel(thrustAccel, vertAccel, latAccel);
         //Assign newly calculated velocity vector
         rb.linearVelocity = rb.rotation * velocityInDirs;
     }

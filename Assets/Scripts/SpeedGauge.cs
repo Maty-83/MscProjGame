@@ -200,12 +200,12 @@ public class SpeedGauge : MonoBehaviour
         //TODO: This is messy, but at least shows
         if (inputFraction > 0.999f)
         {
-            ThrottlePin.transform.position = SpeedIndicatorBlips[SpeedIndicatorBlips.Count - 1].transform.position + new Vector3(0.02f, 0.02f,0f)+CentralAccPinOffset;
+            ThrottlePin.transform.position = SpeedIndicatorBlips[SpeedIndicatorBlips.Count - 1].transform.position +CentralAccPinOffset;
             return;
         }
         if (inputFraction < -0.999f)
         {
-            ThrottlePin.transform.position = SpeedIndicatorBlips[0].transform.position + new Vector3(-0.02f, 0.02f, 0f)+CentralAccPinOffset;
+            ThrottlePin.transform.position = SpeedIndicatorBlips[0].transform.position +CentralAccPinOffset;
             return;
         }
         //Now we need to figure out the rest, done by tweening the position.
@@ -243,8 +243,16 @@ public class SpeedGauge : MonoBehaviour
         }
         SetGaugeFromPercent(SpeedIndicatorBlips, speedFraction);
         SetGaugeFromPercent(AccelerationIndicatorBlips, accPercent);
+        accPercent *= 100f;//Now I need to convert to percentages
         SpeedTextUI.text = vel.ToString("F0");
         PercentInputUI.text = $"{accPercent.ToString("F0")}%";
         SetThrustPinPos(accPercent);
+
+        //Potential bugs found:
+        //Insufficient Thrust axis sensitivity to use maximum acceleration in negative axis (Code or manual sensitivity change should be done)
+            //FIXED by reducing accumulation maxima to percent-based. Best would be to introduce doce so minimum accumulation equals per-physics-frame percent acceleration to max.
+        //Off-by-one error for the thrust pin
+        //Pin is broken for roll due to rotation being involved.
+        //Bad colors, they seep through too. Add to here?
     }
 }
