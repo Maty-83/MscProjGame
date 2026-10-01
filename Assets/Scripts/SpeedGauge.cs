@@ -41,30 +41,53 @@ public class SpeedGauge : MonoBehaviour
         switch (gaugeAxis)
         {
             case GaugeAxis.Forward:
-                return ShipMovementScript.LastFrameInputPercentLinear.x;
+                return ShipMovementScript.LastFrameExecutedAcceleration.x;
             case GaugeAxis.Vertical:
-                return ShipMovementScript.LastFrameInputPercentLinear.y;
+                return ShipMovementScript.LastFrameExecutedAcceleration.y;
             case GaugeAxis.Lateral:
-                return ShipMovementScript.LastFrameInputPercentLinear.z;
+                return ShipMovementScript.LastFrameExecutedAcceleration.z;
             case GaugeAxis.Pitch:
-                return ShipMovementScript.LastFrameInputPercentRotation.z;
+                return ShipMovementScript.LastFrameExecutedRotation.z;
             case GaugeAxis.Yaw:
-                return ShipMovementScript.LastFrameInputPercentRotation.y;
+                return ShipMovementScript.LastFrameExecutedRotation.y;
             case GaugeAxis.Roll:
-                return ShipMovementScript.LastFrameInputPercentRotation.x;
+                return ShipMovementScript.LastFrameExecutedRotation.x;
             case GaugeAxis.TotalVelocity:
-                return ShipMovementScript.LastFrameInputPercentLinear.x;
+                return ShipMovementScript.LastFrameExecutedAcceleration.x;
             default:
                 Debug.Log("[ERROR]: unknown gauge axis");
                 return 0;
         }
     }
-    private float GetVelocity()
+    private float GetLastFrameInputPercent()
+    {
+        switch (gaugeAxis)
+        {
+            case GaugeAxis.Forward:
+                return ShipMovementScript.LastFrameLinInputPercent.x;
+            case GaugeAxis.Vertical:
+                return ShipMovementScript.LastFrameLinInputPercent.y;
+            case GaugeAxis.Lateral:
+                return ShipMovementScript.LastFrameLinInputPercent.z;
+            case GaugeAxis.Pitch:
+                return ShipMovementScript.LastFrameRotInputPercent.z;
+            case GaugeAxis.Yaw:
+                return ShipMovementScript.LastFrameRotInputPercent.y;
+            case GaugeAxis.Roll:
+                return ShipMovementScript.LastFrameRotInputPercent.x;
+            case GaugeAxis.TotalVelocity:
+                return ShipMovementScript.LastFrameLinInputPercent.x;
+            default:
+                Debug.Log("[ERROR]: unknown gauge axis");
+                return 0;
+        }
+    }
+    private float GetVelocity(GaugeAxis ga)
     {
         Rigidbody rb = ShipMovementScript.GetComponent<Rigidbody>();
         Vector3 velocityInDirs = Quaternion.Inverse(rb.rotation) * rb.linearVelocity;
         Vector3 localAngularVelocity = rb.transform.InverseTransformDirection(rb.angularVelocity);
-        switch (gaugeAxis)
+        switch (ga)
         {
             case GaugeAxis.Forward:
                 return velocityInDirs.x;
@@ -233,8 +256,9 @@ public class SpeedGauge : MonoBehaviour
     void Update()
     {
         GetMaxVelocities(out float maxVel, out float minVel);
-        float vel = GetVelocity();
-        float accPercent = GetLastFrameAccPercent();
+        float vel = GetVelocity(gaugeAxis);
+        float executedAcc = GetLastFrameAccPercent();
+        float inputAcc = GetLastFrameInputPercent();
 
         float speedFraction = vel / maxVel;
         if (vel < 0)
@@ -245,12 +269,21 @@ public class SpeedGauge : MonoBehaviour
         {
             vel = (vel / (2 * Mathf.PI)) * 360;//Convert rotational velocity from rads to degs
         }
-
+        //Hacky fix for Total Velocity as gauge, so I don't need to create a whole new type of gauge (For now): We invert it if we are going "backwards" (E:D does the same IIRC)
+        if (gaugeAxis == GaugeAxis.TotalVelocity) 
+        {
+            if (GetVelocity(GaugeAxis.Forward) < 0)
+            {
+                speedFraction = -speedFraction;
+            }
+        }        
         SetGaugeFromPercent(SpeedIndicatorBlips, speedFraction);
-        SetGaugeFromPercent(AccelerationIndicatorBlips, accPercent);
-        SetThrustPinPos(accPercent);
+        SetGaugeFromPercent(AccelerationIndicatorBlips, executedAcc);
+        SetThrustPinPos(inputAcc);
         SpeedTextUI.text = vel.ToString("F0");
-        PercentInputUI.text = $"{(accPercent*100f).ToString("F0")}%";      
+        PercentInputUI.text = $"{(inputAcc*100f).ToString("F0")}%";
+        
+        //Remaining TODO: Fix up forward velocity (Eventually)
 
         //Bugs found:
         //Insufficient Thrust axis sensitivity to use maximum acceleration in negative axis (Code or manual sensitivity change should be done)

@@ -88,14 +88,16 @@ public class ShipMovementProto : MonoBehaviour
     private InputAction yawAxis;
     private InputAction rollAxis;
 
-    /// <summary>
-    /// Gets the percent of used thrust last physics frame in each axis (Order: Thrust, Vertical, Lateral)
-    /// </summary>
-    public Vector3 LastFrameInputPercentLinear { get; private set; }= new Vector3();
+    public Vector3 LastFrameRotInputPercent {  get; private set; } = new Vector3();
+    public Vector3 LastFrameLinInputPercent { get; private set; }= new Vector3();
     /// <summary>
     /// Gets percent of used rotation accel last physics frame in each axis (Order: Roll, Yaw, Pitch)
     /// </summary>
-    public Vector3 LastFrameInputPercentRotation { get; private set; } = new Vector3();
+    public Vector3 LastFrameExecutedRotation { get; private set; } = new Vector3();
+    /// <summary>
+    /// Gets the percent of used thrust last physics frame in each axis (Order: Thrust, Vertical, Lateral)
+    /// </summary>
+    public Vector3 LastFrameExecutedAcceleration { get; private set; } = new Vector3();
     private enum RotationAxis
     {
         Roll,
@@ -207,6 +209,10 @@ public class ShipMovementProto : MonoBehaviour
         }
     }
 
+    private void SetLastFrameRotInputs(float pitchAcc, float yawAcc, float rollAcc)
+    {
+        LastFrameRotInputPercent= new Vector3(rollAcc, yawAcc, pitchAcc);
+    }
     private void SetLastFrameRotAccel(float pitchAcc, float yawAcc, float rollAcc)
     {
         //Back-calculate max per-frame accel
@@ -214,7 +220,7 @@ public class ShipMovementProto : MonoBehaviour
         float MYA = yawAccelPerSec * Time.fixedDeltaTime;
         float MRA = rollAccelPerSec * Time.fixedDeltaTime;
 
-        LastFrameInputPercentRotation = new Vector3(rollAcc / MRA, yawAcc / MYA, pitchAcc / MPA);
+        LastFrameExecutedRotation = new Vector3(rollAcc / MRA, yawAcc / MYA, pitchAcc / MPA);
     }
 
     /// <summary>
@@ -256,12 +262,15 @@ public class ShipMovementProto : MonoBehaviour
         }
         float inputThisFrame = Mathf.Clamp(inputOverFrames, -1, 1);
 
+        float inputForRot = inputThisFrame;
+
         //Throttle Control uses a completely different mechanism than everything else.
         float accel = 0;
         if (controlType == AxisControlType.Throttle)
         {
-            float targetVelocity = Mathf.Clamp(inputOverFrames / accumulationToFullThrottle, -1, 1)*axisSpeedLimit;
-            accel=GetAccelToTarget(targetVelocity, axisAngularVelocity, accelPerSec*Time.fixedDeltaTime);
+            inputForRot = inputOverFrames / accumulationToFullThrottle;
+            float targetVelocity = Mathf.Clamp(inputForRot, -1, 1)*axisSpeedLimit;
+            accel =GetAccelToTarget(targetVelocity, axisAngularVelocity, accelPerSec*Time.fixedDeltaTime);
         }
         else
         {
@@ -307,6 +316,19 @@ public class ShipMovementProto : MonoBehaviour
                 }
             }
         }
+        //Now to cache our input so the UI can grab it.
+        switch (axis)
+        {
+            case RotationAxis.Roll:
+                SetLastFrameRotInputs(LastFrameRotInputPercent.z, LastFrameRotInputPercent.y, inputForRot);
+                break;
+            case RotationAxis.Yaw:
+                SetLastFrameRotInputs(LastFrameRotInputPercent.z, inputForRot, LastFrameRotInputPercent.x);
+                break;
+            case RotationAxis.Pitch:
+                SetLastFrameRotInputs(inputForRot, LastFrameRotInputPercent.y, LastFrameRotInputPercent.x);
+                break;
+        }
         return accel;
     }
     /// <summary>
@@ -325,16 +347,29 @@ public class ShipMovementProto : MonoBehaviour
 
         //Roll
         float rollAcc=ReturnRotAcceleration(RotationAxis.Roll, localAngularVelocity, rollControlType);
-
         SetLastFrameRotAccel(pitchAcc, yawAcc, rollAcc);
         if(logAppliedRotAcc) Debug.Log($"Applied rotation input: P:{pitchAcc}, Y:{yawAcc}, R: {rollAcc}");
         if(logRotationVel) Debug.Log($"Current rotation rate: {localAngularVelocity}");
         //Add torque
         rb.AddRelativeTorque(rollAcc, yawAcc, pitchAcc, ForceMode.VelocityChange);
     }
-    private void SetLastFrameLinAccel(float thrustAcc, float vertAcc, float latAcc)
+    private void SetLastFrameLinInputs(float thrustAcc, float vertAcc, float latAcc)
     {
-        LastFrameInputPercentLinear = new Vector3(thrustAcc, vertAcc, latAcc);
+        LastFrameLinInputPercent = new Vector3(thrustAcc, vertAcc, latAcc);
+    }
+    private void SetLastFrameActualAccel(float thrustAcc, float vertAcc, float latAcc)
+    {
+        float MFA = forwardAccelPerSec * Time.fixedDeltaTime;
+        float MRA = reverseAccelPerSec * Time.fixedDeltaTime;
+        float MVA = verticalAccelPerSec * Time.fixedDeltaTime;
+        float MLA = lateralAccelPerSec * Time.fixedDeltaTime;
+
+        float thrustAccActual = thrustAcc / MFA;
+        if (thrustAcc < 0)
+        {
+            thrustAccActual = thrustAcc / MRA;
+        }
+        LastFrameExecutedAcceleration = new Vector3(thrustAccActual, vertAcc / MVA, latAcc / MLA);
     }
     private void ApplyLinearVelChanges()
     {
@@ -468,8 +503,8 @@ public class ShipMovementProto : MonoBehaviour
         {
             velocityInDirs = (velocityInDirs / velocityInDirs.magnitude) * maxVel;//Normalize the vector to max speed. I'd rather do it this way as it's less confusing.
         }
-        SetLastFrameLinAccel(thrustThisFrame, verticalThisFrame, lateralThisFrame);
-        //SetLastFrameLinAccel(thrustAccel, vertAccel, latAccel);
+        SetLastFrameActualAccel(thrustAccel, vertAccel, latAccel);
+        SetLastFrameLinInputs(thrustThisFrame, verticalThisFrame, lateralThisFrame);
         //Assign newly calculated velocity vector
         rb.linearVelocity = rb.rotation * velocityInDirs;
     }
