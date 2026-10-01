@@ -1803,7 +1803,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 180}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0.4}
+  m_AnchoredPosition: {x: 0, y: 0.35}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &3596086916753581348
@@ -2517,7 +2517,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 45}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -0.075}
+  m_AnchoredPosition: {x: 0, y: -0.125}
   m_SizeDelta: {x: 0.03, y: 0.03}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5065656412511689416
@@ -2667,7 +2667,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -0.002}
+  m_AnchoredPosition: {x: 0, y: -0.052}
   m_SizeDelta: {x: 0.12, y: 0.01}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2263856053282731951
@@ -4228,6 +4228,7 @@ MonoBehaviour:
   SpeedTextUI: {fileID: 5115854439740142021}
   PercentInputUI: {fileID: 9057689629131094342}
   minimumGaugeSensitivity: 0.01
+  LocalThrottlePinRotMaxEuler: {x: 0, y: 0, z: 123.75}
 --- !u!1 &8210550613941531908
 GameObject:
   m_ObjectHideFlags: 0

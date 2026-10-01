@@ -232,8 +232,6 @@ Initial notes about diploma thesis:
         //Speed is broken for rotations, since we use too little fractional
         //FIXED: Add a conditional switch for velocity change, convert from rad/s to deg/s
 
-        //Off-by-one error for the thrust pin
-        //FIXED: Inverted logic statement (oops). I was taking the average at the wrong time.
 
         //Velocity fluctuations cause low blips to flicker
         //FIXED: Set a minimum sensitivity level (By default, say 1%?)
@@ -241,11 +239,14 @@ Initial notes about diploma thesis:
 		//Yaw and Roll gauges are inverted
         //FIXED: Easiest is to just modify the prefab by swapping order of items in the list.
 		
+		//Off-by-one error for the thrust pin
+        //FIXED: Inverted logic statement (oops). I was taking the average at the wrong time.
+		
         //Pin doesn't tween, only does 100% and 0% pos
-        //TODO: Inspect code. Seems code works, but transforms are the issue.. Also gives index out of range exception when maxing out.
+        //FIXED: Off-by-one error coupled with missing a line of code.
 
         //Pin is broken for roll due to rotation being involved.
-        //TODO: Simplest way to fix it is to introduce a "Rotation at 100%" variable, which affects rotation ONLY for roll. Won't be perfect when tweening, but I want a working UI first.
+        //FIXED: Had to rewrite and simplify like half the function, but... Worth it!
 
         //Bad colors, they seep through too at some angles it seems.
         //TODO: Add color to the SpeedGauge script maybe? And set proper UI render priority. UI + Cockpit redesign will eventually be needed anyway.
@@ -260,3 +261,5 @@ Initial notes about diploma thesis:
         //Best to consult on this
 		
 		>Central UI needs a different gauge mode for both the speedo and the thrust pin.
+		
+		>Needs a separate "Applied acceleration percent" passed from the ship control to UI to differentiate throttle pin and acceleration meter.

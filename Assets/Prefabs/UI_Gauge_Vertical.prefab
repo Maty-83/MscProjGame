@@ -334,7 +334,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -90}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.38, y: 0}
+  m_AnchoredPosition: {x: -0.35, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &577846244171271516
@@ -2263,7 +2263,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 45}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -0.075}
+  m_AnchoredPosition: {x: 0, y: -0.105}
   m_SizeDelta: {x: 0.03, y: 0.03}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8797355961473183079
@@ -4399,6 +4399,8 @@ MonoBehaviour:
   gaugeAxis: 1
   SpeedTextUI: {fileID: 5115854439740142021}
   PercentInputUI: {fileID: 9057689629131094342}
+  minimumGaugeSensitivity: 0.01
+  LocalThrottlePinRotMaxEuler: {x: 0, y: 0, z: 0}
 --- !u!1 &8102562122109795034
 GameObject:
   m_ObjectHideFlags: 0
@@ -4950,7 +4952,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -0.002}
+  m_AnchoredPosition: {x: 0, y: -0.032}
   m_SizeDelta: {x: 0.12, y: 0.01}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5136778967604664738

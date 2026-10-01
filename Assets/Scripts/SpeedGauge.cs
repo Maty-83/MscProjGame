@@ -33,9 +33,8 @@ public class SpeedGauge : MonoBehaviour
     public TMP_Text PercentInputUI;
     public float minimumGaugeSensitivity = 0.01f;//Minimum percentage input for the gauge to show. Prevents flicker.
 
-    public Vector3 LocalThrottlePinRotAt100Percent = Vector3.zero; //Here
-
-    private Vector3 CentralAccPinOffset;
+    public Vector3 LocalThrottlePinRotMaxEuler = Vector3.zero;
+    private Vector3 PinLocalEulerAngleBase;
     
     private float GetLastFrameAccPercent()
     {
@@ -202,12 +201,15 @@ public class SpeedGauge : MonoBehaviour
         //TODO: This is messy, but at least shows
         if (inputFraction > 0.999f)
         {
-            ThrottlePin.transform.position = SpeedIndicatorBlips[SpeedIndicatorBlips.Count - 1].transform.position + CentralAccPinOffset;
+            ThrottlePin.transform.position = SpeedIndicatorBlips[SpeedIndicatorBlips.Count - 1].transform.position;
+            ThrottlePin.transform.localEulerAngles = LocalThrottlePinRotMaxEuler + PinLocalEulerAngleBase;
             return;
         }
         if (inputFraction < -0.999f)
         {
-            ThrottlePin.transform.position = SpeedIndicatorBlips[0].transform.position + CentralAccPinOffset;
+
+            ThrottlePin.transform.position = SpeedIndicatorBlips[0].transform.position;
+            ThrottlePin.transform.localEulerAngles = -LocalThrottlePinRotMaxEuler + PinLocalEulerAngleBase;
             return;
         }
         //Now we need to figure out the rest, done by tweening the position.
@@ -216,20 +218,15 @@ public class SpeedGauge : MonoBehaviour
         //Now that we have this, we can easily get the number by dividing inputFraction+1 by perEntryFrac
         float precisePos = ((inputFraction + 1) / perEntryFrac);
         //With that, we can now simply tween.
-        Vector3 pos = SpeedIndicatorBlips[(int)precisePos].transform.position * (1 - (precisePos % 1)) + SpeedIndicatorBlips[(int)precisePos + 1].transform.position * (precisePos % 1) + CentralAccPinOffset;
+        Vector3 pos = SpeedIndicatorBlips[(int)precisePos].transform.position * (1 - (precisePos % 1)) + SpeedIndicatorBlips[(int)precisePos + 1].transform.position * (precisePos % 1);      
         ThrottlePin.transform.position = pos;
+        ThrottlePin.transform.localEulerAngles = inputFraction * LocalThrottlePinRotMaxEuler + PinLocalEulerAngleBase;
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        //This is dirty and will break outside its specific use limit, but the goal is functionality first and general code second.
-        Vector3 centralPos = SpeedIndicatorBlips[SpeedIndicatorBlips.Count / 2].transform.position;
-        if (SpeedIndicatorBlips.Count % 2 == 0)
-        {
-            centralPos = SpeedIndicatorBlips[SpeedIndicatorBlips.Count / 2].transform.position / 2 + SpeedIndicatorBlips[(SpeedIndicatorBlips.Count / 2) + 1].transform.position / 2;
-        }
-        CentralAccPinOffset = ThrottlePin.transform.position-centralPos;
+        PinLocalEulerAngleBase = ThrottlePin.transform.localEulerAngles;
     }
 
     // Update is called once per frame
@@ -259,12 +256,6 @@ public class SpeedGauge : MonoBehaviour
         //Insufficient Thrust axis sensitivity to use maximum acceleration in negative axis (Code or manual sensitivity change should be done)
         //BYPASSED by reducing accumulation maxima to percent-based. Best would be to introduce code so minimum accumulation equals per-physics-frame percent acceleration to max.
         //TODO: This should be solved with code, as it lets players be dumb otherwise.
-
-        //Pin doesn't tween, only does 100% and 0% pos
-        //FIXED: Off-by-one error coupled with missing a line of code.
-
-        //Pin is broken for roll due to rotation being involved.
-        //TODO: Simplest way to fix it is to introduce a "Rotation at 100%" variable, which affects rotation ONLY for roll. Won't be perfect when tweening, but I want a working UI first.
 
         //Bad colors, they seep through too at some angles it seems.
         //TODO: Add color to the SpeedGauge script maybe? And set proper UI render priority. UI + Cockpit redesign will eventually be needed anyway.
