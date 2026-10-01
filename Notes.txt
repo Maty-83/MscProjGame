@@ -222,3 +222,36 @@ Initial notes about diploma thesis:
 				>Could be useful for Accumulation and Throttle modes of control, as the player input isn't directly related to the ship there.
 			>May still get cut, but for now it should exist in early player testing.
 			>Needed a public param w/ private set for the last frame inputs.
+			
+	>Bugs found in UI implementation:
+	
+        //Insufficient Thrust axis sensitivity to use maximum acceleration in negative axis (Code or manual sensitivity change should be done)
+        //BYPASSED by reducing accumulation maxima to percent-based. Best would be to introduce doce so minimum accumulation equals per-physics-frame percent acceleration to max.
+        //TODO: This should be solved with code, as it lets players be dumb otherwise.
+
+        //Speed is broken for rotations, since we use too little fractional
+        //FIXED: Add a conditional switch for velocity change, convert from rad/s to deg/s
+
+        //Off-by-one error for the thrust pin
+        //FIXED: Inverted logic statement (oops). I was taking the average at the wrong time.
+
+        //Velocity fluctuations cause low blips to flicker
+        //Fixed: Set a minimum sensitivity level (By default, say 1%?)
+
+		//Yaw and Roll gauges are inverted
+        //TODO: Easiest is to just modify the prefab by swapping order of items in the list.
+		
+        //Pin doesn't tween, only does 100% and 0% pos
+        //TODO: Inspect code. Seems code works, but transforms are the issue.. Also gives index out of range exception when maxing out.
+
+        //Pin is broken for roll due to rotation being involved.
+        //TODO: Simplest way to fix it is to introduce a "Rotation at 100%" variable, which affects rotation ONLY for roll. Won't be perfect when tweening, but I want a working UI first.
+
+        //Bad colors, they seep through too at some angles it seems.
+        //TODO: Add color to the SpeedGauge script maybe? And set proper UI render priority. UI + Cockpit redesign will eventually be needed anyway.
+
+        //Code remains untested for even number of blips, but it should work.
+        //TODO: Will test maybe?
+			
+	>TODOs:
+		>Introducing that code for fixing insufficient thrust axis sensitivity?

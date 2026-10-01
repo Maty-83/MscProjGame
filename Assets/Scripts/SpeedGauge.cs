@@ -31,7 +31,9 @@ public class SpeedGauge : MonoBehaviour
     public GaugeAxis gaugeAxis;
     public TMP_Text SpeedTextUI;
     public TMP_Text PercentInputUI;
+    public float minimumGaugeSensitivity = 0.01f;//Minimum percentage input for the gauge to show. Prevents flicker.
     private Vector3 CentralAccPinOffset;
+    
     private float GetLastFrameAccPercent()
     {
         switch (gaugeAxis)
@@ -59,7 +61,7 @@ public class SpeedGauge : MonoBehaviour
     {
         Rigidbody rb = ShipMovementScript.GetComponent<Rigidbody>();
         Vector3 velocityInDirs = Quaternion.Inverse(rb.rotation) * rb.linearVelocity;
-        Vector3 localAngularVelocity = transform.InverseTransformDirection(rb.angularVelocity);
+        Vector3 localAngularVelocity = rb.transform.InverseTransformDirection(rb.angularVelocity);
         switch (gaugeAxis)
         {
             case GaugeAxis.Forward:
@@ -136,18 +138,15 @@ public class SpeedGauge : MonoBehaviour
             color.a = AlphaLowerBound;
             blips[i].color = color;
         }
-        //If input's zero, we can just do nothing.
-        if (inputFraction == 0)
-        {
-            return;
-        }
-        //If input is zero and there's a central blip, we light it up.
         if (blips.Count % 2 == 1)
         {
             var col = blips[(blips.Count - 1) / 2].color;
             col.a = AlphaUpperBound;
             blips[(blips.Count - 1) / 2].color = col;
         }
+        //If input's zero, we can just do nothing.
+        if (inputFraction > -minimumGaugeSensitivity && inputFraction < minimumGaugeSensitivity) return;
+        //If input is zero and there's a central blip, we light it up.
 
         var blipsPerDir = (blips.Count - 2) / 2;//Amount of blips on each side we split to show rough percentage visually.
         float blipFraction = 1f / blipsPerDir;
@@ -222,7 +221,7 @@ public class SpeedGauge : MonoBehaviour
     {
         //This is dirty and will break outside its specific use limit, but the goal is functionality first and general code second.
         Vector3 centralPos = SpeedIndicatorBlips[SpeedIndicatorBlips.Count / 2].transform.position;
-        if (SpeedIndicatorBlips.Count % 2 == 1)
+        if (SpeedIndicatorBlips.Count % 2 == 0)
         {
             centralPos = SpeedIndicatorBlips[SpeedIndicatorBlips.Count / 2].transform.position / 2 + SpeedIndicatorBlips[(SpeedIndicatorBlips.Count / 2) + 1].transform.position / 2;
         }
@@ -241,18 +240,44 @@ public class SpeedGauge : MonoBehaviour
         {
             speedFraction = vel / minVel;
         }
+        if (gaugeAxis == GaugeAxis.Pitch || gaugeAxis == GaugeAxis.Yaw || gaugeAxis == GaugeAxis.Roll)
+        {
+            vel = (vel / (2 * Mathf.PI)) * 360;//Convert rotational velocity from rads to degs
+        }
+
         SetGaugeFromPercent(SpeedIndicatorBlips, speedFraction);
         SetGaugeFromPercent(AccelerationIndicatorBlips, accPercent);
-        accPercent *= 100f;//Now I need to convert to percentages
-        SpeedTextUI.text = vel.ToString("F0");
-        PercentInputUI.text = $"{accPercent.ToString("F0")}%";
         SetThrustPinPos(accPercent);
+        SpeedTextUI.text = vel.ToString("F0");
+        PercentInputUI.text = $"{(accPercent*100f).ToString("F0")}%";      
 
-        //Potential bugs found:
+        //Bugs found:
         //Insufficient Thrust axis sensitivity to use maximum acceleration in negative axis (Code or manual sensitivity change should be done)
-            //FIXED by reducing accumulation maxima to percent-based. Best would be to introduce doce so minimum accumulation equals per-physics-frame percent acceleration to max.
+        //BYPASSED by reducing accumulation maxima to percent-based. Best would be to introduce doce so minimum accumulation equals per-physics-frame percent acceleration to max.
+        //TODO: This should be solved with code, as it lets players be dumb otherwise.
+
+        //Speed is broken for rotations, since we use too little fractional
+        //FIXED: Add a conditional switch for velocity change, convert from rad/s to deg/s
+
         //Off-by-one error for the thrust pin
+        //FIXED: Inverted logic statement (oops). I was taking the average at the wrong time.
+
+        //Velocity fluctuations cause low blips to flicker
+        //FIXED: Set a minimum sensitivity level (By default, say 1%?)
+
+        //Yaw and Roll gauges are inverted
+        //TODO: Easiest is to just modify the prefab by swapping order of items in the list.
+
+        //Pin doesn't tween, only does 100% and 0% pos
+        //TODO: Inspect code. Seems code works, but transforms are the issue.. Also gives index out of range exception when maxing out.
+
         //Pin is broken for roll due to rotation being involved.
-        //Bad colors, they seep through too. Add to here?
+        //TODO: Simplest way to fix it is to introduce a "Rotation at 100%" variable, which affects rotation ONLY for roll. Won't be perfect when tweening, but I want a working UI first.
+
+        //Bad colors, they seep through too at some angles it seems.
+        //TODO: Add color to the SpeedGauge script maybe? And set proper UI render priority. UI + Cockpit redesign will eventually be needed anyway.
+
+        //Code remains untested for even number of blips, but it should work.
+        //TODO: Will test maybe?
     }
 }
