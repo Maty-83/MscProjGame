@@ -224,14 +224,8 @@ Initial notes about diploma thesis:
 			>Needed a public param w/ private set for the last frame inputs.
 			
 	>Bugs found in UI implementation:
-	
-        //Insufficient Thrust axis sensitivity to use maximum acceleration in negative axis (Code or manual sensitivity change should be done)
-        //BYPASSED by reducing accumulation maxima to percent-based. Best would be to introduce doce so minimum accumulation equals per-physics-frame percent acceleration to max.
-        //TODO: This should be solved with code, as it lets players be dumb otherwise.
-
         //Speed is broken for rotations, since we use too little fractional
         //FIXED: Add a conditional switch for velocity change, convert from rad/s to deg/s
-
 
         //Velocity fluctuations cause low blips to flicker
         //FIXED: Set a minimum sensitivity level (By default, say 1%?)
@@ -248,11 +242,12 @@ Initial notes about diploma thesis:
         //Pin is broken for roll due to rotation being involved.
         //FIXED: Had to rewrite and simplify like half the function, but... Worth it!
 
-        //Bad colors, they seep through too at some angles it seems.
-        //TODO: Add color to the SpeedGauge script maybe? And set proper UI render priority. UI + Cockpit redesign will eventually be needed anyway.
-
-        //Code remains untested for even number of blips, but it should work.
-        //TODO: Will test maybe?
+	>Main menu design:
+		>Could be simpler than this, by simply allowing myself to use a static menu, BUUUT. I have a fancy ship model to show off, so let's do it!
+		
+		>Use a rotating camera (Fix position, offset cam from center) to point at lit ship inside basically a grey cube and overlay the menu on it.
+		
+		
 			
 	>TODOs:
 		>Introducing that code for fixing insufficient thrust axis sensitivity?
@@ -260,6 +255,14 @@ Initial notes about diploma thesis:
 		>Flicker caused by direct motion when moving on a cardinal axis with a mouse
         //Best to consult on this
 		
-		>Central UI needs a different gauge mode for both the speedo and the thrust pin.
-		
 		>Needs a separate "Applied acceleration percent" passed from the ship control to UI to differentiate throttle pin and acceleration meter.
+		
+		>Bad colors, they seep through too at some angles it seems.
+			>TODO: Add color to the SpeedGauge script maybe? And set proper UI render priority. UI + Cockpit redesign will eventually be needed anyway.
+
+        >Code remains untested for even number of blips, but it should work.
+			>TODO: Will test maybe?
+		
+		>Insufficient Thrust axis sensitivity to use maximum acceleration in negative axis (Code or manual sensitivity change should be done)
+			>BYPASSED by reducing accumulation maxima to percent-based. Best would be to introduce code so minimum accumulation equals per-physics-frame percent acceleration to max.
+			>TODO: This should be solved with code, as it lets players be dumb otherwise.
