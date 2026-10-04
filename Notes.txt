@@ -247,15 +247,31 @@ Initial notes about diploma thesis:
 		
 		>Use a rotating camera (Fix position, offset cam from center) to point at lit ship inside basically a grey cube and overlay the menu on it.
 		
-		
+	>Level functionality: Checkpoints
+		>Checkpoints make it so we can design a more complex race course that overlaps, rather than the player having to figure out the ordering on their own.
+			>That also introduces a popular passtime of many players, shortcuts!
+			>We may want to force a certain order of checkpoints
+		>Since the design is evolving, I'd rather over-build the system and not use certain functions than later regret not having it.
+		>It means if you create levels, all you need to do is set them down and potentially set up priorities, with the code handling everything else.
+		>Idea: Use a SortedList<TKey,TValue> with TKey being the checkpoint priority (lower is better) and TValue being a list of checkpoints.
+			>That also solves our issue of guiding the player to the next checkpoint, if that pops up as a necessity.
+			>Checkpoints can be set to be permissive or not, either via a general setting, or individually (E.G. we can have multiple same-priority checkpoints unlocking a route, but another set unlocking only after going through that route.
+			>Maintaining a reference this way also allows checkpoints themselves to "Decide" if they can be taken, with a public priority key "Telling" them the current priority.
+			>Could even have proactive "Linked checkpoint" code to allow multi-routing.
+				>Exclusive with same-priority unlocks to do easily, but eh.
+			>Basic blueprint is as such:
+				>On checkpoint Start() method, call the singleton and add yourself to its checkpoint SortedList
+				>OnCollisionEntered with the inside and ship, call singleton with your index and reference, telling it to remove you from the list of outstanding checkpoints.
+					>If this removes the final element from the SortedList, remove entry entirely from SortedList.
+					>If SortedList is empty, we can finish.
+				>NOTE: Keep the total list (Or at least count) somewhere so the player can see the # of checkpoints.
+				
+			>BIG NOTE: We probably want a unique indexing style with two indices for when to unlock checkpoints and to check which checkpoint number this is (And if it's linked)
+			>We also need the ability to remove items from the SortedList easily, as it will be useful for our level editor.
 			
 	>TODOs:
-		>Introducing that code for fixing insufficient thrust axis sensitivity?
-		
 		>Flicker caused by direct motion when moving on a cardinal axis with a mouse
         //Best to consult on this
-		
-		>Needs a separate "Applied acceleration percent" passed from the ship control to UI to differentiate throttle pin and acceleration meter.
 		
 		>Bad colors, they seep through too at some angles it seems.
 			>TODO: Add color to the SpeedGauge script maybe? And set proper UI render priority. UI + Cockpit redesign will eventually be needed anyway.
