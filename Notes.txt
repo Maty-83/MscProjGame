@@ -248,7 +248,7 @@ Initial notes about diploma thesis:
 		>Use a rotating camera (Fix position, offset cam from center) to point at lit ship inside basically a grey cube and overlay the menu on it.
 		
 	>Level functionality: Checkpoints
-		>Checkpoints make it so we can design a more complex race course that overlaps, rather than the player having to figure out the ordering on their own.
+		>Checkpoints make it so we can design a more complex race course that overlaps, rather than the course just being the fastest route from A to B
 			>That also introduces a popular passtime of many players, shortcuts!
 			>We may want to force a certain order of checkpoints
 		>Since the design is evolving, I'd rather over-build the system and not use certain functions than later regret not having it.
@@ -256,7 +256,7 @@ Initial notes about diploma thesis:
 		>Idea: Use a SortedList<TKey,TValue> with TKey being the checkpoint priority (lower is better) and TValue being a list of checkpoints.
 			>That also solves our issue of guiding the player to the next checkpoint, if that pops up as a necessity.
 			>Checkpoints can be set to be permissive or not, either via a general setting, or individually (E.G. we can have multiple same-priority checkpoints unlocking a route, but another set unlocking only after going through that route.
-			>Maintaining a reference this way also allows checkpoints themselves to "Decide" if they can be taken, with a public priority key "Telling" them the current priority.
+			>Maintaining a reference this way also allows checkpoints themselves to "Decide" if they can be taken, with a public priority "Telling" them the current priority.
 			>Could even have proactive "Linked checkpoint" code to allow multi-routing.
 				>Exclusive with same-priority unlocks to do easily, but eh.
 			>Basic blueprint is as such:
@@ -265,10 +265,21 @@ Initial notes about diploma thesis:
 					>If this removes the final element from the SortedList, remove entry entirely from SortedList.
 					>If SortedList is empty, we can finish.
 				>NOTE: Keep the total list (Or at least count) somewhere so the player can see the # of checkpoints.
+			>Unless specified, we should always have checkpoints of the same priority
 				
-			>BIG NOTE: We probably want a unique indexing style with two indices for when to unlock checkpoints and to check which checkpoint number this is (And if it's linked)
+			>BIG NOTE: We probably want a unique indexing style with two indices for when to unlock checkpoints and to check which checkpoint number this is (Same number checkpoints are linked)
+			
 			>We also need the ability to remove items from the SortedList easily, as it will be useful for our level editor.
 			
+			>All checkpoints with the same priority will complete at once (Our linked level)
+			
+			>We don't permit checkpoint re-use, as that would throw a wrench into our goals
+				>It's entirely possible, but the setup is not something worth doing right now.
+				
+			>We also don't require this to be set.
+				>We can exploit a simple idea: Using uint16 for the indices in the checkpoints, and then negative indices for the ones unspecified!
+					>Those will follow placement priority likely (Depends on how instantiating GameObjects adds new ones, since Update() goes through the list linearly
+						>May break if multithreading.			
 	>TODOs:
 		>Flicker caused by direct motion when moving on a cardinal axis with a mouse
         //Best to consult on this
