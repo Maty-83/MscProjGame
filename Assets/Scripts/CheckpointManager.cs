@@ -26,10 +26,10 @@ public class CheckpointManager : MonoBehaviour
 
     #region Checkpoint Management
 
-    private SortedList<int, HashSet<GameObject>> Checkpoints= new SortedList<int, HashSet<GameObject>>();
-    private SortedList<int, HashSet<GameObject>> CheckpointsNotPassed = new SortedList<int, HashSet<GameObject>>();
-    private GameObject LastCompleteCheckpoint = null;//In case we do a stationary reset (Desirable)
-    public int CurrentCheckpointNum { get; private set; } = 0;
+    private SortedList<int, HashSet<Checkpoint>> Checkpoints= new SortedList<int, HashSet<Checkpoint>>();
+    private SortedList<int, HashSet<Checkpoint>> CheckpointsNotPassed = new SortedList<int, HashSet<Checkpoint>>();
+    private Checkpoint LastCompleteCheckpoint = null;//In case we do a stationary reset (Desirable)
+    public int MaxCheckpointOrdPassed { get; private set; } = 0;
     public int CreatorCheckpointIndex = int.MinValue;
     /// <summary>
     /// Adds a checkpoint to the manager
@@ -37,7 +37,7 @@ public class CheckpointManager : MonoBehaviour
     /// <param name="Checkpoint">GameObject containing the Checkpoint.</param>
     /// <param name="CheckpointNumber">If checkpoints are numbered, which checkpoint this would be.</param>
     /// <returns>True on successful add, False if unsuccessful</returns>
-    public bool AddCheckpointToList(GameObject Checkpoint, int CheckpointNumber = -1)
+    public bool AddCheckpointToList(Checkpoint Checkpoint, int CheckpointNumber = -1)
     {
         if (CheckpointNumber == -1)
         {
@@ -57,7 +57,7 @@ public class CheckpointManager : MonoBehaviour
             }
             else
             {
-                CheckpointsNotPassed.Add(CheckpointNumber, new HashSet<GameObject> { Checkpoint });
+                CheckpointsNotPassed.Add(CheckpointNumber, new HashSet<Checkpoint> { Checkpoint });
             }
             if (Checkpoints.ContainsKey(CheckpointNumber))
             {
@@ -65,7 +65,7 @@ public class CheckpointManager : MonoBehaviour
             }
             else
             {
-                Checkpoints.Add(CheckpointNumber, new HashSet<GameObject>() { Checkpoint });
+                Checkpoints.Add(CheckpointNumber, new HashSet<Checkpoint>() { Checkpoint });
             }
             return success;
         }
@@ -76,7 +76,7 @@ public class CheckpointManager : MonoBehaviour
     /// </summary>
     /// <param name="Checkpoint">GameObject to search for</param>
     /// <returns>True on successful removal, False if Checkpoint was not present in the immutable list.</returns>
-    public bool RemoveCheckpointFromList(GameObject Checkpoint)
+    public bool RemoveCheckpointFromList(Checkpoint Checkpoint)
     { 
         for(int i = 0; i<CheckpointsNotPassed.Count; i++)
         {
@@ -113,7 +113,7 @@ public class CheckpointManager : MonoBehaviour
     /// </summary>
     /// <param name="Checkpoint">Checkpoint to purge</param>
     /// <returns></returns>
-    public void PurgeFromList(GameObject Checkpoint)
+    public void PurgeFromList(Checkpoint Checkpoint)
     {
         bool found= true;
         while (found)
@@ -128,18 +128,16 @@ public class CheckpointManager : MonoBehaviour
     /// <param name="Checkpoint"></param>
     /// <returns>True if successful, False otherwise.</returns>
     /// <remarks>Will break if you somehow have the same checkpoint multiple times, so fix that if you add the functionality.</remarks>
-    public bool SetCheckpointLevelComplete(GameObject Checkpoint)
+    public bool SetCheckpointLevelComplete(Checkpoint C)
     {
-        for (int i = 0; i < CheckpointsNotPassed.Count; i++)
+        var set = CheckpointsNotPassed[(int)C.RankInSequence];
+        if (set.Contains(C))
         {
-            var list = CheckpointsNotPassed[CheckpointsNotPassed.Keys[i]];
-            if (list.Contains(Checkpoint))
-            {
-                CheckpointsNotPassed.Remove(CheckpointsNotPassed.Keys[i]);
-                LastCompleteCheckpoint = Checkpoint;
-                return true;
-            }
-        }        
+            CheckpointsNotPassed.Remove((int)C.RankInSequence);
+            MaxCheckpointOrdPassed = Mathf.Max(MaxCheckpointOrdPassed, (int)C.RankInSequence);
+            LastCompleteCheckpoint = C;
+            return true;
+        }      
         return false;
     }
     public int GetTotalCheckpoints()
@@ -155,13 +153,13 @@ public class CheckpointManager : MonoBehaviour
     /// </summary>
     public void NewLapReset()
     {
-        CheckpointsNotPassed= new SortedList<int, HashSet<GameObject>>();
-        foreach(KeyValuePair<int, HashSet<GameObject>> pair in Checkpoints)
+        CheckpointsNotPassed= new SortedList<int, HashSet<Checkpoint>>();
+        foreach(KeyValuePair<int, HashSet<Checkpoint>> pair in Checkpoints)
         {
-            CheckpointsNotPassed.Add(pair.Key, new HashSet<GameObject>());
-            foreach(GameObject go in pair.Value)
+            CheckpointsNotPassed.Add(pair.Key, new HashSet<Checkpoint>());
+            foreach(Checkpoint c in pair.Value)
             {
-                CheckpointsNotPassed[pair.Key].Add(go);
+                CheckpointsNotPassed[pair.Key].Add(c);
             }
         }
     }
