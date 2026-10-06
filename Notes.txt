@@ -279,7 +279,18 @@ Initial notes about diploma thesis:
 			>We also don't require this to be set.
 				>We can exploit a simple idea: Using uint16 for the indices in the checkpoints, and then negative indices for the ones unspecified!
 					>Those will follow placement priority likely (Depends on how instantiating GameObjects adds new ones, since Update() goes through the list linearly
-						>May break if multithreading.			
+						>May break if multithreading.
+
+	>Timer
+		>A racing game about going the fastest needs a timer.
+		>Question is, do we want a timer synced with the real world, or with the physics?
+		>Borrowing an idea from TM2020: Using unscaled time.
+			>Can choose to add fun and interesting slowdown effects.
+			>Don't really care for pausing the game while doing the run (And timescaling physics to zero could brick some things)
+			>Means we're not tied to Update() method or PhysicsUpdate() if done properly, just the timer calls.
+		>In order to get the highest accuracy, we store only the start of the timer
+			>Pause is supported by storing the elapsed time at call of Pause() and start only updates StartTime, meaning timer is entirely a passive process.
+						
 	>TODOs:
 		>Flicker caused by direct motion when moving on a cardinal axis with a mouse
         //Best to consult on this
