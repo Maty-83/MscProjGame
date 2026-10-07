@@ -290,7 +290,10 @@ Initial notes about diploma thesis:
 			>Means we're not tied to Update() method or PhysicsUpdate() if done properly, just the timer calls.
 		>In order to get the highest accuracy, we store only the start of the timer
 			>Pause is supported by storing the elapsed time at call of Pause() and start only updates StartTime, meaning timer is entirely a passive process.
-						
+	
+		>We also introduce a start timer for the levels so players have a little time to get ready.
+			>For now, this is directly hooked to the ship prefab, as provided a self-contained way to hook the start timer and actual timer together for testing.
+	
 	>TODOs:
 		>Flicker caused by direct motion when moving on a cardinal axis with a mouse
         //Best to consult on this
