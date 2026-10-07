@@ -1,5 +1,5 @@
 using UnityEngine;
-
+using TMPro;
 /// <summary>
 /// Timer using unscaled time as a base
 /// </summary>
@@ -8,15 +8,27 @@ public class Timer : MonoBehaviour
     private float StartTime = -1f;
     private float TimeElapsedBeforePause = 0f;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
+    public TMP_Text TimerUI;
     void Start()
     {
-        
+        TimerUI.text = "00.00";
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        float time=GetTimeSinceStart();
+        float timeSec = time % 60;
+        int timeMin = (int)time / 60;
+
+        if(timeMin > 0)
+        {
+            TimerUI.text = $"{timeMin}:{timeSec.ToString("00.00")}";
+        }
+        else
+        {
+            TimerUI.text = timeSec.ToString("00.00");
+        }
     }
     /// <summary>
     /// Starts (Or unpauses) the timer
