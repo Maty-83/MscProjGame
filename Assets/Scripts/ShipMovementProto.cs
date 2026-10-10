@@ -2,6 +2,7 @@ using System.Runtime.CompilerServices;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 using static UnityEditor.Searcher.SearcherWindow.Alignment;
 /// <summary>
 /// Specifies control types for controla axes. 
@@ -87,6 +88,7 @@ public class ShipMovementProto : MonoBehaviour
     private InputAction pitchAxis;
     private InputAction yawAxis;
     private InputAction rollAxis;
+    private InputAction resetAction;
 
     public Vector3 LastFrameRotInputPercent {  get; private set; } = new Vector3();
     public Vector3 LastFrameLinInputPercent { get; private set; }= new Vector3();
@@ -117,7 +119,10 @@ public class ShipMovementProto : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (resetAction.WasPressedThisFrame())
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        }
     }
     private void ReloadInputBindings()
     {
@@ -127,6 +132,7 @@ public class ShipMovementProto : MonoBehaviour
         pitchAxis = currentMap.FindAction("Rotation Pitch",true);
         yawAxis = currentMap.FindAction("Rotation Yaw", true);
         rollAxis = currentMap.FindAction("Rotation Roll",true);
+        resetAction=currentMap.FindAction("Reset Level", true);
         Debug.Log("Reloading input bindings");
     }
     private void GetControlInputs(out float pitch, out float yaw, out float roll, out float forward, out float vertical, out float lateral, out bool resetMultiFrameInputs)

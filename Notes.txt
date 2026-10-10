@@ -293,6 +293,8 @@ Initial notes about diploma thesis:
 	
 		>We also introduce a start timer for the levels so players have a little time to get ready.
 			>For now, this is directly hooked to the ship prefab, as provided a self-contained way to hook the start timer and actual timer together for testing.
+			>Due to it looking awful, we added DOTween as a Unity package and started using it
+				>This time, it's primarily used as a way to animate the text.
 	
 	>TODOs:
 		>Flicker caused by direct motion when moving on a cardinal axis with a mouse
