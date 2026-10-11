@@ -16,13 +16,13 @@ public class CheckpointCounterUI : MonoBehaviour
         var cpm = CheckpointManager.Instance;
         if (cpm.Finished)
         {
-            text.text = "FINISHED!";
+            text.text = "FINISH!";
         }
         else
         {
             var remaining = cpm.GetTotalRemainingCheckpoints();
             var total = cpm.GetTotalCheckpoints();
-            text.text = $"Checkpoints: {total-remaining}/{total}";
+            text.text = $"{total-remaining}/{total}";
         }
     }
 }
