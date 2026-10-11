@@ -31,6 +31,7 @@ public class CheckpointManager : MonoBehaviour
     private Checkpoint LastCompleteCheckpoint = null;//In case we do a stationary reset (Desirable)
     public int MaxCheckpointOrdPassed { get; private set; } = 0;
     public int CreatorCheckpointIndex = int.MinValue;
+    public bool Finished { get; private set; } = false;
     /// <summary>
     /// Adds a checkpoint to the manager
     /// </summary>
@@ -162,6 +163,19 @@ public class CheckpointManager : MonoBehaviour
                 CheckpointsNotPassed[pair.Key].Add(c);
             }
         }
+    }
+    /// <summary>
+    /// A function call which sets the "Finished" value in checkpoint manager if all prerequisits to finish a level have been completed (We have gone through all checkpoints.)
+    /// </summary>
+    /// <returns>True if succesfully finished, False if not</returns>
+    public bool TryFinish()
+    {
+        if (GetTotalRemainingCheckpoints() == 0)
+        {
+            Finished = true;
+            return true;
+        }
+        return false;
     }
 
     #endregion

@@ -4914,7 +4914,7 @@ GameObject:
   - component: {fileID: 56359291506201547}
   m_Layer: 0
   m_Name: Ship
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5080,6 +5080,18 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: 71e6b393-eca9-44fa-bb43-4bb3d76af9e3
     m_ActionName: 'Primary Roll-on-mouse/Toggle FA[/Keyboard/z]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: bfc53aa5-d974-49c3-9ad8-73a8a7ef8331
+    m_ActionName: 'Primary/Reset Level[/Keyboard/backspace]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: a801b483-9bba-46f8-9af8-5d22c1918c69
+    m_ActionName: 'Primary KB-only/Reset Level[/Keyboard/backspace]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: b96d2dc6-e45b-418e-a999-eab72a2a6355
+    m_ActionName: 'Primary Roll-on-mouse/Reset Level[/Keyboard/backspace]'
   m_NeverAutoSwitchControlSchemes: 1
   m_DefaultControlScheme: KB+Mouse
   m_DefaultActionMap: Primary KB-only
@@ -5402,6 +5414,18 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 378cc3e90f0e3294f8ddcb9085345e0b, type: 3}
       propertyPath: m_Name
       value: Ship Outline
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 378cc3e90f0e3294f8ddcb9085345e0b, type: 3}
+      propertyPath: m_TagString
+      value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 7273234460426374030, guid: 378cc3e90f0e3294f8ddcb9085345e0b, type: 3}
+      propertyPath: m_TagString
+      value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 8865293051123461410, guid: 378cc3e90f0e3294f8ddcb9085345e0b, type: 3}
+      propertyPath: m_TagString
+      value: Player
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
