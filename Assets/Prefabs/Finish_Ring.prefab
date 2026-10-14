@@ -9,6 +9,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5213224087917196320}
+  - component: {fileID: 2287435446690465391}
+  - component: {fileID: 6090790709406224487}
   m_Layer: 0
   m_Name: Finish_Ring
   m_TagString: Untagged
@@ -32,6 +34,45 @@ Transform:
   - {fileID: 1096923906331044697}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!54 &2287435446690465391
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3429529251239811768}
+  serializedVersion: 5
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!114 &6090790709406224487
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3429529251239811768}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9185355c8c822ca408d5db817f788853, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FinishRing
 --- !u!1001 &627046011021528242
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -80,6 +121,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -5370568685512968053, guid: 1555490963b619940a4360a503902824, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 1555490963b619940a4360a503902824, type: 3}
       propertyPath: m_Name
       value: Checkpoint_ring_Finish
@@ -91,9 +136,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: -3089448795897157011, guid: 1555490963b619940a4360a503902824, type: 3}
       insertIndex: -1
       addedObject: {fileID: 660421409177783442}
-    - targetCorrespondingSourceObject: {fileID: -3089448795897157011, guid: 1555490963b619940a4360a503902824, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 4181343497145853539}
     - targetCorrespondingSourceObject: {fileID: -5370568685512968053, guid: 1555490963b619940a4360a503902824, type: 3}
       insertIndex: -1
       addedObject: {fileID: 141070313120659980}
@@ -157,30 +199,3 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 5049742784258483811, guid: 1555490963b619940a4360a503902824, type: 3}
---- !u!54 &4181343497145853539
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6742915268341212895}
-  serializedVersion: 5
-  m_Mass: 1
-  m_LinearDamping: 0
-  m_AngularDamping: 0.05
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
-  m_UseGravity: 0
-  m_IsKinematic: 1
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0

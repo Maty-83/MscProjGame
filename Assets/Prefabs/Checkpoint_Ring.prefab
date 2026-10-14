@@ -9,6 +9,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8864856227527614884}
+  - component: {fileID: 6076283066039383059}
+  - component: {fileID: 3228366774935044937}
   m_Layer: 0
   m_Name: Checkpoint_Ring
   m_TagString: Untagged
@@ -32,6 +34,49 @@ Transform:
   - {fileID: 7462598158597775906}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!54 &6076283066039383059
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4706116234711786647}
+  serializedVersion: 5
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!114 &3228366774935044937
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4706116234711786647}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1a2603ee2a4cf9f439f5224f69ab8f3e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Checkpoint
+  UseAutomaticRank: 1
+  RankInSequence: 0
+  MinRankToOpen: 0
+  TimePassedInBestAttempt: -1
 --- !u!1001 &6925058491422410185
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -80,6 +125,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -5370568685512968053, guid: 3d7db283e43752245ba7a7fe33c19d75, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: -504628431476089712, guid: 3d7db283e43752245ba7a7fe33c19d75, type: 3}
       propertyPath: m_LocalRotation.w
       value: 1
@@ -111,9 +160,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: -3089448795897157011, guid: 3d7db283e43752245ba7a7fe33c19d75, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1577936458915805351}
-    - targetCorrespondingSourceObject: {fileID: -3089448795897157011, guid: 3d7db283e43752245ba7a7fe33c19d75, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 9013947525805775853}
     - targetCorrespondingSourceObject: {fileID: -5370568685512968053, guid: 3d7db283e43752245ba7a7fe33c19d75, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2948800836009545585}
@@ -145,33 +191,6 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 5049742784258483811, guid: 3d7db283e43752245ba7a7fe33c19d75, type: 3}
---- !u!54 &9013947525805775853
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3835609693376720804}
-  serializedVersion: 5
-  m_Mass: 1
-  m_LinearDamping: 0
-  m_AngularDamping: 0.05
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
-  m_UseGravity: 0
-  m_IsKinematic: 1
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
 --- !u!1 &6155620511568149826 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -5370568685512968053, guid: 3d7db283e43752245ba7a7fe33c19d75, type: 3}

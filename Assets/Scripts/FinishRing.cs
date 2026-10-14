@@ -13,9 +13,10 @@ public class FinishRing : MonoBehaviour
     {
         
     }
-    private void OnCollisionEnter(Collision collision)
+
+    public void OnTriggerEnter(Collider other)
     {
-        if (collision.gameObject.CompareTag("Player"))
+        if (other.gameObject.CompareTag("Player"))
         {
             CheckpointManager.Instance.TryFinish();
         }

@@ -3,14 +3,16 @@ using UnityEngine;
 
 public class Checkpoint : MonoBehaviour
 {
-    public UInt16? RankInSequence=null;//What rank in sequence is this checkpoint? Checkpoints with the same rank are considered linked
+    public bool UseAutomaticRank = true; //Ignores the RankInSequence input field and assigns a value independently.
+    [Min(1)]
+    public int RankInSequence = 1;//What rank in sequence is this checkpoint? Checkpoints with the same rank are considered linked
     public int MinRankToOpen = 0;//Should this checkpoint be locked until we pass a checkpoint with a rank greater than specified?
     public float TimePassedInBestAttempt = -1;//TODO: Make Functional later: float for best time in replay we load at start once replay/logging system is functional
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        if (RankInSequence == null) CheckpointManager.Instance.AddCheckpointToList(this);
+        if (UseAutomaticRank) CheckpointManager.Instance.AddCheckpointToList(this);
         else CheckpointManager.Instance.AddCheckpointToList(this, (int)RankInSequence);
     }
 
@@ -34,5 +36,13 @@ public class Checkpoint : MonoBehaviour
             return CheckpointManager.Instance.SetCheckpointLevelComplete(this);            
         }
         return false;
+    }
+    public void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("Player"))
+        {
+            bool passed=TryPass();
+            //TODO: Once we set up a proper timing system, we would call for saving our time here.
+        }
     }
 }

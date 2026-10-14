@@ -43,8 +43,9 @@ public class CheckpointManager : MonoBehaviour
         if (CheckpointNumber == -1)
         {
             CheckpointNumber = CreatorCheckpointIndex;
+            Checkpoint.RankInSequence = CreatorCheckpointIndex;
             CreatorCheckpointIndex++;
-            if (CreatorCheckpointIndex > -2)
+            if (CreatorCheckpointIndex > 0)
             {
                 Debug.Log("Congratulations, you've somehow placed enough checkpoints to break the game. HOW?");//Leave this in, it's both a fault code and a message to stop.
             }
