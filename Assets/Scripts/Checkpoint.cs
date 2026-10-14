@@ -38,8 +38,8 @@ public class Checkpoint : MonoBehaviour
         return false;
     }
     public void OnTriggerEnter(Collider other)
-    {
-        if (other.gameObject.CompareTag("Player"))
+    {    
+        if (other.attachedRigidbody.gameObject.layer==6)
         {
             bool passed=TryPass();
             //TODO: Once we set up a proper timing system, we would call for saving our time here.

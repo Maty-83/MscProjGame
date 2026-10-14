@@ -132,14 +132,17 @@ public class CheckpointManager : MonoBehaviour
     /// <remarks>Will break if you somehow have the same checkpoint multiple times, so fix that if you add the functionality.</remarks>
     public bool SetCheckpointLevelComplete(Checkpoint C)
     {
-        var set = CheckpointsNotPassed[(int)C.RankInSequence];
-        if (set.Contains(C))
+        if (CheckpointsNotPassed.Keys.Contains(C.RankInSequence))
         {
-            CheckpointsNotPassed.Remove((int)C.RankInSequence);
-            MaxCheckpointOrdPassed = Mathf.Max(MaxCheckpointOrdPassed, (int)C.RankInSequence);
-            LastCompleteCheckpoint = C;
-            return true;
-        }      
+            var set = CheckpointsNotPassed[C.RankInSequence];
+            if (set.Contains(C))
+            {
+                CheckpointsNotPassed.Remove(C.RankInSequence);
+                MaxCheckpointOrdPassed = Mathf.Max(MaxCheckpointOrdPassed, C.RankInSequence);
+                LastCompleteCheckpoint = C;
+                return true;
+            }
+        } 
         return false;
     }
     public int GetTotalCheckpoints()
