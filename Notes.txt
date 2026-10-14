@@ -295,6 +295,14 @@ Initial notes about diploma thesis:
 			>For now, this is directly hooked to the ship prefab, as provided a self-contained way to hook the start timer and actual timer together for testing.
 			>Due to it looking awful, we added DOTween as a Unity package and started using it
 				>This time, it's primarily used as a way to animate the text.
+				
+	>Ship colliders were implemented at this point by using mesh colliders as the fastest choice at the time.
+	
+	>The previous timer and ship control design has proven resilient, as after implementing the ship's rigidbody, we found that the physics framerate of 50 was insufficient for detecting collisions at maximum speeds for the player ship, resulting in multi-frame tunneling when tested.
+		>As such, the physics framerate has been increased from 50 Hz to 100 Hz for more accurate collision detection.
+		>The other option for reduced tunnelling is to manually rig the colliders with basic sphere, capsule and cube colliders, since those can use continuous collision detection (CCD) settings.
+			>This option may be used later, but for the purposes of creating a playable prototype, we will leave it be for now.
+	
 	
 	>TODOs:
 		>Flicker caused by direct motion when moving on a cardinal axis with a mouse
@@ -309,3 +317,5 @@ Initial notes about diploma thesis:
 		>Insufficient Thrust axis sensitivity to use maximum acceleration in negative axis (Code or manual sensitivity change should be done)
 			>BYPASSED by reducing accumulation maxima to percent-based. Best would be to introduce code so minimum accumulation equals per-physics-frame percent acceleration to max.
 			>TODO: This should be solved with code, as it lets players be dumb otherwise.
+			
+		>Investigate rigging the ship with continuous collision detection colliders.
