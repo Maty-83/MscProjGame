@@ -302,6 +302,9 @@ Initial notes about diploma thesis:
 		>As such, the physics framerate has been increased from 50 Hz to 100 Hz for more accurate collision detection.
 		>The other option for reduced tunnelling is to manually rig the colliders with basic sphere, capsule and cube colliders, since those can use continuous collision detection (CCD) settings.
 			>This option may be used later, but for the purposes of creating a playable prototype, we will leave it be for now.
+			
+	>Significant issues were had with Unity's handling of triggers, as having a trigger to kill particles too far from the player caused issues with collisions where the trigger would execute a collision and as a compound, the rigidbody above it would no longer call OnTriggerEnter for any of the other colliders, be they triggers or colliders.
+		>This forced removal of said trigger from the player model until a good alternative can be found.
 	
 	
 	>TODOs:
@@ -319,3 +322,6 @@ Initial notes about diploma thesis:
 			>TODO: This should be solved with code, as it lets players be dumb otherwise.
 			
 		>Investigate rigging the ship with continuous collision detection colliders.
+		
+		>Reintroduce the particle system trigger at some point.
+			>Difficult, but necessary.
