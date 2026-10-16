@@ -8,6 +8,7 @@ public class Checkpoint : MonoBehaviour
     public int RankInSequence = 1;//What rank in sequence is this checkpoint? Checkpoints with the same rank are considered linked
     public int MinRankToOpen = 0;//Should this checkpoint be locked until we pass a checkpoint with a rank greater than specified?
     public float TimePassedInBestAttempt = -1;//TODO: Make Functional later: float for best time in replay we load at start once replay/logging system is functional
+    public GameObject ChildTrigger; //Our child GameObject that serves as a trigger.
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -44,5 +45,13 @@ public class Checkpoint : MonoBehaviour
             bool passed=TryPass();
             //TODO: Once we set up a proper timing system, we would call for saving our time here.
         }
+    }
+    /// <summary>
+    /// A callback for other scripts to set a checkpoint passed.
+    /// </summary>
+    /// <param name="passed">If True, will set Passed as Passed and deactivate pass trigger. If False, will set Passed as not passed and activate pass trigger.</param>
+    public void SetPassed(bool passed)
+    {
+        ChildTrigger.SetActive(!passed);
     }
 }

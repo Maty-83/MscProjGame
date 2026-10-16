@@ -306,6 +306,10 @@ Initial notes about diploma thesis:
 	>Significant issues were had with Unity's handling of triggers, as having a trigger to kill particles too far from the player caused issues with collisions where the trigger would execute a collision and as a compound, the rigidbody above it would no longer call OnTriggerEnter for any of the other colliders, be they triggers or colliders.
 		>This forced removal of said trigger from the player model until a good alternative can be found.
 	
+	>Some notes for assets.
+		>Arrow billboard.
+			>Created after I figured out you can swap entire materials in Unity. Will feature a script to do so on a scaled timer.
+			>As a game design feature inspired by real-life: Features backside indicator lights, as to make it readable easier by the player.
 	
 	>TODOs:
 		>Flicker caused by direct motion when moving on a cardinal axis with a mouse

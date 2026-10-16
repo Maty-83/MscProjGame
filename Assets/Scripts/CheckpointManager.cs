@@ -137,6 +137,7 @@ public class CheckpointManager : MonoBehaviour
             var set = CheckpointsNotPassed[C.RankInSequence];
             if (set.Contains(C))
             {
+                foreach (var item in set) item.SetPassed(true);
                 CheckpointsNotPassed.Remove(C.RankInSequence);
                 MaxCheckpointOrdPassed = Mathf.Max(MaxCheckpointOrdPassed, C.RankInSequence);
                 LastCompleteCheckpoint = C;
@@ -165,6 +166,7 @@ public class CheckpointManager : MonoBehaviour
             foreach(Checkpoint c in pair.Value)
             {
                 CheckpointsNotPassed[pair.Key].Add(c);
+                c.SetPassed(false);
             }
         }
     }

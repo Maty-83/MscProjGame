@@ -77,6 +77,7 @@ MonoBehaviour:
   RankInSequence: 0
   MinRankToOpen: 0
   TimePassedInBestAttempt: -1
+  ChildTrigger: {fileID: 6155620511568149826}
 --- !u!1001 &6925058491422410185
 PrefabInstance:
   m_ObjectHideFlags: 0
