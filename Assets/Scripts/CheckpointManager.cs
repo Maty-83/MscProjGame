@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class CheckpointManager : MonoBehaviour
 {
-    #region Singleton Stuff
+    #region Singleton Pattern no.1
     private static CheckpointManager instance;
 
     public static CheckpointManager Instance

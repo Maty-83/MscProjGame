@@ -318,6 +318,10 @@ Initial notes about diploma thesis:
 		>A player may not see the start at all in their time of play, due to the code handling.
 			>Maybe offset the initial position from the actual start?
 	
+	>Conserving controls settings.
+		>For testing to be successfully completed, a player should be able to choose the controls setting as they like.
+		>While for a full game with customizable controls a proper setup saving the controls externally would be the correct choice, in order to test as intended we aim to limit this to the desired control types.
+	
 	>TODOs:
 		>Flicker caused by direct motion when moving on a cardinal axis with a mouse
         //Best to consult on this
