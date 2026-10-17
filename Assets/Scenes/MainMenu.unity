@@ -2700,7 +2700,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d1cfc771bc23af4188d5cf642d20a78, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MainMenuButton
-  SceneToLoad: TestLevelScene
+  SceneToLoad: LevelTestScene
 --- !u!114 &1730461846
 MonoBehaviour:
   m_ObjectHideFlags: 0
