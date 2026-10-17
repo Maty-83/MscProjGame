@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -14,11 +15,16 @@ using static UnityEditor.Searcher.SearcherWindow.Alignment;
 /// </summary>
 public enum AxisControlType
 {
-    Direct=0,
-    DirectDamped=1,
-    Accumulation=2,
-    AccumulationDamped=3,
-    Throttle=4
+    [Description("Movement-based Unstabilized")]
+    Direct,
+    [Description("Movement-based Stabilized")]
+    DirectDamped,
+    [Description("Offset-Based acceleration")]
+    Accumulation,
+    [Description("Offset-Based acceleration, Damped")]
+    AccumulationDamped,
+    [Description("Offset as rotation velocity")]
+    Throttle
 
 }
 public class ShipMovementProto : MonoBehaviour
