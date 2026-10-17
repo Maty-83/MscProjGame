@@ -33,6 +33,21 @@ public class MainMenuButtonControls : MonoBehaviour
     {
         
     }
+    public void OnButtonPressed()
+    {
+        switch (SettingType)
+        {
+            case SettingType.Controls:
+                CycleControls();
+                break;
+            case SettingType.MouseControlType:
+                CycleMouseControls();
+                break;
+            case SettingType.Stabilization:
+                CycleStab();
+                break;
+        }
+    }
     public void CycleStab()
     {
         ControlsCarrier.Instance().CycleStab();
