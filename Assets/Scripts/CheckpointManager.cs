@@ -179,6 +179,11 @@ public class CheckpointManager : MonoBehaviour
         if (GetTotalRemainingCheckpoints() == 0)
         {
             Finished = true;
+            var timer=Timer.GetShipTimer();
+            if(timer != null)
+            {
+                timer.PauseTimer();
+            }
             //TODO: We do something here if we finish (Like timescale to zero, record our logs and time, etc.)
             return true;
         }

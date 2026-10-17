@@ -5038,6 +5038,18 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: b96d2dc6-e45b-418e-a999-eab72a2a6355
     m_ActionName: 'Primary Roll-on-mouse/Reset Level[/Keyboard/backspace]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 4fba8cca-8df6-465f-a3c6-367068f536e9
+    m_ActionName: 'Primary (P+Y)M + KB/Back to Main Menu[/Keyboard/escape]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 98b6de13-8c44-4b7b-8510-0604d143dc23
+    m_ActionName: 'Primary KB-only/Back to Main Menu[/Keyboard/escape]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: fafac7af-296d-45b8-ae14-b67f0b105688
+    m_ActionName: 'Primary (P+R)M + KB/Back to Main Menu[/Keyboard/escape]'
   m_NeverAutoSwitchControlSchemes: 1
   m_DefaultControlScheme: KB+Mouse
   m_DefaultActionMap: Primary KB-only
@@ -7457,6 +7469,10 @@ PrefabInstance:
     - target: {fileID: 5130886161987600323, guid: 3bc43d4d4651cac4f849c783c0367bab, type: 3}
       propertyPath: m_Layer
       value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 6413179453698094958, guid: 3bc43d4d4651cac4f849c783c0367bab, type: 3}
+      propertyPath: IsShipTimer
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

@@ -5,6 +5,12 @@ using TMPro;
 /// </summary>
 public class Timer : MonoBehaviour
 {
+    public bool IsShipTimer = false;
+    private static Timer ShipTimer = null;
+    public static Timer GetShipTimer()
+    {
+        return ShipTimer;
+    }
     private float StartTime = -1f;
     private float TimeElapsedBeforePause = 0f;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -12,6 +18,10 @@ public class Timer : MonoBehaviour
     void Start()
     {
         TimerUI.text = "00.00";
+        if (IsShipTimer)
+        {
+            ShipTimer = this;
+        }
     }
 
     // Update is called once per frame
