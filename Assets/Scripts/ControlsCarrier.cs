@@ -143,17 +143,13 @@ public class ControlsCarrier : MonoBehaviour
                 break;            
         }
 
-        //Set the mouse controls for everything, we'll adjust later.
-        movementScript.pitchControlType = mouseControlType;
-        movementScript.yawControlType = mouseControlType;
-        movementScript.rollControlType = mouseControlType;
-
         switch (controlsType)
         {
             case ControlsType.PitchYawOnMouse:
-
-                //Assign the correct IA_Base input
                 input.SwitchCurrentActionMap("Primary (P+Y)M + KB");
+
+                movementScript.pitchControlType = mouseControlType;
+                movementScript.yawControlType = mouseControlType;
 
                 if (stabType == StabilizationType.FAOffNonMouseRotStabilized)
                 {
@@ -161,19 +157,18 @@ public class ControlsCarrier : MonoBehaviour
                 }
                 break;
             case ControlsType.PitchRollOnMouse:
-
-                //Assign the correct IA_Base input
                 input.SwitchCurrentActionMap("Primary (P+R)M + KB");
+
+                movementScript.pitchControlType = mouseControlType;
+                movementScript.rollControlType = mouseControlType;
 
                 if (stabType == StabilizationType.FAOffNonMouseRotStabilized)
                 {
                     movementScript.yawControlType = AxisControlType.DirectDamped;
-
                 }
                 break;
             case ControlsType.KeyboardOnly:
 
-                //Assign the correct IA_Base input
                 input.SwitchCurrentActionMap("Primary KB-only");
 
                 if (stabType == StabilizationType.FAOffNonMouseRotStabilized)
