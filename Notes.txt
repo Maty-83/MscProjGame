@@ -321,6 +321,10 @@ Initial notes about diploma thesis:
 	>Conserving controls settings.
 		>For testing to be successfully completed, a player should be able to choose the controls setting as they like.
 		>While for a full game with customizable controls a proper setup saving the controls externally would be the correct choice, in order to test as intended we aim to limit this to the desired control types.
+		>As such, a simple Enum of control types carried by a singleton pattern that isn't destroyed on scene loading and is loaded into the ship control script on Start() would be perfect
+			>It should be noted that this is DIFFERENT from the Checkpointmanager singleton, since the benefit of that type of singleton pattern is 
+		>This is even REUSABLE should we want fully custom settings as a preset! It would need some extra code for loading and handling changes to presets (Only done in code now), but it's possible!
+		
 	
 	>TODOs:
 		>Flicker caused by direct motion when moving on a cardinal axis with a mouse

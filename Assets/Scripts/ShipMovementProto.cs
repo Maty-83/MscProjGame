@@ -14,11 +14,11 @@ using static UnityEditor.Searcher.SearcherWindow.Alignment;
 /// </summary>
 public enum AxisControlType
 {
-    Direct,
-    DirectDamped,
-    Accumulation,
-    AccumulationDamped,
-    Throttle
+    Direct=0,
+    DirectDamped=1,
+    Accumulation=2,
+    AccumulationDamped=3,
+    Throttle=4
 
 }
 public class ShipMovementProto : MonoBehaviour
