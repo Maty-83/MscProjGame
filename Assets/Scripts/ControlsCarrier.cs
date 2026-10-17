@@ -14,21 +14,21 @@ public enum StabilizationType
 {
     [Description("FA-Off")]
     FAOff,
-    [Description("FA-On, including forward")]
+    [Description("FA-On, Including Forward")]
     FAOn,
-    [Description("FA-On, forward axis as throttle")]
+    [Description("FA-On, Forward Axis as Throttle")]
     FAOnThrottleForwards,
-    [Description("FA-Off, rotation axis on KB Stabilized")]
+    [Description("FA-Off, Rotation on KB Stabilized")]
     FAOffNonMouseRotStabilized,
 }
 
 public enum ControlsType
 {
-    [Description("KB+M (P+Y)")]
+    [Description("Keyboard+Mouse Pitch & Yaw")]
     PitchYawOnMouse,
-    [Description("KB+M (P+R)")]
+    [Description("Keyboard+Mouse Pitch & Roll")]
     PitchRollOnMouse,
-    [Description("KB-Only")]
+    [Description("Keyboard-Only")]
     KeyboardOnly
 }
 public class ControlsCarrier : MonoBehaviour
@@ -89,7 +89,7 @@ public class ControlsCarrier : MonoBehaviour
     {
         mouseControlType= (AxisControlType)(((int)mouseControlType + 1) % Enum.GetNames(typeof(AxisControlType)).Length);
     }
-    public string GetMouseControlTypeStringDesc()
+    public string GetMouseControlTypeDesc()
     {
         var fieldInfo = mouseControlType.GetType().GetField(mouseControlType.ToString());
         var attributes = (DescriptionAttribute[])fieldInfo.GetCustomAttributes(typeof(DescriptionAttribute), false);
