@@ -3,7 +3,7 @@
     "name": "IA_Base",
     "maps": [
         {
-            "name": "Primary",
+            "name": "Primary (P+Y)M + KB",
             "id": "53f0eb8d-3dd7-44ab-baab-8e772e7469f9",
             "actions": [
                 {
@@ -73,6 +73,15 @@
                     "name": "Reset Level",
                     "type": "Button",
                     "id": "bfc53aa5-d974-49c3-9ad8-73a8a7ef8331",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Back to Main Menu",
+                    "type": "Button",
+                    "id": "4fba8cca-8df6-465f-a3c6-367068f536e9",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -299,6 +308,17 @@
                     "action": "Reset Level",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "20aa9ce3-4d51-4a66-86e6-692e21d457bc",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";KB+Mouse",
+                    "action": "Back to Main Menu",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         },
@@ -373,6 +393,15 @@
                     "name": "Reset Level",
                     "type": "Button",
                     "id": "a801b483-9bba-46f8-9af8-5d22c1918c69",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Back to Main Menu",
+                    "type": "Button",
+                    "id": "98b6de13-8c44-4b7b-8510-0604d143dc23",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -599,11 +628,22 @@
                     "action": "Toggle FA",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "9c8939fe-c86d-4a2e-8c26-6692fe54e429",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Back to Main Menu",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         },
         {
-            "name": "Primary Roll-on-mouse",
+            "name": "Primary (P+R)M + KB",
             "id": "446c60a6-5f7a-45d3-b055-b072668eac7e",
             "actions": [
                 {
@@ -673,6 +713,15 @@
                     "name": "Reset Level",
                     "type": "Button",
                     "id": "b96d2dc6-e45b-418e-a999-eab72a2a6355",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Back to Main Menu",
+                    "type": "Button",
+                    "id": "fafac7af-296d-45b8-ae14-b67f0b105688",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -897,6 +946,17 @@
                     "processors": "",
                     "groups": ";KB+Mouse",
                     "action": "Reset Level",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "9725ba4c-a57d-4899-8f8e-a01aeeca6e66",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Back to Main Menu",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

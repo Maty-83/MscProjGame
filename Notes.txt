@@ -328,7 +328,7 @@ Initial notes about diploma thesis:
 	
 	>TODOs:
 		>"Throttles" Control type?
-			>Would be interesting as a question...
+			>Would be interesting as a questionable control type that might work....
 	
 		>Flicker caused by direct motion when moving on a cardinal axis with a mouse
         //Best to consult on this

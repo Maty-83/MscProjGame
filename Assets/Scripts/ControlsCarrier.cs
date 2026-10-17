@@ -110,9 +110,6 @@ public class ControlsCarrier : MonoBehaviour
 
     public void SetControls(ShipMovementProto movementScript, PlayerInput input)
     {
-
-
-        //TODO
         switch (stabType)
         {
             case StabilizationType.FAOff:
@@ -120,13 +117,29 @@ public class ControlsCarrier : MonoBehaviour
                 //Both of these use the same setup, the non-mouse rotations are handled in controlsType switch.
 
                 //FAOff for all keyboard axes is direct input, undamped.
-
+                movementScript.thrustControlType = AxisControlType.Direct;
+                movementScript.lateralControlType=AxisControlType.Direct;
+                movementScript.verticalControlType=AxisControlType.Direct;
+                movementScript.pitchControlType = AxisControlType.Direct;
+                movementScript.yawControlType = AxisControlType.Direct;
+                movementScript.rollControlType = AxisControlType.Direct;
                 break;
             case StabilizationType.FAOn:
-                //FA-On for all axes is direct damped.
+                movementScript.thrustControlType = AxisControlType.DirectDamped;
+                movementScript.lateralControlType = AxisControlType.DirectDamped;
+                movementScript.verticalControlType = AxisControlType.DirectDamped;
+                movementScript.pitchControlType = AxisControlType.DirectDamped;
+                movementScript.yawControlType = AxisControlType.DirectDamped;
+                movementScript.rollControlType = AxisControlType.DirectDamped;
                 break;
             case StabilizationType.FAOnThrottleForwards:
                 //Same as FA-On, but forwards is a throttle.
+                movementScript.thrustControlType = AxisControlType.Throttle;
+                movementScript.lateralControlType = AxisControlType.DirectDamped;
+                movementScript.verticalControlType = AxisControlType.DirectDamped;
+                movementScript.pitchControlType = AxisControlType.DirectDamped;
+                movementScript.yawControlType = AxisControlType.DirectDamped;
+                movementScript.rollControlType = AxisControlType.DirectDamped;
                 break;            
         }
 
@@ -139,7 +152,8 @@ public class ControlsCarrier : MonoBehaviour
         {
             case ControlsType.PitchYawOnMouse:
 
-                //TODO:Assign the correct IA_Base input
+                //Assign the correct IA_Base input
+                input.SwitchCurrentActionMap("Primary (P+Y)M + KB");
 
                 if (stabType == StabilizationType.FAOffNonMouseRotStabilized)
                 {
@@ -148,7 +162,8 @@ public class ControlsCarrier : MonoBehaviour
                 break;
             case ControlsType.PitchRollOnMouse:
 
-                //TODO:Assign the correct IA_Base input
+                //Assign the correct IA_Base input
+                input.SwitchCurrentActionMap("Primary (P+R)M + KB");
 
                 if (stabType == StabilizationType.FAOffNonMouseRotStabilized)
                 {
@@ -158,7 +173,8 @@ public class ControlsCarrier : MonoBehaviour
                 break;
             case ControlsType.KeyboardOnly:
 
-                //TODO: Assign the correct IA_Base input
+                //Assign the correct IA_Base input
+                input.SwitchCurrentActionMap("Primary KB-only");
 
                 if (stabType == StabilizationType.FAOffNonMouseRotStabilized)
                 {

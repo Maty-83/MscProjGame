@@ -95,6 +95,7 @@ public class ShipMovementProto : MonoBehaviour
     private InputAction yawAxis;
     private InputAction rollAxis;
     private InputAction resetAction;
+    private InputAction backToMenuAction;
 
     public Vector3 LastFrameRotInputPercent {  get; private set; } = new Vector3();
     public Vector3 LastFrameLinInputPercent { get; private set; }= new Vector3();
@@ -118,6 +119,10 @@ public class ShipMovementProto : MonoBehaviour
     {
         rb = this.gameObject.GetComponent<Rigidbody>();
         playerInput= this.gameObject.GetComponent<PlayerInput>();
+
+        //As the very first thing, we call the controls carrier and get its data!
+        ControlsCarrier.Instance().SetControls(this, playerInput);
+        //Then we load the newly set action map.
         currentMap = playerInput.currentActionMap;
         ReloadInputBindings();
     }
@@ -129,6 +134,10 @@ public class ShipMovementProto : MonoBehaviour
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
+        if (backToMenuAction.WasPressedThisFrame())
+        {
+            SceneManager.LoadScene("MainMenu");
+        }
     }
     private void ReloadInputBindings()
     {
@@ -139,6 +148,7 @@ public class ShipMovementProto : MonoBehaviour
         yawAxis = currentMap.FindAction("Rotation Yaw", true);
         rollAxis = currentMap.FindAction("Rotation Roll",true);
         resetAction=currentMap.FindAction("Reset Level", true);
+        backToMenuAction = currentMap.FindAction("Back to Main Menu", true);
         Debug.Log("Reloading input bindings");
     }
     private void GetControlInputs(out float pitch, out float yaw, out float roll, out float forward, out float vertical, out float lateral, out bool resetMultiFrameInputs)
