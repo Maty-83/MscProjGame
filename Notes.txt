@@ -327,12 +327,35 @@ Initial notes about diploma thesis:
 		>Big issue came up with retrieving string names of the individual control types. This was eventually managed via reflection, using the description attribute of enum values, as string-backed enums are not possible in C#
 	_____________________________
 	>Prototype player feedback
-		>Missing option of swapping A/D and Q/E axes (Player has E:D controls with swapped roll and lateral)
-		>Mouse as rotation control scheme lacks reference point
-			>Centre of screen dot, display the offset would be likely solution.
-			>Felt centre also "Drifts" due to this.
+		>Respondent no.1
+			>Missing option of swapping A/D and Q/E axes (Player has E:D controls with swapped roll and lateral)
+			>Mouse as rotation control scheme lacks reference point
+				>Centre of screen dot, display the offset would be likely solution.
+				>Felt centre also "Drifts" due to this.
+			>Mouse controls overall feel near unusable.
+				>Issue of having to think about centering
+				>Intuitive display requested.
+			>Throttle to zero button would be nice.
+				>Plan to add that
 			
+			>Ship handling too "Drifty", requests higher acceleration outside forward axis and faster roll rotation to make rolling worth it.
 			
+			>Map makes specific handling type too good compared to others
+				>Make different maps!
+				>Also, it's apparently because we have no throttle to zero button.
+			
+			>Space dust too small/infrequent to notice at high speeds
+				>Make bigger, spawn more!
+			>In a similar vane, adding an indicator of which way we're going would be a good idea, at the cost of making the gauges less prominent
+				>In simple gamedev terms, it's a HUD element anchored on the camera, which is placed a certain distance from said camera in the direction of travel
+			
+		>Respondent no.2
+			>Sluggish physics
+			>Cockpit reflections are a bit much.
+			>Some of the stabilizations didn't work well			
+			>On checkpoint size: "not at all, just got to hit them square on, adds to the difficulty"
+			
+		>LIKELY BUG DISCOVERED WITH DIFFERENT MOUSE SENSITIVITY FOR POSITIVE AND NEGATIVE AXIS, FIX LATER!!!
 	_____________________________
 	>TODOs:
 		>"Throttles" Control type?
