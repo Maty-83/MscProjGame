@@ -4,7 +4,6 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
-using static UnityEditor.Searcher.SearcherWindow.Alignment;
 /// <summary>
 /// Specifies control types for controla axes. 
 /// Direct means a clamped -1/+1 accumulation (Sensitivity here adjusts curve)
