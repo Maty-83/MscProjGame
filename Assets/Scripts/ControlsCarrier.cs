@@ -29,7 +29,9 @@ public enum ControlsType
     [Description("Keyboard+Mouse Pitch & Roll")]
     PitchRollOnMouse,
     [Description("Keyboard-Only")]
-    KeyboardOnly
+    KeyboardOnly,
+    [Description("Keyboard-Only, KSP-Like")]
+    KerbalKB
 }
 public class ControlsCarrier : MonoBehaviour
 {
@@ -165,6 +167,15 @@ public class ControlsCarrier : MonoBehaviour
                 if (stabType == StabilizationType.FAOffNonMouseRotStabilized)
                 {
                     movementScript.yawControlType = AxisControlType.DirectDamped;
+                }
+                break;
+            case ControlsType.KerbalKB:
+                input.SwitchCurrentActionMap("Kerbal-like KB");
+                if (stabType == StabilizationType.FAOffNonMouseRotStabilized)
+                {
+                    movementScript.pitchControlType = AxisControlType.DirectDamped;
+                    movementScript.yawControlType = AxisControlType.DirectDamped;
+                    movementScript.rollControlType = AxisControlType.DirectDamped;
                 }
                 break;
             case ControlsType.KeyboardOnly:

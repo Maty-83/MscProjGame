@@ -325,7 +325,15 @@ Initial notes about diploma thesis:
 			>It should be noted that this is DIFFERENT from the Checkpointmanager singleton, since the benefit of that type of singleton pattern is 
 		>This is even REUSABLE should we want fully custom settings as a preset! It would need some extra code for loading and handling changes to presets (Only done in code now), but it's possible!
 		>Big issue came up with retrieving string names of the individual control types. This was eventually managed via reflection, using the description attribute of enum values, as string-backed enums are not possible in C#
-	
+	_____________________________
+	>Prototype player feedback
+		>Missing option of swapping A/D and Q/E axes (Player has E:D controls with swapped roll and lateral)
+		>Mouse as rotation control scheme lacks reference point
+			>Centre of screen dot, display the offset would be likely solution.
+			>Felt centre also "Drifts" due to this.
+			
+			
+	_____________________________
 	>TODOs:
 		>"Throttles" Control type?
 			>Would be interesting as a questionable control type that might work....
