@@ -349,11 +349,19 @@ Initial notes about diploma thesis:
 			>In a similar vane, adding an indicator of which way we're going would be a good idea, at the cost of making the gauges less prominent
 				>In simple gamedev terms, it's a HUD element anchored on the camera, which is placed a certain distance from said camera in the direction of travel
 			
-		>Respondent no.2
+		>Respondent No.2
 			>Sluggish physics
 			>Cockpit reflections are a bit much.
 			>Some of the stabilizations didn't work well			
 			>On checkpoint size: "not at all, just got to hit them square on, adds to the difficulty"
+			
+		>Respondent No.3
+			>Canopy glass, again
+			>Q/E, A/D swapped, so... Controls!
+			>Color balance for the gauges could be better
+			>Also HUD improvements with travel direction & centre dot.
+			>Hide the mouse!
+			
 			
 		>LIKELY BUG DISCOVERED WITH DIFFERENT MOUSE SENSITIVITY FOR POSITIVE AND NEGATIVE AXIS, FIX LATER!!!
 	_____________________________
