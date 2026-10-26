@@ -362,8 +362,27 @@ Initial notes about diploma thesis:
 			>Also HUD improvements with travel direction & centre dot.
 			>Hide the mouse!
 			
+		>Respondent No.4
+			>Audio would be a nice add
+			>Control tuning needed.
+			>Cockpit glass, again!
+		
+		>Respondent No.5
+			>Glass!
+			>Mouse rotation options: can I revert the opposite control directions?
+		
+		>Respondent No.6
+			>Rings are still difficult to figure out when you crash (Maybe needs a tooltip only?)
+			>Request for better pointing out of checkpoints.
+				>Map design issue, complex if we wish to maintain the permissive checkpoint system.	
+			>Or nav-ball showing all incomplete ones?
+			>Auto-centralization/throttle cutoff button
+			>Checkpoint rings are too small to go through fast for someone used to a joystick instead
 			
-		>LIKELY BUG DISCOVERED WITH DIFFERENT MOUSE SENSITIVITY FOR POSITIVE AND NEGATIVE AXIS, FIX LATER!!!
+			
+			
+		>Potential bug with mouse sensitivity, but no guarantee.
+		
 	_____________________________
 	>TODOs:
 		>"Throttles" Control type?
