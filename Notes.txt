@@ -378,7 +378,9 @@ Initial notes about diploma thesis:
 			>Or nav-ball showing all incomplete ones?
 			>Auto-centralization/throttle cutoff button
 			>Checkpoint rings are too small to go through fast for someone used to a joystick instead
-			
+		>Respondent No.7
+			>Mostly complimented the game
+			>Desire to see control schemes present outside the classic space sims more. (WASD+Arrows+something else)
 			
 			
 		>Potential bug with mouse sensitivity, but no guarantee.
