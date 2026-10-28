@@ -385,6 +385,32 @@ Initial notes about diploma thesis:
 			
 		>Potential bug with mouse sensitivity, but no guarantee.
 		
+	>For paper, I ran it through a couple AIs to start with, since they work as search engines. (Similar topics, none quite there):
+	
+		>VERY CLOSE match, but not quite: https://www.theseus.fi/server/api/core/bitstreams/c429cd23-ce2f-41a3-9fb7-1780ceb45561/content
+	
+		>https://www.scienceopen.com/hosted-document?doi=10.14236%2Fewic%2FHCI2011.60&
+		>https://journals.sagepub.com/doi/10.1177/154193129303700415
+		>https://pubmed.ncbi.nlm.nih.gov/22995140/
+		>https://flex.flinders.edu.au/file/27aa0064-9de2-441c-8a17-655405d5fc2e/1/ThesisWu2018.pdf
+		>https://dl.acm.org/doi/abs/10.1145/3116595.3116602
+		>https://www.academia.edu/21333752/Microgravity_cursor_control_device_evaluation_for_Space_Station_Freedom_workstations
+		
+		>Focus on docking tasks over flight (Which is realistic, right up until you consider space sims as a game genre and its specifics.)
+		
+		>Tasks: Include target tracking, precision aiming, 6-DoF maneuvering and docking.
+			Objective measures: Completion time, angular error, target tracking error, overshoot, collisions and unintended movements.
+			Subjective measures: Perceived workload, comfort, controllability and preference.
+		
+		>Schemes recommended
+			>Scheme A: Mouse controls angular velocity; WASD controls translation; ship orientation determines facing.
+			>Scheme B: Mouse controls angular velocity; WASD controls translation independently of ship orientation.
+			>Scheme C: Mouse controls a desired facing direction; WASD controls translation independently.
+			>Scheme D: Mouse controls aim independently of ship orientation; keyboard inputs control ship rotation and translation.
+		
+		>NEED TO READ: May present an evaluation option.
+			>https://dl.acm.org/doi/abs/10.1145/274644.274689
+	
 	_____________________________
 	>TODOs:
 		>"Throttles" Control type?
