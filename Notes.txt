@@ -378,9 +378,15 @@ Initial notes about diploma thesis:
 			>Or nav-ball showing all incomplete ones?
 			>Auto-centralization/throttle cutoff button
 			>Checkpoint rings are too small to go through fast for someone used to a joystick instead
+			
 		>Respondent No.7
 			>Mostly complimented the game
 			>Desire to see control schemes present outside the classic space sims more. (WASD+Arrows+something else)
+			
+		>Respondent No.8
+			>It's fairly hard to fly through the rings with FA-off (They're not too small likely, just getting used to the controls)
+			>Star Citizen controls requested, so I need to do the Free Fly week.
+			>Sluggish response, going back to previous responses with wanting more manoeuvrability.
 			
 			
 		>Potential bug with mouse sensitivity, but no guarantee.
@@ -388,6 +394,11 @@ Initial notes about diploma thesis:
 	>For paper, I ran it through a couple AIs to start with, since they work as search engines. (Similar topics, none quite there):
 	
 		>VERY CLOSE match, but not quite: https://www.theseus.fi/server/api/core/bitstreams/c429cd23-ce2f-41a3-9fb7-1780ceb45561/content
+		
+		>Concerns over legality of "Automatic orientation of craft to point at mouse target" controls (Gaijin ltd. patent, enforced)
+		
+		>For referencing maybe? https://www.researchgate.net/publication/331288019_Introduction_to_Space_Simulators
+			>https://ccl.northwestern.edu/papers/2014/ICLS14_ScienceGames_published%20(1).pdf
 	
 		>https://www.scienceopen.com/hosted-document?doi=10.14236%2Fewic%2FHCI2011.60&
 		>https://journals.sagepub.com/doi/10.1177/154193129303700415
