@@ -19,7 +19,7 @@ public class DirectionIndicator : MonoBehaviour
             var vel = rb.linearVelocity;
             if (vel.magnitude == 0) //edge-case catch for when stationary.
             {
-                vel = Vector3.forward;
+                vel = rb.transform.right;//The entire ship faces right, so we adjust for that. Should really fix it, but I'm too deep in.
             }
             transform.rotation = Quaternion.LookRotation(vel);
         }
