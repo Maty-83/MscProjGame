@@ -86,6 +86,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Reset Throttles/Spacebrake",
+                    "type": "Button",
+                    "id": "bb50872c-3611-47b4-a851-d45163778954",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -319,6 +328,17 @@
                     "action": "Back to Main Menu",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "c14bab3a-bbcc-484d-87c8-a4db6f209004",
+                    "path": "<Keyboard>/x",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Reset Throttles/Spacebrake",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         },
@@ -402,6 +422,15 @@
                     "name": "Back to Main Menu",
                     "type": "Button",
                     "id": "98b6de13-8c44-4b7b-8510-0604d143dc23",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Reset Throttles/Spacebrake",
+                    "type": "Button",
+                    "id": "d8d4ea0e-08c0-49c7-9500-d1065d017219",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -639,6 +668,17 @@
                     "action": "Back to Main Menu",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "9308ae02-fafe-471c-bc24-dc1505e28346",
+                    "path": "<Keyboard>/x",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Reset Throttles/Spacebrake",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         },
@@ -722,6 +762,15 @@
                     "name": "Back to Main Menu",
                     "type": "Button",
                     "id": "2c490a27-dac2-4ee2-8870-bcb1f6e27d7a",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Reset Throttles/Spacebrake",
+                    "type": "Button",
+                    "id": "4b0b40d8-d9c0-4184-84b0-9aa21ce25ec1",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -959,6 +1008,17 @@
                     "action": "Back to Main Menu",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "2c965de4-6efc-4e71-9d5d-140c6dd468df",
+                    "path": "<Keyboard>/x",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Reset Throttles/Spacebrake",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         },
@@ -1042,6 +1102,15 @@
                     "name": "Back to Main Menu",
                     "type": "Button",
                     "id": "fafac7af-296d-45b8-ae14-b67f0b105688",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Reset Throttles/Spacebrake",
+                    "type": "Button",
+                    "id": "76715fa7-cf88-44e6-b4d6-ddc3582e8e46",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -1277,6 +1346,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Back to Main Menu",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "10d7f4c4-8887-4b55-b34b-de6d10619ef5",
+                    "path": "<Keyboard>/x",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Reset Throttles/Spacebrake",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

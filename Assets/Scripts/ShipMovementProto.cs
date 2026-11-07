@@ -96,6 +96,8 @@ public class ShipMovementProto : MonoBehaviour
     private InputAction resetAction;
     private InputAction backToMenuAction;
 
+    private InputAction spaceBrake;
+
     public Vector3 LastFrameRotInputPercent {  get; private set; } = new Vector3();
     public Vector3 LastFrameLinInputPercent { get; private set; }= new Vector3();
     /// <summary>
@@ -148,9 +150,10 @@ public class ShipMovementProto : MonoBehaviour
         rollAxis = currentMap.FindAction("Rotation Roll",true);
         resetAction=currentMap.FindAction("Reset Level", true);
         backToMenuAction = currentMap.FindAction("Back to Main Menu", true);
+        spaceBrake = currentMap.FindAction("Reset Throttles/Spacebrake", true);
         Debug.Log("Reloading input bindings");
     }
-    private void GetControlInputs(out float pitch, out float yaw, out float roll, out float forward, out float vertical, out float lateral, out bool resetMultiFrameInputs)
+    private void GetControlInputs(out float pitch, out float yaw, out float roll, out float forward, out float vertical, out float lateral)
     {
         if (currentMap != playerInput.currentActionMap)
         {
@@ -164,7 +167,7 @@ public class ShipMovementProto : MonoBehaviour
         forward = 0;
         vertical = 0;
         lateral = 0;
-        resetMultiFrameInputs = false;
+
         //TODO: We can actually use InputAction.bindings to potentially retrieve if the binding is a mouse binding and behave accordingly!!!
 
         //Lateral (Left/Right)
@@ -529,34 +532,121 @@ public class ShipMovementProto : MonoBehaviour
         //Assign newly calculated velocity vector
         rb.linearVelocity = rb.rotation * velocityInDirs;
     }
+    /// <summary>
+    /// Handles space brake adjustments
+    /// Iterate per control axis. Depending on axis mode, we do different tasks
+    /// Any throttle axis: reset throttle.
+    /// Any undamped axis: If over frames value is zero, slow it (Active handling cancels out spacebrake)
+    /// Any damped axis: Ignore.
+    /// </summary>
+    private void HandleSpaceBrake()
+    {
+        bool active = spaceBrake.ReadValue<bool>();
+        if (!active) return;
+
+        Vector3 localAngularVelocity = transform.InverseTransformDirection(rb.angularVelocity); //P=Z, R=X, Y=Y
+        var velocityInDirs = Quaternion.Inverse(rb.rotation) * rb.linearVelocity;
+        //PITCH
+        if (pitchControlType == AxisControlType.Throttle)
+        {
+            pitchOverFrames = 0;
+        }
+        if(pitchControlType==AxisControlType.Direct || pitchControlType == AxisControlType.Accumulation)
+        {
+            if (pitchOverFrames == 0)
+            {
+                pitchOverFrames = GetAccelToTarget(0, localAngularVelocity.z, pitchAccelPerSec * Time.fixedDeltaTime) / (pitchAccelPerSec * Time.fixedDeltaTime);// Using this and division ensures we go to zero
+            }
+        }
+        //YAW
+        if (yawControlType == AxisControlType.Throttle)
+        {
+            yawOverFrames = 0;
+        }
+        if (yawControlType == AxisControlType.Direct || yawControlType == AxisControlType.Accumulation)
+        {
+            if (yawOverFrames == 0)
+            {
+                yawOverFrames = GetAccelToTarget(0, localAngularVelocity.y, yawAccelPerSec * Time.fixedDeltaTime) / (yawAccelPerSec * Time.fixedDeltaTime);// Using this and division ensures we go to zero
+            }
+        }
+        //ROLL
+        if (rollControlType == AxisControlType.Throttle)
+        {
+            rollOverFrames = 0;
+        }
+        if (rollControlType == AxisControlType.Direct || rollControlType == AxisControlType.Accumulation)
+        {
+            if (rollOverFrames == 0)
+            {
+                rollOverFrames = GetAccelToTarget(0, localAngularVelocity.x, rollAccelPerSec * Time.fixedDeltaTime) / (rollAccelPerSec * Time.fixedDeltaTime);// Using this and division ensures we go to zero
+            }
+        }
+        //FORWARD
+        if (thrustControlType == AxisControlType.Throttle)
+        {
+            thrustOverFrames = 0;
+        }
+        if (thrustControlType == AxisControlType.Direct || thrustControlType == AxisControlType.Accumulation)
+        {
+            if (thrustOverFrames == 0)
+            {
+                var res = GetAccelToTarget(0, velocityInDirs.x, forwardAccelPerSec * Time.fixedDeltaTime, reverseAccelPerSec*Time.fixedDeltaTime);// Using this and division ensures we go to zero
+                if (res > 0)
+                {
+                    thrustOverFrames = res / (forwardAccelPerSec * Time.fixedDeltaTime);
+                }
+                else
+                {
+                    thrustOverFrames = res / (reverseAccelPerSec * Time.fixedDeltaTime);
+                }
+            }
+        }
+        //LATERAL
+        if (lateralControlType == AxisControlType.Throttle)
+        {
+            lateralOverFrames = 0;
+        }
+        if (lateralControlType == AxisControlType.Direct || lateralControlType == AxisControlType.Accumulation)
+        {
+            if (lateralOverFrames == 0)
+            {
+                lateralOverFrames = GetAccelToTarget(0, velocityInDirs.z, lateralOverFrames * Time.fixedDeltaTime) / (lateralOverFrames * Time.fixedDeltaTime);// Using this and division ensures we go to zero
+            }
+        }
+        //VERTICAL
+        if (verticalControlType == AxisControlType.Throttle)
+        {
+            verticalOverFrames = 0;
+        }
+        if (verticalControlType == AxisControlType.Direct || verticalControlType == AxisControlType.Accumulation)
+        {
+            if (verticalOverFrames == 0)
+            {
+                verticalOverFrames = GetAccelToTarget(0, velocityInDirs.y, verticalAccelPerSec * Time.fixedDeltaTime) / (verticalAccelPerSec * Time.fixedDeltaTime);// Using this and division ensures we go to zero
+            }
+        }
+    }
     void FixedUpdate()
     {
-        GetControlInputs(out float pitch, out float yaw, out float roll, out float thrust, out float vertical, out float lateral, out bool resetMultiFrameInputs);
+        GetControlInputs(out float pitch, out float yaw, out float roll, out float thrust, out float vertical, out float lateral);
 
-        //TEMP: For testing damping
-        /*if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            enableDamping = !enableDamping;
-        }*/
+        pitchOverFrames = Mathf.Clamp(pitchOverFrames+pitch*pitchSensitivity, -maxAccumulation, maxAccumulation); ;
+        yawOverFrames = Mathf.Clamp(yawOverFrames+yaw*yawSensitivity, -maxAccumulation, maxAccumulation);
+        rollOverFrames = Mathf.Clamp(rollOverFrames+roll*rollSensitivity, -maxAccumulation, maxAccumulation);
+        thrustOverFrames = Mathf.Clamp(thrustOverFrames + thrust*thrustSensitivity, -maxAccumulation, maxAccumulation);
+        verticalOverFrames = Mathf.Clamp(verticalOverFrames+vertical*verticalSensitivity, -maxAccumulation, maxAccumulation);
+        lateralOverFrames = Mathf.Clamp(lateralOverFrames+lateral*lateralSensitivity, -maxAccumulation, maxAccumulation);
 
-        if (resetMultiFrameInputs)
-        {
+        /* //Removed code for full control reset.
             pitchOverFrames = pitch*pitchSensitivity;
             yawOverFrames = yaw*yawSensitivity;
             rollOverFrames = roll*rollSensitivity;
             thrustOverFrames = thrust*thrustSensitivity;
             verticalOverFrames = vertical*verticalSensitivity;
             lateralOverFrames = lateral*lateralSensitivity;
-        }
-        else
-        {
-            pitchOverFrames = Mathf.Clamp(pitchOverFrames+pitch*pitchSensitivity, -maxAccumulation, maxAccumulation); ;
-            yawOverFrames = Mathf.Clamp(yawOverFrames+yaw*yawSensitivity, -maxAccumulation, maxAccumulation);
-            rollOverFrames = Mathf.Clamp(rollOverFrames+roll*rollSensitivity, -maxAccumulation, maxAccumulation);
-            thrustOverFrames = Mathf.Clamp(thrustOverFrames + thrust*thrustSensitivity, -maxAccumulation, maxAccumulation);
-            verticalOverFrames = Mathf.Clamp(verticalOverFrames+vertical*verticalSensitivity, -maxAccumulation, maxAccumulation);
-            lateralOverFrames = Mathf.Clamp(lateralOverFrames+lateral*lateralSensitivity, -maxAccumulation, maxAccumulation);
-        }
+        */
+        HandleSpaceBrake();
 
         ApplyRotationVelChanges();
 
