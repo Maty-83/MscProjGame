@@ -388,6 +388,12 @@ Initial notes about diploma thesis:
 			>Star Citizen controls requested, so I need to do the Free Fly week.
 			>Sluggish response, going back to previous responses with wanting more manoeuvrability.
 			
+		>Respondent No.9
+			>Particles much appreciated, suggests making them bigger.
+				>Excellent for orientation
+			>Simplify number of control options for the game, do a better default setting.
+				>Also, potentially show diagrams of what they do.
+			
 			
 		>Potential bug with mouse sensitivity, but no guarantee.
 		
