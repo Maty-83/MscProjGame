@@ -397,6 +397,10 @@ Initial notes about diploma thesis:
 			
 		>Potential bug with mouse sensitivity, but no guarantee.
 		
+		>Implemented ideas so far:
+			>Space Brake
+			>Flight control direction indicator.
+		
 	>For paper, I ran it through a couple AIs to start with, since they work as search engines. (Similar topics, none quite there):
 	
 		>VERY CLOSE match, but not quite: https://www.theseus.fi/server/api/core/bitstreams/c429cd23-ce2f-41a3-9fb7-1780ceb45561/content
