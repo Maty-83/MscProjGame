@@ -17,7 +17,7 @@ public class DirectionIndicator : MonoBehaviour
         if (rb != null)
         {
             var vel = rb.linearVelocity;
-            if (vel.magnitude == 0) //edge-case catch for when stationary.
+            if (vel.sqrMagnitude <0.00001f) //edge-case catch for when stationary or near stationary.
             {
                 vel = rb.transform.right;//The entire ship faces right, so we adjust for that. Should really fix it, but I'm too deep in.
             }

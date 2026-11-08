@@ -615,7 +615,7 @@ public class ShipMovementProto : MonoBehaviour
         {
             if (lateralOverFrames == 0)
             {
-                lateralOverFrames = GetAccelToTarget(0, velocityInDirs.z, lateralOverFrames * Time.fixedDeltaTime) / (lateralAccelPerSec * Time.fixedDeltaTime);// Using this and division ensures we go to zero
+                lateralOverFrames = GetAccelToTarget(0, velocityInDirs.z, lateralAccelPerSec * Time.fixedDeltaTime) / (lateralAccelPerSec * Time.fixedDeltaTime);// Using this and division ensures we go to zero
             }
         }
         //VERTICAL
