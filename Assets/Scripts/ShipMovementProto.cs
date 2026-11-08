@@ -527,6 +527,11 @@ public class ShipMovementProto : MonoBehaviour
         {
             velocityInDirs = (velocityInDirs / velocityInDirs.magnitude) * maxVel;//Normalize the vector to max speed. I'd rather do it this way as it's less confusing.
         }
+        if (float.IsNaN(velocityInDirs.x) || float.IsNaN(velocityInDirs.y) || float.IsNaN(velocityInDirs.z))
+        {
+            Debug.Log("NaN velocity error");
+        }
+
         SetLastFrameActualAccel(thrustAccel, vertAccel, latAccel);
         SetLastFrameLinInputs(thrustThisFrame, verticalThisFrame, lateralThisFrame);
         //Assign newly calculated velocity vector
@@ -541,8 +546,7 @@ public class ShipMovementProto : MonoBehaviour
     /// </summary>
     private void HandleSpaceBrake()
     {
-        bool active = spaceBrake.ReadValue<bool>();
-        if (!active) return;
+        if (spaceBrake.ReadValue<float>()<=0) return;
 
         Vector3 localAngularVelocity = transform.InverseTransformDirection(rb.angularVelocity); //P=Z, R=X, Y=Y
         var velocityInDirs = Quaternion.Inverse(rb.rotation) * rb.linearVelocity;
@@ -611,7 +615,7 @@ public class ShipMovementProto : MonoBehaviour
         {
             if (lateralOverFrames == 0)
             {
-                lateralOverFrames = GetAccelToTarget(0, velocityInDirs.z, lateralOverFrames * Time.fixedDeltaTime) / (lateralOverFrames * Time.fixedDeltaTime);// Using this and division ensures we go to zero
+                lateralOverFrames = GetAccelToTarget(0, velocityInDirs.z, lateralOverFrames * Time.fixedDeltaTime) / (lateralAccelPerSec * Time.fixedDeltaTime);// Using this and division ensures we go to zero
             }
         }
         //VERTICAL
