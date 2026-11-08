@@ -4,6 +4,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
+
 /// <summary>
 /// Specifies control types for controla axes. 
 /// Direct means a clamped -1/+1 accumulation (Sensitivity here adjusts curve)
@@ -97,7 +98,7 @@ public class ShipMovementProto : MonoBehaviour
     private InputAction backToMenuAction;
 
     private InputAction spaceBrake;
-
+    public bool LastFrameSpaceBrakeApplied { get; private set; } = false;
     public Vector3 LastFrameRotInputPercent {  get; private set; } = new Vector3();
     public Vector3 LastFrameLinInputPercent { get; private set; }= new Vector3();
     /// <summary>
@@ -140,6 +141,9 @@ public class ShipMovementProto : MonoBehaviour
             SceneManager.LoadScene("MainMenu");
         }
     }
+    /// <summary>
+    /// Reloads set input bindings from the current action map.
+    /// </summary>
     private void ReloadInputBindings()
     {
         forwardAxis = currentMap.FindAction("Thrust Forward",true);
@@ -153,7 +157,10 @@ public class ShipMovementProto : MonoBehaviour
         spaceBrake = currentMap.FindAction("Reset Throttles/Spacebrake", true);
         Debug.Log("Reloading input bindings");
     }
-    private void GetControlInputs(out float pitch, out float yaw, out float roll, out float forward, out float vertical, out float lateral)
+    /// <summary>
+    /// Return current Input System inputs for the main 6 DOF controls.
+    /// </summary>
+    private void Get6DOFControlInputs(out float pitch, out float yaw, out float roll, out float forward, out float vertical, out float lateral)
     {
         if (currentMap != playerInput.currentActionMap)
         {
@@ -168,38 +175,16 @@ public class ShipMovementProto : MonoBehaviour
         vertical = 0;
         lateral = 0;
 
-        //TODO: We can actually use InputAction.bindings to potentially retrieve if the binding is a mouse binding and behave accordingly!!!
-
-        //Lateral (Left/Right)
-        //if (Input.GetKey(KeyCode.Q)) { lateral++; }
-        //if (Input.GetKey(KeyCode.E)) { lateral--; }
         lateral = lateralAxis.ReadValue<float>();
 
-        //Throttle axis (Forward/Back)
-        //if (Input.GetKey(KeyCode.W)) { forward++; }
-        //if (Input.GetKey(KeyCode.S)) { forward--; }
         forward=forwardAxis.ReadValue<float>();
 
-        //Vertical Axis (Up/Down)
-        //if (Input.GetKey(KeyCode.R)) { vertical++; }
-        //if (Input.GetKey(KeyCode.F)) { vertical--; }
         vertical=verticalAxis.ReadValue<float>();
 
-
-        //Roll Axis
-        //if (Input.GetKey(KeyCode.A)) { roll++; }
-        //if (Input.GetKey(KeyCode.D)) { roll--; }
         roll=rollAxis.ReadValue<float>();
 
-        //Pitch Axis
-        //if (Input.GetKey(KeyCode.I)) { pitch++; }
-        //if (Input.GetKey(KeyCode.K)) { pitch--; }
         pitch=pitchAxis.ReadValue<float>();
         
-
-        //Yaw Axis
-        //if (Input.GetKey(KeyCode.L)) { yaw++; }
-        //if (Input.GetKey(KeyCode.J)) { yaw--; }
         yaw=yawAxis.ReadValue<float>();
 
         if (logInputs) Debug.Log($"Raw Input: F: {forward}, L: {lateral}, V: {vertical}, P:{pitch}, Y:{yaw}, R: {roll}");
@@ -233,10 +218,9 @@ public class ShipMovementProto : MonoBehaviour
         }
     }
 
-    private void SetLastFrameRotInputs(float pitchAcc, float yawAcc, float rollAcc)
-    {
-        LastFrameRotInputPercent= new Vector3(rollAcc, yawAcc, pitchAcc);
-    }
+    /// <summary>
+    /// Seats read-only value for last frame rotation acceleration
+    /// </summary>
     private void SetLastFrameRotAccel(float pitchAcc, float yawAcc, float rollAcc)
     {
         //Back-calculate max per-frame accel
@@ -252,7 +236,7 @@ public class ShipMovementProto : MonoBehaviour
     /// </summary>
     /// <param name="axis">Axis of acceleration</param>
     /// <param name="localAngularVelocity">Vector of locally transformed angular velocity</param>
-    /// <param name="dampIfNotAccelerating">Determines if rotation damping takes place</param>
+    /// <param name="controlType">Type of control for the axis</param>
     /// <returns>Direct acceleration value for a given rotation axis</returns>
     private float ReturnRotAcceleration(RotationAxis axis, Vector3 localAngularVelocity, AxisControlType controlType)
     {
@@ -340,19 +324,6 @@ public class ShipMovementProto : MonoBehaviour
                 }
             }
         }
-        //Now to cache our input so the UI can grab it.
-        switch (axis)
-        {
-            case RotationAxis.Roll:
-                SetLastFrameRotInputs(LastFrameRotInputPercent.z, LastFrameRotInputPercent.y, inputForRot);
-                break;
-            case RotationAxis.Yaw:
-                SetLastFrameRotInputs(LastFrameRotInputPercent.z, inputForRot, LastFrameRotInputPercent.x);
-                break;
-            case RotationAxis.Pitch:
-                SetLastFrameRotInputs(inputForRot, LastFrameRotInputPercent.y, LastFrameRotInputPercent.x);
-                break;
-        }
         return accel;
     }
     /// <summary>
@@ -377,11 +348,10 @@ public class ShipMovementProto : MonoBehaviour
         //Add torque
         rb.AddRelativeTorque(rollAcc, yawAcc, pitchAcc, ForceMode.VelocityChange);
     }
-    private void SetLastFrameLinInputs(float thrustAcc, float vertAcc, float latAcc)
-    {
-        LastFrameLinInputPercent = new Vector3(thrustAcc, vertAcc, latAcc);
-    }
-    private void SetLastFrameActualAccel(float thrustAcc, float vertAcc, float latAcc)
+    /// <summary>
+    /// Utility function setting a read-only value of last physics frame linear acceleration
+    /// </summary>
+    private void SetLastFrameLinearAccel(float thrustAcc, float vertAcc, float latAcc)
     {
         float MFA = forwardAccelPerSec * Time.fixedDeltaTime;
         float MRA = reverseAccelPerSec * Time.fixedDeltaTime;
@@ -395,6 +365,9 @@ public class ShipMovementProto : MonoBehaviour
         }
         LastFrameExecutedAcceleration = new Vector3(thrustAccActual, vertAcc / MVA, latAcc / MLA);
     }
+    /// <summary>
+    /// Applies recorded input over frames values to linear velocity based on control types.
+    /// </summary>
     private void ApplyLinearVelChanges()
     {
         //Rotate our velocity system to local space
@@ -532,8 +505,7 @@ public class ShipMovementProto : MonoBehaviour
             Debug.Log("NaN velocity error");
         }
 
-        SetLastFrameActualAccel(thrustAccel, vertAccel, latAccel);
-        SetLastFrameLinInputs(thrustThisFrame, verticalThisFrame, lateralThisFrame);
+        SetLastFrameLinearAccel(thrustAccel, vertAccel, latAccel);
         //Assign newly calculated velocity vector
         rb.linearVelocity = rb.rotation * velocityInDirs;
     }
@@ -546,7 +518,12 @@ public class ShipMovementProto : MonoBehaviour
     /// </summary>
     private void HandleSpaceBrake()
     {
-        if (spaceBrake.ReadValue<float>()<=0) return;
+        if (spaceBrake.ReadValue<float>()<=0)
+        {
+            LastFrameSpaceBrakeApplied = false;
+            return;
+        }
+        LastFrameSpaceBrakeApplied = true;
 
         Vector3 localAngularVelocity = transform.InverseTransformDirection(rb.angularVelocity); //P=Z, R=X, Y=Y
         var velocityInDirs = Quaternion.Inverse(rb.rotation) * rb.linearVelocity;
@@ -631,9 +608,76 @@ public class ShipMovementProto : MonoBehaviour
             }
         }
     }
+
+    /// <summary>
+    /// Utility function setting read-only values of last physics frame acceleration inputs
+    /// </summary>
+    private void SetLastFrameLinInputs(float thrustAcc, float vertAcc, float latAcc)
+    {
+        LastFrameLinInputPercent = new Vector3(thrustAcc, vertAcc, latAcc);
+    }
+    /// <summary>
+    /// Sets read-only value for last frame rotation inputs.
+    /// </summary>
+    private void SetLastFrameRotInputs(float pitchAcc, float yawAcc, float rollAcc)
+    {
+        LastFrameRotInputPercent = new Vector3(rollAcc, yawAcc, pitchAcc);
+    }
+    /// <summary>
+    /// Utility function logging all inputs of the latest frame to the ship movement script.
+    /// </summary>
+    public void SetLastFrameInputs()
+    {
+        float thrustThisFrame = Mathf.Clamp(thrustOverFrames, -1, 1);
+        if (thrustControlType == AxisControlType.Throttle)
+        {
+            thrustThisFrame = Mathf.Clamp(thrustOverFrames / accumulationToFullThrottle, -1, 1);
+        }
+
+        float lateralThisFrame = Mathf.Clamp(lateralOverFrames, -1, 1);
+        if (lateralControlType == AxisControlType.Throttle)
+        {
+            lateralThisFrame = Mathf.Clamp(lateralOverFrames / accumulationToFullThrottle, -1, 1);
+        }
+
+        float verticalThisFrame = Mathf.Clamp(verticalOverFrames, -1, 1);
+        if (verticalControlType == AxisControlType.Throttle)
+        {
+            verticalThisFrame = Mathf.Clamp(verticalOverFrames / accumulationToFullThrottle, -1, 1);
+        }
+
+        SetLastFrameLinInputs(thrustThisFrame, verticalThisFrame, lateralThisFrame);
+
+        float pitchThisFrame = Mathf.Clamp(pitchOverFrames, -1, 1);
+
+        //Throttle Control uses a completely different mechanism than everything else.
+        if (pitchControlType == AxisControlType.Throttle)
+        {
+            pitchThisFrame = pitchOverFrames / accumulationToFullThrottle;
+        }
+
+        float yawThisFrame = Mathf.Clamp(yawOverFrames, -1, 1);
+
+        //Throttle Control uses a completely different mechanism than everything else.
+        if (yawControlType == AxisControlType.Throttle)
+        {
+            yawThisFrame = yawOverFrames / accumulationToFullThrottle;
+        }
+
+        float rollThisFrame = Mathf.Clamp(rollOverFrames, -1, 1);
+
+        //Throttle Control uses a completely different mechanism than everything else.
+        if (rollControlType == AxisControlType.Throttle)
+        {
+            rollThisFrame = rollOverFrames / accumulationToFullThrottle;
+        }
+
+        SetLastFrameRotInputs(pitchThisFrame, yawOverFrames, rollOverFrames);
+    }
+
     void FixedUpdate()
     {
-        GetControlInputs(out float pitch, out float yaw, out float roll, out float thrust, out float vertical, out float lateral);
+        Get6DOFControlInputs(out float pitch, out float yaw, out float roll, out float thrust, out float vertical, out float lateral);
 
         pitchOverFrames = Mathf.Clamp(pitchOverFrames+pitch*pitchSensitivity, -maxAccumulation, maxAccumulation); ;
         yawOverFrames = Mathf.Clamp(yawOverFrames+yaw*yawSensitivity, -maxAccumulation, maxAccumulation);
@@ -650,6 +694,8 @@ public class ShipMovementProto : MonoBehaviour
             verticalOverFrames = vertical*verticalSensitivity;
             lateralOverFrames = lateral*lateralSensitivity;
         */
+        SetLastFrameInputs();
+
         HandleSpaceBrake();
 
         ApplyRotationVelChanges();
