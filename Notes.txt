@@ -393,13 +393,19 @@ Initial notes about diploma thesis:
 				>Excellent for orientation
 			>Simplify number of control options for the game, do a better default setting.
 				>Also, potentially show diagrams of what they do.
-			
+		
+		>Respondent No.10
+			>Recommends having a tutorial/guide in-game (Really good point!)
 			
 		>Potential bug with mouse sensitivity, but no guarantee.
 		
 		>Implemented ideas so far:
 			>Space Brake
 			>Flight control direction indicator.
+			
+		>TODOs for Unity over the whole week:
+			>Logging implementation (Base of a replay system, we can see fun stuff that way)
+			>Design for guide or a tutorial)
 		
 	>For paper, I ran it through a couple AIs to start with, since they work as search engines. (Similar topics, none quite there):
 	
