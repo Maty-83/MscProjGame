@@ -672,7 +672,7 @@ public class ShipMovementProto : MonoBehaviour
             rollThisFrame = rollOverFrames / accumulationToFullThrottle;
         }
 
-        SetLastFrameRotInputs(pitchThisFrame, yawOverFrames, rollOverFrames);
+        SetLastFrameRotInputs(pitchThisFrame, yawThisFrame, rollThisFrame);
     }
 
     void FixedUpdate()

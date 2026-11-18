@@ -403,9 +403,16 @@ Initial notes about diploma thesis:
 			>Space Brake
 			>Flight control direction indicator.
 			
-		>TODOs for Unity over the whole week:
+	>Guide design:
+		>Guide decided as current primary offer of "How to fly". Tutorial may come later, but I'd rather throw people into the game without expectatations, to see who learns the fastest.
+		>Simple solution: Offer a text-based solution, add pictures when you get to it to show what the ship does (Could even do camera work in a specific scene).
+			>Benefits of starting with a guide: Allows for text formatting based on current keyboard scheme, meaning it should be easy to implement
+			
+			
+	
+	>TODOs for Unity over the whole week:
 			>Logging implementation (Base of a replay system, we can see fun stuff that way)
-			>Design for guide or a tutorial)
+			>Design for guide or a tutorial, maybe implement before logging?
 		
 	>For paper, I ran it through a couple AIs to start with, since they work as search engines. (Similar topics, none quite there):
 	

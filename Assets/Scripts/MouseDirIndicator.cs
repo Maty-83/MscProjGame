@@ -1,3 +1,5 @@
+using System.Net;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class MouseDirIndicator : MonoBehaviour
@@ -13,10 +15,12 @@ public class MouseDirIndicator : MonoBehaviour
     public float MaxIntensity = 0;
     public float MinIntensity = -5;
     public Color EmissionColorBase = new Color(0, 191f / 255f, 0);
+    private Vector3 basePos;
+    public Renderer TransparencyTargetRenderer;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+        basePos=transform.localPosition;
     }
 
     // Update is called once per frame
@@ -42,36 +46,38 @@ public class MouseDirIndicator : MonoBehaviour
             xAxis = ShipMovementScript.LastFrameRotInputPercent.x;
         }
 
-        //TODO.
         SetOffset(xAxis, yAxis);
         SetAngleFromOffsets(xAxis, yAxis);
-
+        SetTransparencyFromOffsets(xAxis, yAxis);
     }
     public void SetOffset(float xOffset, float yOffset)
     {
-        OffsetTarget.transform.position += new Vector3(xOffset * xOffsetMult, yOffset * yOffsetMult, 0);
+        OffsetTarget.transform.localPosition = basePos + new Vector3(xOffset * xOffsetMult, yOffset * yOffsetMult, 0);
     }
     public void SetAngleFromOffsets(float xOffset, float yOffset)
     {
-        //TODO:
-
         //Pitch target sets linear interpolated pitch
         //Angle to the side max is about -110. It's based on offset magnitude  (If mag >1, we clamp)
         //I think it's X axis?
+        float rot= -110*Mathf.Clamp(Mathf.Sqrt(xOffset * xOffset + yOffset * yOffset),0,1);
+        PitchTarget.transform.localEulerAngles=new Vector3(0,rot,0);
 
         //Roll Target only rolls Z axis based on AngleFromOffset function.
+        RollTarget.transform.localEulerAngles=new Vector3(0,0, AngleFromOffset(xOffset, yOffset));
     }
     public void SetTransparencyFromOffsets(float xOffset, float yOffset)
     {
         //If we move
         var offFrac = Mathf.Sqrt(xOffset * xOffset + yOffset * yOffset);
-
+        
         var intensity=Mathf.Clamp((MinIntensity+ offFrac*((MaxIntensity-MinIntensity)/OffsetFracToMaxIntensity)), MinIntensity, MaxIntensity);
-        TransparencyTarget.SetColor("_EmissiveColor", EmissionColorBase * Mathf.Pow(2, intensity));//This I'm not sure about, it depends on the render pipelines.
+        TransparencyTarget.EnableKeyword("_EMISSION");
+        TransparencyTarget.SetColor("_EmissionColor", EmissionColorBase * Mathf.Pow(2, intensity));//This I'm not sure about, it depends on the render pipelines.
+        RendererExtensions.UpdateGIMaterials(TransparencyTargetRenderer);
     }
-    public float AngleFromOffset(float offsetX, float offsetY)
+    public float AngleFromOffset(float xOffset, float yOffset)
     {
-        float angleRad = Mathf.Atan2(offsetY, offsetX);
+        float angleRad = Mathf.Atan2(yOffset, xOffset);
 
         // Convert to degrees: -180 to 180
         float angleDeg = angleRad * (180.0f / Mathf.PI);
