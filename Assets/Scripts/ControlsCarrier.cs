@@ -36,9 +36,9 @@ public enum ControlsType
 public class ControlsCarrier : MonoBehaviour
 {
    
-    public StabilizationType stabType=StabilizationType.FAOff;
-    public ControlsType controlsType = ControlsType.PitchYawOnMouse;
-    public AxisControlType mouseControlType = AxisControlType.Direct;
+    public StabilizationType StabType=StabilizationType.FAOff;
+    public ControlsType ControlsType = ControlsType.PitchYawOnMouse;
+    public AxisControlType MouseControlType = AxisControlType.Direct;
     #region Singleton Pattern no.2
     private static ControlsCarrier instance;
 
@@ -68,34 +68,34 @@ public class ControlsCarrier : MonoBehaviour
     #region Button Utilities
     public void CycleStab()
     {
-        stabType =(StabilizationType)(((int)stabType + 1) % Enum.GetNames(typeof(StabilizationType)).Length);//A smart piece of code that automatically cycles through enum modulo count.      
+        StabType =(StabilizationType)(((int)StabType + 1) % Enum.GetNames(typeof(StabilizationType)).Length);//A smart piece of code that automatically cycles through enum modulo count.      
     }
     public string GetStabTypeDesc()
     {
-        var fieldInfo=stabType.GetType().GetField(stabType.ToString());
+        var fieldInfo=StabType.GetType().GetField(StabType.ToString());
         var attributes= (DescriptionAttribute[])fieldInfo.GetCustomAttributes(typeof(DescriptionAttribute), false);
-        return attributes.Length > 0 ? attributes[0].Description : stabType.ToString();
+        return attributes.Length > 0 ? attributes[0].Description : StabType.ToString();
     }
     
     public void CycleControls()
     {
-        controlsType =(ControlsType)(((int)controlsType + 1)% Enum.GetNames (typeof(ControlsType)).Length);
+        ControlsType =(ControlsType)(((int)ControlsType + 1)% Enum.GetNames (typeof(ControlsType)).Length);
     }
     public string GetControlsTypeDesc()
     {
-        var fieldInfo = controlsType.GetType().GetField(controlsType.ToString());
+        var fieldInfo = ControlsType.GetType().GetField(ControlsType.ToString());
         var attributes = (DescriptionAttribute[])fieldInfo.GetCustomAttributes(typeof(DescriptionAttribute), false);
-        return attributes.Length > 0 ? attributes[0].Description : controlsType.ToString();
+        return attributes.Length > 0 ? attributes[0].Description : ControlsType.ToString();
     }
     public void CycleMouseControl()
     {
-        mouseControlType= (AxisControlType)(((int)mouseControlType + 1) % Enum.GetNames(typeof(AxisControlType)).Length);
+        MouseControlType= (AxisControlType)(((int)MouseControlType + 1) % Enum.GetNames(typeof(AxisControlType)).Length);
     }
     public string GetMouseControlTypeDesc()
     {
-        var fieldInfo = mouseControlType.GetType().GetField(mouseControlType.ToString());
+        var fieldInfo = MouseControlType.GetType().GetField(MouseControlType.ToString());
         var attributes = (DescriptionAttribute[])fieldInfo.GetCustomAttributes(typeof(DescriptionAttribute), false);
-        return attributes.Length > 0 ? attributes[0].Description : mouseControlType.ToString();
+        return attributes.Length > 0 ? attributes[0].Description : MouseControlType.ToString();
     }
     #endregion
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -112,7 +112,7 @@ public class ControlsCarrier : MonoBehaviour
 
     public void SetControls(ShipMovementProto movementScript, PlayerInput input)
     {
-        switch (stabType)
+        switch (StabType)
         {
             case StabilizationType.FAOff:
             case StabilizationType.FAOffNonMouseRotStabilized:
@@ -145,15 +145,15 @@ public class ControlsCarrier : MonoBehaviour
                 break;            
         }
 
-        switch (controlsType)
+        switch (ControlsType)
         {
             case ControlsType.PitchYawOnMouse:
                 input.SwitchCurrentActionMap("Primary (P+Y)M + KB");
 
-                movementScript.pitchControlType = mouseControlType;
-                movementScript.yawControlType = mouseControlType;
+                movementScript.pitchControlType = MouseControlType;
+                movementScript.yawControlType = MouseControlType;
 
-                if (stabType == StabilizationType.FAOffNonMouseRotStabilized)
+                if (StabType == StabilizationType.FAOffNonMouseRotStabilized)
                 {
                     movementScript.rollControlType = AxisControlType.DirectDamped;
                 }
@@ -161,17 +161,17 @@ public class ControlsCarrier : MonoBehaviour
             case ControlsType.PitchRollOnMouse:
                 input.SwitchCurrentActionMap("Primary (P+R)M + KB");
 
-                movementScript.pitchControlType = mouseControlType;
-                movementScript.rollControlType = mouseControlType;
+                movementScript.pitchControlType = MouseControlType;
+                movementScript.rollControlType = MouseControlType;
 
-                if (stabType == StabilizationType.FAOffNonMouseRotStabilized)
+                if (StabType == StabilizationType.FAOffNonMouseRotStabilized)
                 {
                     movementScript.yawControlType = AxisControlType.DirectDamped;
                 }
                 break;
             case ControlsType.KerbalKB:
                 input.SwitchCurrentActionMap("Kerbal-like KB");
-                if (stabType == StabilizationType.FAOffNonMouseRotStabilized)
+                if (StabType == StabilizationType.FAOffNonMouseRotStabilized)
                 {
                     movementScript.pitchControlType = AxisControlType.DirectDamped;
                     movementScript.yawControlType = AxisControlType.DirectDamped;
@@ -182,7 +182,7 @@ public class ControlsCarrier : MonoBehaviour
 
                 input.SwitchCurrentActionMap("Primary KB-only");
 
-                if (stabType == StabilizationType.FAOffNonMouseRotStabilized)
+                if (StabType == StabilizationType.FAOffNonMouseRotStabilized)
                 {
                     movementScript.pitchControlType = AxisControlType.DirectDamped;
                     movementScript.yawControlType = AxisControlType.DirectDamped;

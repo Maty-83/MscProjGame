@@ -77,9 +77,9 @@ public class ShipMovementProto : MonoBehaviour
     public bool logRotationVel = false;
 
 
-    private float pitchOverFrames = 0;
-    private float yawOverFrames = 0;
-    private float rollOverFrames = 0;
+    public float pitchOverFrames { get; private set; } = 0;
+    public float yawOverFrames { get; private set; } = 0;
+    public float rollOverFrames { get; private set; } = 0;
 
     private float thrustOverFrames = 0;
     private float verticalOverFrames = 0;
@@ -516,7 +516,7 @@ public class ShipMovementProto : MonoBehaviour
     /// Any undamped axis: If over frames value is zero, slow it (Active handling cancels out spacebrake)
     /// Any damped axis: Ignore.
     /// </summary>
-    private void HandleSpaceBrake()
+    private void HandleSpaceBrake(float pitch, float yaw, float roll, float thrust, float vertical, float lateral)
     {
         if (spaceBrake.ReadValue<float>()<=0)
         {
@@ -529,12 +529,12 @@ public class ShipMovementProto : MonoBehaviour
         var velocityInDirs = Quaternion.Inverse(rb.rotation) * rb.linearVelocity;
         //PITCH
         if (pitchControlType == AxisControlType.Throttle)
-        {
-            pitchOverFrames = 0;
+        {            
+            if(pitch==0) pitchOverFrames = 0;
         }
         if(pitchControlType==AxisControlType.Direct || pitchControlType == AxisControlType.Accumulation)
         {
-            if (pitchOverFrames == 0)
+            if (pitch == 0)
             {
                 pitchOverFrames = GetAccelToTarget(0, localAngularVelocity.z, pitchAccelPerSec * Time.fixedDeltaTime) / (pitchAccelPerSec * Time.fixedDeltaTime);// Using this and division ensures we go to zero
             }
@@ -542,11 +542,11 @@ public class ShipMovementProto : MonoBehaviour
         //YAW
         if (yawControlType == AxisControlType.Throttle)
         {
-            yawOverFrames = 0;
+            if(yaw==0) yawOverFrames = 0;
         }
         if (yawControlType == AxisControlType.Direct || yawControlType == AxisControlType.Accumulation)
         {
-            if (yawOverFrames == 0)
+            if (yaw == 0)
             {
                 yawOverFrames = GetAccelToTarget(0, localAngularVelocity.y, yawAccelPerSec * Time.fixedDeltaTime) / (yawAccelPerSec * Time.fixedDeltaTime);// Using this and division ensures we go to zero
             }
@@ -554,11 +554,11 @@ public class ShipMovementProto : MonoBehaviour
         //ROLL
         if (rollControlType == AxisControlType.Throttle)
         {
-            rollOverFrames = 0;
+            if(roll==0)rollOverFrames = 0;
         }
         if (rollControlType == AxisControlType.Direct || rollControlType == AxisControlType.Accumulation)
         {
-            if (rollOverFrames == 0)
+            if (roll == 0)
             {
                 rollOverFrames = GetAccelToTarget(0, localAngularVelocity.x, rollAccelPerSec * Time.fixedDeltaTime) / (rollAccelPerSec * Time.fixedDeltaTime);// Using this and division ensures we go to zero
             }
@@ -566,11 +566,11 @@ public class ShipMovementProto : MonoBehaviour
         //FORWARD
         if (thrustControlType == AxisControlType.Throttle)
         {
-            thrustOverFrames = 0;
+            if(thrust==0) thrustOverFrames = 0;
         }
         if (thrustControlType == AxisControlType.Direct || thrustControlType == AxisControlType.Accumulation)
         {
-            if (thrustOverFrames == 0)
+            if (thrust == 0)
             {
                 var res = GetAccelToTarget(0, velocityInDirs.x, forwardAccelPerSec * Time.fixedDeltaTime, reverseAccelPerSec*Time.fixedDeltaTime);// Using this and division ensures we go to zero
                 if (res > 0)
@@ -586,11 +586,11 @@ public class ShipMovementProto : MonoBehaviour
         //LATERAL
         if (lateralControlType == AxisControlType.Throttle)
         {
-            lateralOverFrames = 0;
+            if(lateral==0) lateralOverFrames = 0;
         }
         if (lateralControlType == AxisControlType.Direct || lateralControlType == AxisControlType.Accumulation)
         {
-            if (lateralOverFrames == 0)
+            if (lateral == 0)
             {
                 lateralOverFrames = GetAccelToTarget(0, velocityInDirs.z, lateralAccelPerSec * Time.fixedDeltaTime) / (lateralAccelPerSec * Time.fixedDeltaTime);// Using this and division ensures we go to zero
             }
@@ -598,11 +598,11 @@ public class ShipMovementProto : MonoBehaviour
         //VERTICAL
         if (verticalControlType == AxisControlType.Throttle)
         {
-            verticalOverFrames = 0;
+            if(vertical==0) verticalOverFrames = 0;
         }
         if (verticalControlType == AxisControlType.Direct || verticalControlType == AxisControlType.Accumulation)
         {
-            if (verticalOverFrames == 0)
+            if (vertical == 0)
             {
                 verticalOverFrames = GetAccelToTarget(0, velocityInDirs.y, verticalAccelPerSec * Time.fixedDeltaTime) / (verticalAccelPerSec * Time.fixedDeltaTime);// Using this and division ensures we go to zero
             }
@@ -696,7 +696,7 @@ public class ShipMovementProto : MonoBehaviour
         */
         SetLastFrameInputs();
 
-        HandleSpaceBrake();
+        HandleSpaceBrake(pitch, yaw, roll, thrust, vertical, lateral);
 
         ApplyRotationVelChanges();
 

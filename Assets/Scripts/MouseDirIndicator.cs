@@ -7,7 +7,8 @@ public class MouseDirIndicator : MonoBehaviour
     public GameObject OffsetTarget;
     public GameObject RollTarget;
     public GameObject PitchTarget;
-    public Material TransparencyTarget;
+    public Renderer TransparencyTargetRenderer;
+    private Material TransparencyTarget;
     public ShipMovementProto ShipMovementScript;
     public float xOffsetMult = 0.15f;
     public float yOffsetMult = 0.1f;
@@ -16,11 +17,12 @@ public class MouseDirIndicator : MonoBehaviour
     public float MinIntensity = -5;
     public Color EmissionColorBase = new Color(0, 191f / 255f, 0);
     private Vector3 basePos;
-    public Renderer TransparencyTargetRenderer;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         basePos=transform.localPosition;
+        TransparencyTarget=TransparencyTargetRenderer.material;
     }
 
     // Update is called once per frame
@@ -32,20 +34,42 @@ public class MouseDirIndicator : MonoBehaviour
     public void SetDirIndicator()
     {
         //It's meant to be mouse-only, exclude KB-only first. For stability with addon schemes, use if's that say "We don't equal either" so the default is doing nothing.
-        if (ControlsCarrier.Instance().controlsType != ControlsType.PitchYawOnMouse && ControlsCarrier.Instance().controlsType != ControlsType.PitchRollOnMouse) return;
+        if (ControlsCarrier.Instance().ControlsType != ControlsType.PitchYawOnMouse && ControlsCarrier.Instance().ControlsType != ControlsType.PitchRollOnMouse) return;
 
-        float yAxis = ShipMovementScript.LastFrameRotInputPercent.z;
-        float xAxis = 0f;//Varies based on the controls type instance, can be roll or yaw.
+        float xAxis = 0f;
+        float yAxis = 0f;
 
-        if (ControlsCarrier.Instance().controlsType == ControlsType.PitchYawOnMouse)
+        //This is really very good at showing throttles, but sucks for anything else.
+        if (ControlsCarrier.Instance().MouseControlType == AxisControlType.Throttle)
         {
-            xAxis = ShipMovementScript.LastFrameRotInputPercent.y;
-        }
-        if (ControlsCarrier.Instance().controlsType == ControlsType.PitchRollOnMouse)
-        {
-            xAxis = ShipMovementScript.LastFrameRotInputPercent.x;
-        }
+            yAxis = ShipMovementScript.LastFrameRotInputPercent.z;
+            //Varies based on the controls type instance, can be roll or yaw.
 
+            if (ControlsCarrier.Instance().ControlsType == ControlsType.PitchYawOnMouse)
+            {
+                xAxis = ShipMovementScript.LastFrameRotInputPercent.y;
+            }
+            if (ControlsCarrier.Instance().ControlsType == ControlsType.PitchRollOnMouse)
+            {
+                xAxis = ShipMovementScript.LastFrameRotInputPercent.x;
+            }
+        }
+        else
+        {
+            //TODO: We'll need to show the % of accumulated input compared to max accumulation.
+
+            yAxis = ;
+            //Varies based on the controls type instance, can be roll or yaw.
+
+            if (ControlsCarrier.Instance().ControlsType == ControlsType.PitchYawOnMouse)
+            {
+                xAxis =;// ShipMovementScript.LastFrameRotInputPercent.y;
+            }
+            if (ControlsCarrier.Instance().ControlsType == ControlsType.PitchRollOnMouse)
+            {
+                xAxis =; //ShipMovementScript.LastFrameRotInputPercent.x;
+            }
+        }
         SetOffset(xAxis, yAxis);
         SetAngleFromOffsets(xAxis, yAxis);
         SetTransparencyFromOffsets(xAxis, yAxis);
