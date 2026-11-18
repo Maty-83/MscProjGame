@@ -3,7 +3,8 @@ using UnityEngine;
 public class MouseDirIndicator : MonoBehaviour
 {
     public GameObject OffsetTarget;
-    public GameObject RotationTarget;
+    public GameObject RollTarget;
+    public GameObject PitchTarget;
     public Material TransparencyTarget;
     public ShipMovementProto ShipMovementScript;
     public float xOffsetMult = 0.15f;
@@ -52,7 +53,13 @@ public class MouseDirIndicator : MonoBehaviour
     }
     public void SetAngleFromOffsets(float xOffset, float yOffset)
     {
-        //TODO
+        //TODO:
+
+        //Pitch target sets linear interpolated pitch
+        //Angle to the side max is about -110. It's based on offset magnitude  (If mag >1, we clamp)
+        //I think it's X axis?
+
+        //Roll Target only rolls Z axis based on AngleFromOffset function.
     }
     public void SetTransparencyFromOffsets(float xOffset, float yOffset)
     {
