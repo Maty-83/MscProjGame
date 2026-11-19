@@ -408,7 +408,14 @@ Initial notes about diploma thesis:
 		>Simple solution: Offer a text-based solution, add pictures when you get to it to show what the ship does (Could even do camera work in a specific scene).
 			>Benefits of starting with a guide: Allows for text formatting based on current keyboard scheme, meaning it should be easy to implement
 			
-			
+	>Implementing mouse direction indicator.
+		>Big issue with indicating directions: Space (being empty) has more orientation issues, especially with queued movement etc.
+		>Idea: Direction indication using an arrow (Or even a rectangle)
+			>Distance from centre dot (Also added as a static reference) indicates amount
+			>To not clutter the forward vector, strength of emission is reduced close to the centre.
+			>Direction corresponds to mouse axes used.
+				>We also linearly interpolate pitch to show at least a decent profile of the arrow.
+			>Works for both accumulation and throttle type environments. Direct would technically barely work, but not the case.
 	
 	>TODOs for Unity over the whole week:
 			>Logging implementation (Base of a replay system, we can see fun stuff that way)
