@@ -15,6 +15,7 @@ public class MouseDirIndicator : MonoBehaviour
     public float OffsetFracToMaxIntensity=0.3f;
     public float MaxIntensity = 0;
     public float MinIntensity = -5;
+    public float PitchDegAtMaxOffset = 100f;
     public Color EmissionColorBase = new Color(0, 191f / 255f, 0);
     private Vector3 basePos;
 
@@ -83,7 +84,7 @@ public class MouseDirIndicator : MonoBehaviour
         //Pitch target sets linear interpolated pitch
         //Angle to the side max is about -110. It's based on offset magnitude  (If mag >1, we clamp)
         //I think it's X axis?
-        float rot= -110*Mathf.Clamp(Mathf.Sqrt(xOffset * xOffset + yOffset * yOffset),0,1);
+        float rot= -PitchDegAtMaxOffset*Mathf.Clamp(Mathf.Sqrt(xOffset * xOffset + yOffset * yOffset),0,1);
         PitchTarget.transform.localEulerAngles=new Vector3(0,rot,0);
 
         //Roll Target only rolls Z axis based on AngleFromOffset function.
