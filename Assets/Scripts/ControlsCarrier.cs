@@ -1,6 +1,7 @@
 using DG.Tweening.Core.Easing;
 using System;
 using System.ComponentModel;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using TMPro;
 using Unity.VisualScripting;
@@ -39,6 +40,9 @@ public class ControlsCarrier : MonoBehaviour
     public StabilizationType StabType=StabilizationType.FAOff;
     public ControlsType ControlsType = ControlsType.PitchYawOnMouse;
     public AxisControlType MouseControlType = AxisControlType.Direct;
+
+    public InputActionAsset BindingsCollection = AssetDatabase.LoadAssetAtPath<InputActionAsset>("Assets/IA_Base.inputactions)");//Hard-coded so Singleton pattern works out the box.
+
     #region Singleton Pattern no.2
     private static ControlsCarrier instance;
 
@@ -112,6 +116,7 @@ public class ControlsCarrier : MonoBehaviour
 
     public void SetControls(ShipMovementProto movementScript, PlayerInput input)
     {
+        input.actions = this.BindingsCollection;
         switch (StabType)
         {
             case StabilizationType.FAOff:
@@ -190,5 +195,56 @@ public class ControlsCarrier : MonoBehaviour
                 }
                 break;
         }
+    }
+
+    public void GetCurrentControlBinds(AxisType axis, out string positive, out string negative)
+    {
+        var currentMap = GetSelectedActionMap();
+        InputAction controlAxis = null;
+        switch (axis)
+        {
+            case AxisType.TotalVelocity:
+                Debug.Log("This axis isn't meant to be used!");
+                GetCurrentControlBinds(AxisType.Forward, out positive, out negative);
+                return;
+            case AxisType.Forward:
+                controlAxis= currentMap.FindAction("Thrust Forward", true);
+                break;
+            case AxisType.Vertical:
+                controlAxis = currentMap.FindAction("Thrust Vertical", true);
+                break;
+            case AxisType.Lateral:
+                controlAxis = currentMap.FindAction("Thrust Lateral", true);
+                break;
+            case AxisType.Pitch:
+                controlAxis = currentMap.FindAction("Rotation Pitch", true);
+                break;
+            case AxisType.Yaw:
+                controlAxis = currentMap.FindAction("Rotation Yaw", true);
+                break;
+            case AxisType.Roll:
+                controlAxis = currentMap.FindAction("Rotation Roll", true);
+                break;
+        }
+        //This I'm unsure about. But I should be able to find it with Linq
+        var positiveBind = controlAxis.bindings.FirstOrDefault(b => b.name == "Positive");
+        var negativeBind = controlAxis.bindings.FirstOrDefault(b => b.name == "Negative");
+        positive=positiveBind.effectivePath.Split('/')[1];//The string is <Keyboard>/[bind], so split is optimal
+        negative=negativeBind.effectivePath.Split("/")[1];
+    }
+    public InputActionMap GetSelectedActionMap()
+    {
+        switch (ControlsType)
+        {
+            case ControlsType.PitchYawOnMouse:
+                return BindingsCollection.FindActionMap("Primary (P+Y)M + KB", true);
+            case ControlsType.PitchRollOnMouse:
+                return BindingsCollection.FindActionMap("Primary (P+R)M + KB", true);
+            case ControlsType.KeyboardOnly:
+                return BindingsCollection.FindActionMap("Primary KB-only", true);
+            case ControlsType.KerbalKB:
+                return BindingsCollection.FindActionMap("Kerbal-like KB", true);
+        }
+        return null;
     }
 }

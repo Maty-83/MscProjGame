@@ -9,7 +9,7 @@ using UnityEngine.UI;
     FromMidpoint,
     OppositeSideAsZero
 }*/
-public enum GaugeAxis
+public enum AxisType
 {
     Forward,
     Vertical,
@@ -28,7 +28,7 @@ public class SpeedGauge : MonoBehaviour
     public GameObject ThrottlePin;//If we set a throttle to exist, the throttle pin becomes visible and indicates to which level throttle is supposed to go.
     public ShipMovementProto ShipMovementScript;
     /*public GaugeType gaugeType;*/
-    public GaugeAxis gaugeAxis;
+    public AxisType gaugeAxis;
     public TMP_Text SpeedTextUI;
     public TMP_Text PercentInputUI;
     public float minimumGaugeSensitivity = 0.01f;//Minimum percentage input for the gauge to show. Prevents flicker.
@@ -40,19 +40,19 @@ public class SpeedGauge : MonoBehaviour
     {
         switch (gaugeAxis)
         {
-            case GaugeAxis.Forward:
+            case AxisType.Forward:
                 return ShipMovementScript.LastFrameExecutedAcceleration.x;
-            case GaugeAxis.Vertical:
+            case AxisType.Vertical:
                 return ShipMovementScript.LastFrameExecutedAcceleration.y;
-            case GaugeAxis.Lateral:
+            case AxisType.Lateral:
                 return ShipMovementScript.LastFrameExecutedAcceleration.z;
-            case GaugeAxis.Pitch:
+            case AxisType.Pitch:
                 return ShipMovementScript.LastFrameExecutedRotation.z;
-            case GaugeAxis.Yaw:
+            case AxisType.Yaw:
                 return ShipMovementScript.LastFrameExecutedRotation.y;
-            case GaugeAxis.Roll:
+            case AxisType.Roll:
                 return ShipMovementScript.LastFrameExecutedRotation.x;
-            case GaugeAxis.TotalVelocity:
+            case AxisType.TotalVelocity:
                 return ShipMovementScript.LastFrameExecutedAcceleration.x;
             default:
                 Debug.Log("[ERROR]: unknown gauge axis");
@@ -63,45 +63,45 @@ public class SpeedGauge : MonoBehaviour
     {
         switch (gaugeAxis)
         {
-            case GaugeAxis.Forward:
+            case AxisType.Forward:
                 return ShipMovementScript.LastFrameLinInputPercent.x;
-            case GaugeAxis.Vertical:
+            case AxisType.Vertical:
                 return ShipMovementScript.LastFrameLinInputPercent.y;
-            case GaugeAxis.Lateral:
+            case AxisType.Lateral:
                 return ShipMovementScript.LastFrameLinInputPercent.z;
-            case GaugeAxis.Pitch:
+            case AxisType.Pitch:
                 return ShipMovementScript.LastFrameRotInputPercent.z;
-            case GaugeAxis.Yaw:
+            case AxisType.Yaw:
                 return ShipMovementScript.LastFrameRotInputPercent.y;
-            case GaugeAxis.Roll:
+            case AxisType.Roll:
                 return ShipMovementScript.LastFrameRotInputPercent.x;
-            case GaugeAxis.TotalVelocity:
+            case AxisType.TotalVelocity:
                 return ShipMovementScript.LastFrameLinInputPercent.x;
             default:
                 Debug.Log("[ERROR]: unknown gauge axis");
                 return 0;
         }
     }
-    private float GetVelocity(GaugeAxis ga)
+    private float GetVelocity(AxisType ga)
     {
         Rigidbody rb = ShipMovementScript.GetComponent<Rigidbody>();
         Vector3 velocityInDirs = Quaternion.Inverse(rb.rotation) * rb.linearVelocity;
         Vector3 localAngularVelocity = rb.transform.InverseTransformDirection(rb.angularVelocity);
         switch (ga)
         {
-            case GaugeAxis.Forward:
+            case AxisType.Forward:
                 return velocityInDirs.x;
-            case GaugeAxis.Vertical:
+            case AxisType.Vertical:
                 return velocityInDirs.y;
-            case GaugeAxis.Lateral:
+            case AxisType.Lateral:
                 return velocityInDirs.z;
-            case GaugeAxis.Pitch:
+            case AxisType.Pitch:
                 return localAngularVelocity.z;
-            case GaugeAxis.Yaw:
+            case AxisType.Yaw:
                 return localAngularVelocity.y;
-            case GaugeAxis.Roll:
+            case AxisType.Roll:
                 return localAngularVelocity.x;
-            case GaugeAxis.TotalVelocity:
+            case AxisType.TotalVelocity:
                 return velocityInDirs.magnitude;
             default:
                 Debug.Log("[ERROR]: unknown gauge axis");
@@ -114,26 +114,26 @@ public class SpeedGauge : MonoBehaviour
         min = 0;
         switch (gaugeAxis)
         {
-            case GaugeAxis.Forward:
+            case AxisType.Forward:
                 max = ShipMovementScript.maxVel;
                 min = ShipMovementScript.maxReverseVel;
                 break;
-            case GaugeAxis.Vertical:
+            case AxisType.Vertical:
                 max = ShipMovementScript.maxVerticalVel;
                 break;
-            case GaugeAxis.Lateral:
+            case AxisType.Lateral:
                 max = ShipMovementScript.maxLateralVel;
                 break;
-            case GaugeAxis.Pitch:
+            case AxisType.Pitch:
                 max = ShipMovementScript.maxPitchVel;
                 break;
-            case GaugeAxis.Yaw:
+            case AxisType.Yaw:
                 max = ShipMovementScript.maxYawVel;
                 break;
-            case GaugeAxis.Roll:
+            case AxisType.Roll:
                 max = ShipMovementScript.maxRollVel;
                 break;
-            case GaugeAxis.TotalVelocity:
+            case AxisType.TotalVelocity:
                 max = ShipMovementScript.maxVel;
                 break;
             default:
@@ -265,14 +265,14 @@ public class SpeedGauge : MonoBehaviour
         {
             speedFraction = vel / minVel;
         }
-        if (gaugeAxis == GaugeAxis.Pitch || gaugeAxis == GaugeAxis.Yaw || gaugeAxis == GaugeAxis.Roll)
+        if (gaugeAxis == AxisType.Pitch || gaugeAxis == AxisType.Yaw || gaugeAxis == AxisType.Roll)
         {
             vel = (vel / (2 * Mathf.PI)) * 360;//Convert rotational velocity from rads to degs
         }
         //Hacky fix for Total Velocity as gauge, so I don't need to create a whole new type of gauge (For now): We invert it if we are going "backwards" (E:D does the same IIRC)
-        if (gaugeAxis == GaugeAxis.TotalVelocity) 
+        if (gaugeAxis == AxisType.TotalVelocity) 
         {
-            if (GetVelocity(GaugeAxis.Forward) < 0)
+            if (GetVelocity(AxisType.Forward) < 0)
             {
                 speedFraction = -speedFraction;
             }

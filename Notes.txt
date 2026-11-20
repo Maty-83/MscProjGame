@@ -428,9 +428,11 @@ Initial notes about diploma thesis:
 			>Use a text based solution with the ship and axes shown modelled. This is intuitive enough for players to see what will happen (Especially if we include sufficient visual elements)
 			>A "true" tutorial could be useful for a full game, but we'd be essentially stuck updating the control scheme and rewriting parts of the ship movement script. I might do so, but as it stands, the immediately beneficial solution would be a text guide.
 			>Since we use the ControlsCarrier singleton, we can technically load in the control scheme too! Meaning, using that hook (And reading IA_base keys), we should be able to dynamize this.
-			>That also includes pseudo-interactive elements, such as pressing the keys to show what the ship will do. (Partial rotation of model assembly+arrows, indicated by the same color. with keys/mouse.)
+			>As an ambition, we could include pseudo-interactive elements, such as pressing the keys to show what the ship will do. (Partial rotation of model assembly+arrows, indicated by the same color. with keys/mouse.)
 			>Biggest issue with those elements is mouse controls. As a solution, "gating" the response feels the most beneficial. Button on the UI to test, then Esc. to bring back your mouse. Done for all axes.
 			>Final slide should be about what assists the current active ControlsCarrier has: Plus, activation of all the axes as interactive model show.
+		>Negatives of implementation:
+			>Strings defined in code: This could be bypassed by logging the strings outside the game, but as it stands with one language and easier formatting, we will be using code-defined strings since we want adaptive controls. That does reduce our modularity and would need change on a full game, but would also mean more effort and code spent on loading in the strings.
 	
 	
 	>For paper, I ran it through a couple AIs to start with, since they work as search engines. (Similar topics, none quite there):

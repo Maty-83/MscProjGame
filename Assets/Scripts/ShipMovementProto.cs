@@ -164,7 +164,7 @@ public class ShipMovementProto : MonoBehaviour
     {
         if (currentMap != playerInput.currentActionMap)
         {
-            currentMap= playerInput.currentActionMap;
+            currentMap = playerInput.currentActionMap;
             ReloadInputBindings();
         }
 
