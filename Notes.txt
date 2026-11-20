@@ -403,11 +403,6 @@ Initial notes about diploma thesis:
 			>Space Brake
 			>Flight control direction indicator.
 			
-	>Guide design:
-		>Guide decided as current primary offer of "How to fly". Tutorial may come later, but I'd rather throw people into the game without expectatations, to see who learns the fastest.
-		>Simple solution: Offer a text-based solution, add pictures when you get to it to show what the ship does (Could even do camera work in a specific scene).
-			>Benefits of starting with a guide: Allows for text formatting based on current keyboard scheme, meaning it should be easy to implement
-			
 	>Implementing mouse direction indicator.
 		>Big issue with indicating directions: Space (being empty) has more orientation issues, especially with queued movement etc.
 		>Idea: Direction indication using an arrow (Or even a rectangle)
@@ -417,10 +412,27 @@ Initial notes about diploma thesis:
 				>We also linearly interpolate pitch to show at least a decent profile of the arrow.
 			>Works for both accumulation and throttle type environments. Direct would technically barely work, but not the case.
 	
-	>TODOs for Unity over the whole week:
-			>Logging implementation (Base of a replay system, we can see fun stuff that way)
-			>Design for guide or a tutorial, maybe implement before logging?
 		
+	>SC notes
+		>Weird controls coming from E:D
+		>A/D lateral, Space & Ctrl for up & down
+		>Q/E roll
+		>Everything runs base on Direct damped (INCLUDING THROTTLE IN THE BASE MODE), mouse is throttle type for pitch & yaw
+		>Central dot, like what I'm doing.
+		
+	>Guide design:
+		>Guide decided as current primary offer of "How to fly". Tutorial may come later, but I'd rather throw people into the game without expectatations, to see who learns the fastest.
+		>Simple solution: Offer a text-based solution, add pictures when you get to it to show what the ship does (Could even do camera work in a specific scene).
+			>Benefits of starting with a guide: Allows for text formatting based on current keyboard scheme, meaning it should be easy to implement
+		>Decided on solution:
+			>Use a text based solution with the ship and axes shown modelled. This is intuitive enough for players to see what will happen (Especially if we include sufficient visual elements)
+			>A "true" tutorial could be useful for a full game, but we'd be essentially stuck updating the control scheme and rewriting parts of the ship movement script. I might do so, but as it stands, the immediately beneficial solution would be a text guide.
+			>Since we use the ControlsCarrier singleton, we can technically load in the control scheme too! Meaning, using that hook (And reading IA_base keys), we should be able to dynamize this.
+			>That also includes pseudo-interactive elements, such as pressing the keys to show what the ship will do. (Partial rotation of model assembly+arrows, indicated by the same color. with keys/mouse.)
+			>Biggest issue with those elements is mouse controls. As a solution, "gating" the response feels the most beneficial. Button on the UI to test, then Esc. to bring back your mouse. Done for all axes.
+			>Final slide should be about what assists the current active ControlsCarrier has: Plus, activation of all the axes as interactive model show.
+	
+	
 	>For paper, I ran it through a couple AIs to start with, since they work as search engines. (Similar topics, none quite there):
 	
 		>VERY CLOSE match, but not quite: https://www.theseus.fi/server/api/core/bitstreams/c429cd23-ce2f-41a3-9fb7-1780ceb45561/content
