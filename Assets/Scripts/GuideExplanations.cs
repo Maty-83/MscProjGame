@@ -50,7 +50,7 @@ public class GuideExplanations : MonoBehaviour
 
     public string GetRollBindsExplanation()
     {
-        if (ControlsCarrier.Instance().ControlsType==ControlsType.PitchRollOnMouse)
+        if (ControlsCarrier.Instance().controlsType==ControlsType.PitchRollOnMouse)
         {
             return $"Roll is rotating your ship arounds its forward axis.\nLeft roll pushes your left side down, right roll the right side.\nIt is bound to your mouse movement sideways.";
 
@@ -61,7 +61,7 @@ public class GuideExplanations : MonoBehaviour
 
     public string GetYawBindsExplanation()
     {
-        if (ControlsCarrier.Instance().ControlsType == ControlsType.PitchYawOnMouse)
+        if (ControlsCarrier.Instance().controlsType == ControlsType.PitchYawOnMouse)
         {
             return $"Yaw is rotating your ship either left or right, like steering a car.\nIt is noticeably slower than either pitch or roll.\nIt is bound to your sideways mouse movement.";
         }
@@ -71,12 +71,15 @@ public class GuideExplanations : MonoBehaviour
 
     public string GetPitchBindsExplanation()
     {
-        if (ControlsCarrier.Instance().ControlsType == ControlsType.PitchYawOnMouse || ControlsCarrier.Instance().ControlsType == ControlsType.PitchRollOnMouse) 
+        if (ControlsCarrier.Instance().controlsType == ControlsType.PitchYawOnMouse || ControlsCarrier.Instance().controlsType == ControlsType.PitchRollOnMouse) 
         { 
             return $"Pitch is the motion of your ship's nose going up or down. It's generally faster than yawing.\n\nIt is bound to your mouse moving up and down.";
         }
         ControlsCarrier.Instance().GetCurrentControlBinds(AxisType.Pitch,out string upBind,out string downBind);
         return $"Pitch is the motion of your ship's nose going up or down. It's generally faster than yawing.\n\nCurrent bindings: Up: {upBind.ToUpper()} Down: {downBind.ToUpper()}.";
     }
+
+
+
 
 }

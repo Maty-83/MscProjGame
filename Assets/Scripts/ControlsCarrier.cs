@@ -37,9 +37,9 @@ public enum ControlsType
 public class ControlsCarrier : MonoBehaviour
 {
    
-    public StabilizationType StabType=StabilizationType.FAOnThrottleForwards;
-    public ControlsType ControlsType = ControlsType.PitchYawOnMouse;
-    public AxisControlType MouseControlType = AxisControlType.Throttle;
+    public StabilizationType stabType=StabilizationType.FAOnThrottleForwards;
+    public ControlsType controlsType = ControlsType.PitchYawOnMouse;
+    public AxisControlType mouseControlType = AxisControlType.Throttle;
 
     public InputActionAsset BindingsCollection;
     #region Singleton Pattern no.2
@@ -74,34 +74,34 @@ public class ControlsCarrier : MonoBehaviour
     #region Button Utilities
     public void CycleStab()
     {
-        StabType =(StabilizationType)(((int)StabType + 1) % Enum.GetNames(typeof(StabilizationType)).Length);//A smart piece of code that automatically cycles through enum modulo count.      
+        stabType =(StabilizationType)(((int)stabType + 1) % Enum.GetNames(typeof(StabilizationType)).Length);//A smart piece of code that automatically cycles through enum modulo count.      
     }
     public string GetStabTypeDesc()
     {
-        var fieldInfo=StabType.GetType().GetField(StabType.ToString());
+        var fieldInfo=stabType.GetType().GetField(stabType.ToString());
         var attributes= (DescriptionAttribute[])fieldInfo.GetCustomAttributes(typeof(DescriptionAttribute), false);
-        return attributes.Length > 0 ? attributes[0].Description : StabType.ToString();
+        return attributes.Length > 0 ? attributes[0].Description : stabType.ToString();
     }
     
     public void CycleControls()
     {
-        ControlsType =(ControlsType)(((int)ControlsType + 1)% Enum.GetNames (typeof(ControlsType)).Length);
+        controlsType =(ControlsType)(((int)controlsType + 1)% Enum.GetNames (typeof(ControlsType)).Length);
     }
     public string GetControlsTypeDesc()
     {
-        var fieldInfo = ControlsType.GetType().GetField(ControlsType.ToString());
+        var fieldInfo = controlsType.GetType().GetField(controlsType.ToString());
         var attributes = (DescriptionAttribute[])fieldInfo.GetCustomAttributes(typeof(DescriptionAttribute), false);
-        return attributes.Length > 0 ? attributes[0].Description : ControlsType.ToString();
+        return attributes.Length > 0 ? attributes[0].Description : controlsType.ToString();
     }
     public void CycleMouseControl()
     {
-        MouseControlType= (AxisControlType)(((int)MouseControlType + 1) % Enum.GetNames(typeof(AxisControlType)).Length);
+        mouseControlType= (AxisControlType)(((int)mouseControlType + 1) % Enum.GetNames(typeof(AxisControlType)).Length);
     }
     public string GetMouseControlTypeDesc()
     {
-        var fieldInfo = MouseControlType.GetType().GetField(MouseControlType.ToString());
+        var fieldInfo = mouseControlType.GetType().GetField(mouseControlType.ToString());
         var attributes = (DescriptionAttribute[])fieldInfo.GetCustomAttributes(typeof(DescriptionAttribute), false);
-        return attributes.Length > 0 ? attributes[0].Description : MouseControlType.ToString();
+        return attributes.Length > 0 ? attributes[0].Description : mouseControlType.ToString();
     }
     #endregion
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -117,104 +117,91 @@ public class ControlsCarrier : MonoBehaviour
     }
 
     public AxisControlType GetAxisControlType(AxisType axis)
-    {        
-        switch (axis)
+    {
+        //Everything starts as Direct.
+        AxisControlType controlType = AxisControlType.Direct;
+        //If we're FA-On, we move to DirectDamped.
+        if (stabType == StabilizationType.FAOn || stabType == StabilizationType.FAOnThrottleForwards)
         {
-            case AxisType.Forward:
-                break;
-            case AxisType.Vertical:
-                break;
-            case AxisType.Lateral:
-                break;
-            case AxisType.Pitch:
-                break;
-            case AxisType.Yaw:
-                break;
-            case AxisType.Roll:
-                break;
+            controlType = AxisControlType.DirectDamped;
         }
-        throw new NotImplementedException();
+        //If it's FA-On with forwards throttle, make throttle a throttle.
+        if(stabType==StabilizationType.FAOnThrottleForwards && axis == AxisType.Forward)
+        {
+            controlType = AxisControlType.Throttle;
+        }
+        //If we want to stabilize all keyboard rotations...
+        if (stabType == StabilizationType.FAOffNonMouseRotStabilized)
+        {
+            //Stabilize roll if we have pitch and yaw on mouse.
+            if (controlsType==ControlsType.PitchYawOnMouse)
+            {
+                if (axis == AxisType.Roll)
+                {
+                    controlType = AxisControlType.DirectDamped;
+                }
+            }
+            //Stabilize yaw if we have pitch and roll on mouse.
+            if (controlsType==ControlsType.PitchRollOnMouse)
+            {
+                if(axis == AxisType.Yaw)
+                {
+                    controlType=AxisControlType.DirectDamped;
+                }
+            }
+            //If we're full-keyboard, stabilize all.
+            if (controlsType == ControlsType.KeyboardOnly || controlsType == ControlsType.KerbalKB)
+            {
+                if (axis == AxisType.Pitch || axis == AxisType.Yaw || axis == AxisType.Roll)
+                {
+                    controlType = AxisControlType.DirectDamped;
+                }
+
+            }
+        }
+        //If we're pitch+roll on mouse, use the mouse control type for pitch and roll.
+        if (controlsType == ControlsType.PitchRollOnMouse)
+        {
+            if(axis == AxisType.Pitch || axis == AxisType.Roll)
+            {
+                controlType = mouseControlType;
+            }
+        }
+        //if we're pitch+yaw on mouse, use the mouse control type for pitch and yaw.
+        if(controlsType == ControlsType.PitchYawOnMouse)
+        {
+            if(axis== AxisType.Pitch || axis == AxisType.Yaw)
+            {
+                controlType = mouseControlType;
+            }
+        }
+        return controlType;
     }
 
     public void SetControls(ShipMovementProto movementScript, PlayerInput input)
     {
         input.actions = this.BindingsCollection;
-        switch (StabType)
-        {
-            case StabilizationType.FAOff:
-            case StabilizationType.FAOffNonMouseRotStabilized:
-                //Both of these use the same setup, the non-mouse rotations are handled in controlsType switch.
+        
+        movementScript.thrustControlType = GetAxisControlType(AxisType.Forward);
+        movementScript.lateralControlType = GetAxisControlType(AxisType.Lateral);
+        movementScript.verticalControlType = GetAxisControlType (AxisType.Vertical);
+        movementScript.pitchControlType = GetAxisControlType(AxisType.Pitch);
+        movementScript.yawControlType = GetAxisControlType(AxisType.Yaw);
+        movementScript.rollControlType = GetAxisControlType(AxisType.Roll);
 
-                //FAOff for all keyboard axes is direct input, undamped.
-                movementScript.thrustControlType = AxisControlType.Direct;
-                movementScript.lateralControlType=AxisControlType.Direct;
-                movementScript.verticalControlType=AxisControlType.Direct;
-                movementScript.pitchControlType = AxisControlType.Direct;
-                movementScript.yawControlType = AxisControlType.Direct;
-                movementScript.rollControlType = AxisControlType.Direct;
-                break;
-            case StabilizationType.FAOn:
-                movementScript.thrustControlType = AxisControlType.DirectDamped;
-                movementScript.lateralControlType = AxisControlType.DirectDamped;
-                movementScript.verticalControlType = AxisControlType.DirectDamped;
-                movementScript.pitchControlType = AxisControlType.DirectDamped;
-                movementScript.yawControlType = AxisControlType.DirectDamped;
-                movementScript.rollControlType = AxisControlType.DirectDamped;
-                break;
-            case StabilizationType.FAOnThrottleForwards:
-                //Same as FA-On, but forwards is a throttle.
-                movementScript.thrustControlType = AxisControlType.Throttle;
-                movementScript.lateralControlType = AxisControlType.DirectDamped;
-                movementScript.verticalControlType = AxisControlType.DirectDamped;
-                movementScript.pitchControlType = AxisControlType.DirectDamped;
-                movementScript.yawControlType = AxisControlType.DirectDamped;
-                movementScript.rollControlType = AxisControlType.DirectDamped;
-                break;            
-        }
-
-        switch (ControlsType)
+        switch (controlsType)
         {
             case ControlsType.PitchYawOnMouse:
                 input.SwitchCurrentActionMap("Primary (P+Y)M + KB");
-
-                movementScript.pitchControlType = MouseControlType;
-                movementScript.yawControlType = MouseControlType;
-
-                if (StabType == StabilizationType.FAOffNonMouseRotStabilized)
-                {
-                    movementScript.rollControlType = AxisControlType.DirectDamped;
-                }
                 break;
             case ControlsType.PitchRollOnMouse:
                 input.SwitchCurrentActionMap("Primary (P+R)M + KB");
-
-                movementScript.pitchControlType = MouseControlType;
-                movementScript.rollControlType = MouseControlType;
-
-                if (StabType == StabilizationType.FAOffNonMouseRotStabilized)
-                {
-                    movementScript.yawControlType = AxisControlType.DirectDamped;
-                }
                 break;
             case ControlsType.KerbalKB:
                 input.SwitchCurrentActionMap("Kerbal-like KB");
-                if (StabType == StabilizationType.FAOffNonMouseRotStabilized)
-                {
-                    movementScript.pitchControlType = AxisControlType.DirectDamped;
-                    movementScript.yawControlType = AxisControlType.DirectDamped;
-                    movementScript.rollControlType = AxisControlType.DirectDamped;
-                }
                 break;
             case ControlsType.KeyboardOnly:
-
                 input.SwitchCurrentActionMap("Primary KB-only");
-
-                if (StabType == StabilizationType.FAOffNonMouseRotStabilized)
-                {
-                    movementScript.pitchControlType = AxisControlType.DirectDamped;
-                    movementScript.yawControlType = AxisControlType.DirectDamped;
-                    movementScript.rollControlType = AxisControlType.DirectDamped;
-                }
                 break;
         }
     }
@@ -254,9 +241,9 @@ public class ControlsCarrier : MonoBehaviour
     {
         if (BindingsCollection == null)
         {
-            BindingsCollection = AssetDatabase.LoadAssetAtPath<InputActionAsset>("Assets/IA_Base.inputactions");//We default to our inputactionasset if it doesn't exist.
+            BindingsCollection = AssetDatabase.LoadAssetAtPath<InputActionAsset>("Assets/IA_Base.inputactions");//We default to our inputactionasset if BindingsCollection doesn't exist.
         }
-        switch (ControlsType)
+        switch (controlsType)
         {
             case ControlsType.PitchYawOnMouse:
                 return BindingsCollection.FindActionMap("Primary (P+Y)M + KB", true);

@@ -35,22 +35,22 @@ public class MouseDirIndicator : MonoBehaviour
     public void SetDirIndicator()
     {
         //It's meant to be mouse-only, exclude KB-only first. For stability with addon schemes, use if's that say "We don't equal either" so the default is doing nothing.
-        if (ControlsCarrier.Instance().ControlsType != ControlsType.PitchYawOnMouse && ControlsCarrier.Instance().ControlsType != ControlsType.PitchRollOnMouse) return;
+        if (ControlsCarrier.Instance().controlsType != ControlsType.PitchYawOnMouse && ControlsCarrier.Instance().controlsType != ControlsType.PitchRollOnMouse) return;
 
         float xAxis = 0f;
         float yAxis = 0f;
 
         //This is really very good at showing throttles, but sucks for anything else.
-        if (ControlsCarrier.Instance().MouseControlType == AxisControlType.Throttle)
+        if (ControlsCarrier.Instance().mouseControlType == AxisControlType.Throttle)
         {
             yAxis = ShipMovementScript.LastFrameRotInputPercent.z;
             //Varies based on the controls type instance, can be roll or yaw.
 
-            if (ControlsCarrier.Instance().ControlsType == ControlsType.PitchYawOnMouse)
+            if (ControlsCarrier.Instance().controlsType == ControlsType.PitchYawOnMouse)
             {
                 xAxis = ShipMovementScript.LastFrameRotInputPercent.y;
             }
-            if (ControlsCarrier.Instance().ControlsType == ControlsType.PitchRollOnMouse)
+            if (ControlsCarrier.Instance().controlsType == ControlsType.PitchRollOnMouse)
             {
                 xAxis = ShipMovementScript.LastFrameRotInputPercent.x;
             }
@@ -62,13 +62,13 @@ public class MouseDirIndicator : MonoBehaviour
             yAxis = ShipMovementScript.pitchOverFrames / ShipMovementScript.maxAccumulation;
 
             //Varies based on the controls type instance, can be roll or yaw.
-            if (ControlsCarrier.Instance().ControlsType == ControlsType.PitchYawOnMouse)
+            if (ControlsCarrier.Instance().controlsType == ControlsType.PitchYawOnMouse)
             {
                 xAxis =ShipMovementScript.yawOverFrames / ShipMovementScript.maxAccumulation;
             }
-            if (ControlsCarrier.Instance().ControlsType == ControlsType.PitchRollOnMouse)
+            if (ControlsCarrier.Instance().controlsType == ControlsType.PitchRollOnMouse)
             {
-                xAxis =ShipMovementScript.rollOverFrames / ShipMovementScript.maxAccumulation;
+                xAxis =-ShipMovementScript.rollOverFrames / ShipMovementScript.maxAccumulation; //Roll is flipped, needs this.
             }
         }
         SetOffset(xAxis, yAxis);
