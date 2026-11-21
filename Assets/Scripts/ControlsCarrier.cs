@@ -41,8 +41,7 @@ public class ControlsCarrier : MonoBehaviour
     public ControlsType ControlsType = ControlsType.PitchYawOnMouse;
     public AxisControlType MouseControlType = AxisControlType.Direct;
 
-    public InputActionAsset BindingsCollection = AssetDatabase.LoadAssetAtPath<InputActionAsset>("Assets/IA_Base.inputactions)");//Hard-coded so Singleton pattern works out the box.
-
+    public InputActionAsset BindingsCollection;
     #region Singleton Pattern no.2
     private static ControlsCarrier instance;
 
@@ -51,6 +50,7 @@ public class ControlsCarrier : MonoBehaviour
         if (instance == null)
         {
             instance = this;
+            BindingsCollection = AssetDatabase.LoadAssetAtPath<InputActionAsset>("Assets/IA_Base.inputactions)");//Hard-coded so Singleton pattern works out the box.
             DontDestroyOnLoad(gameObject);
         }
         else
