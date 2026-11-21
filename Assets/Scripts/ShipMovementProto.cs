@@ -15,15 +15,15 @@ using UnityEngine.SceneManagement;
 /// </summary>
 public enum AxisControlType
 {
-    [Description("Movement-based Unstabilized")]
+    [Description("Direct")]
     Direct,
-    [Description("Movement-based Stabilized")]
+    [Description("Direct Damped")]
     DirectDamped,
-    [Description("Offset-Based acceleration")]
+    [Description("Accumulation")]
     Accumulation,
-    [Description("Offset-Based acceleration, Damped")]
+    [Description("Accumulation Damped")]
     AccumulationDamped,
-    [Description("Offset as rotation velocity")]
+    [Description("Throttle")]
     Throttle
 
 }

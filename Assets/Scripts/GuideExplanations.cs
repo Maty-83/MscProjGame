@@ -79,7 +79,4 @@ public class GuideExplanations : MonoBehaviour
         return $"Pitch is the motion of your ship's nose going up or down. It's generally faster than yawing.\n\nCurrent bindings: Up: {upBind.ToUpper()} Down: {downBind.ToUpper()}.";
     }
 
-
-
-
 }

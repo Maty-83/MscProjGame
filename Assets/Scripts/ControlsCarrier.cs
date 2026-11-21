@@ -103,6 +103,14 @@ public class ControlsCarrier : MonoBehaviour
         var attributes = (DescriptionAttribute[])fieldInfo.GetCustomAttributes(typeof(DescriptionAttribute), false);
         return attributes.Length > 0 ? attributes[0].Description : mouseControlType.ToString();
     }
+    public string GetControlTypeDesc(AxisType axis)
+    {
+        var type = GetAxisControlType(axis);
+        var fieldInfo = type.GetType().GetField(type.ToString());
+        var attributes = (DescriptionAttribute[])fieldInfo.GetCustomAttributes(typeof(DescriptionAttribute), false);
+        return attributes.Length > 0 ? attributes[0].Description : type.ToString();
+    }
+
     #endregion
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
