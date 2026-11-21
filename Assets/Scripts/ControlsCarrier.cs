@@ -37,7 +37,7 @@ public enum ControlsType
 public class ControlsCarrier : MonoBehaviour
 {
    
-    public StabilizationType StabType=StabilizationType.FAOn;
+    public StabilizationType StabType=StabilizationType.FAOnThrottleForwards;
     public ControlsType ControlsType = ControlsType.PitchYawOnMouse;
     public AxisControlType MouseControlType = AxisControlType.Throttle;
 
@@ -114,6 +114,26 @@ public class ControlsCarrier : MonoBehaviour
     void Update()
     {
         
+    }
+
+    public AxisControlType GetAxisControlType(AxisType axis)
+    {        
+        switch (axis)
+        {
+            case AxisType.Forward:
+                break;
+            case AxisType.Vertical:
+                break;
+            case AxisType.Lateral:
+                break;
+            case AxisType.Pitch:
+                break;
+            case AxisType.Yaw:
+                break;
+            case AxisType.Roll:
+                break;
+        }
+        throw new NotImplementedException();
     }
 
     public void SetControls(ShipMovementProto movementScript, PlayerInput input)
@@ -205,10 +225,6 @@ public class ControlsCarrier : MonoBehaviour
         InputAction controlAxis = null;
         switch (axis)
         {
-            case AxisType.TotalVelocity:
-                Debug.Log("This axis isn't meant to be used!");
-                GetCurrentControlBinds(AxisType.Forward, out positive, out negative);
-                return;
             case AxisType.Forward:
                 controlAxis= currentMap.FindAction("Thrust Forward", true);
                 break;

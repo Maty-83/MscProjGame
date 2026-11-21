@@ -653,7 +653,7 @@ public class ShipMovementProto : MonoBehaviour
         //Throttle Control uses a completely different mechanism than everything else.
         if (pitchControlType == AxisControlType.Throttle)
         {
-            pitchThisFrame = pitchOverFrames / accumulationToFullThrottle;
+            pitchThisFrame = Mathf.Clamp(pitchOverFrames / accumulationToFullThrottle,-1,1);
         }
 
         float yawThisFrame = Mathf.Clamp(yawOverFrames, -1, 1);
@@ -661,7 +661,7 @@ public class ShipMovementProto : MonoBehaviour
         //Throttle Control uses a completely different mechanism than everything else.
         if (yawControlType == AxisControlType.Throttle)
         {
-            yawThisFrame = yawOverFrames / accumulationToFullThrottle;
+            yawThisFrame = Mathf.Clamp(yawOverFrames / accumulationToFullThrottle, -1, 1);
         }
 
         float rollThisFrame = Mathf.Clamp(rollOverFrames, -1, 1);
@@ -669,7 +669,7 @@ public class ShipMovementProto : MonoBehaviour
         //Throttle Control uses a completely different mechanism than everything else.
         if (rollControlType == AxisControlType.Throttle)
         {
-            rollThisFrame = rollOverFrames / accumulationToFullThrottle;
+            rollThisFrame = Mathf.Clamp(rollOverFrames / accumulationToFullThrottle, -1, 1);
         }
 
         SetLastFrameRotInputs(pitchThisFrame, yawThisFrame, rollThisFrame);

@@ -4548,10 +4548,11 @@ MonoBehaviour:
   - {fileID: 7982547101452669571}
   ThrottlePin: {fileID: 3563868122671013123}
   ShipMovementScript: {fileID: 0}
-  gaugeAxis: 6
+  gaugeAxis: 0
   SpeedTextUI: {fileID: 5115854439740142021}
   PercentInputUI: {fileID: 9057689629131094342}
   minimumGaugeSensitivity: 0.01
+  showTotalVelocity: 1
   LocalThrottlePinRotMaxEuler: {x: 0, y: 0, z: 0}
 --- !u!1 &8102562122109795034
 GameObject:

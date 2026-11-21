@@ -57,18 +57,18 @@ public class MouseDirIndicator : MonoBehaviour
         }
         else
         {
-            //TODO: We'll need to show the % of accumulated input compared to max accumulation.
+            //We'll need to show the % of accumulated input compared to max accumulation. Could be AccumulationToFullThrottle too, but this is less confusing IMO.
 
             yAxis = ShipMovementScript.pitchOverFrames / ShipMovementScript.maxAccumulation;
-            //Varies based on the controls type instance, can be roll or yaw.
 
+            //Varies based on the controls type instance, can be roll or yaw.
             if (ControlsCarrier.Instance().ControlsType == ControlsType.PitchYawOnMouse)
             {
-                xAxis =ShipMovementScript.yawOverFrames / ShipMovementScript.maxAccumulation;// ShipMovementScript.LastFrameRotInputPercent.y;
+                xAxis =ShipMovementScript.yawOverFrames / ShipMovementScript.maxAccumulation;
             }
             if (ControlsCarrier.Instance().ControlsType == ControlsType.PitchRollOnMouse)
             {
-                xAxis =ShipMovementScript.rollOverFrames / ShipMovementScript.maxAccumulation; //ShipMovementScript.LastFrameRotInputPercent.x;
+                xAxis =ShipMovementScript.rollOverFrames / ShipMovementScript.maxAccumulation;
             }
         }
         SetOffset(xAxis, yAxis);
