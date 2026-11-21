@@ -1083,6 +1083,7 @@ GameObject:
   - component: {fileID: 412214876}
   - component: {fileID: 412214878}
   - component: {fileID: 412214877}
+  - component: {fileID: 412214879}
   m_Layer: 5
   m_Name: Text_Controls_Title
   m_TagString: Untagged
@@ -1216,6 +1217,24 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 412214875}
   m_CullTransparentMesh: 1
+--- !u!114 &412214879
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 412214875}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 73239f16e576677429e5bba235979749, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GuideExplanations
+  throttleText: {fileID: 399498158}
+  lateralText: {fileID: 1841191713}
+  verticalText: {fileID: 713724547}
+  pitchText: {fileID: 783769587}
+  yawText: {fileID: 1882518386}
+  rollText: {fileID: 1884756282}
 --- !u!1 &428195105
 GameObject:
   m_ObjectHideFlags: 0
@@ -2268,7 +2287,7 @@ GameObject:
   - component: {fileID: 926030355}
   - component: {fileID: 926030354}
   m_Layer: 5
-  m_Name: Button_Flighttest
+  m_Name: Button_Mainnmenu
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

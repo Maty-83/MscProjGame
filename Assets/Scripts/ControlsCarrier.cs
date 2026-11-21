@@ -37,9 +37,9 @@ public enum ControlsType
 public class ControlsCarrier : MonoBehaviour
 {
    
-    public StabilizationType StabType=StabilizationType.FAOff;
+    public StabilizationType StabType=StabilizationType.FAOn;
     public ControlsType ControlsType = ControlsType.PitchYawOnMouse;
-    public AxisControlType MouseControlType = AxisControlType.Direct;
+    public AxisControlType MouseControlType = AxisControlType.Throttle;
 
     public InputActionAsset BindingsCollection;
     #region Singleton Pattern no.2
@@ -50,7 +50,9 @@ public class ControlsCarrier : MonoBehaviour
         if (instance == null)
         {
             instance = this;
-            BindingsCollection = AssetDatabase.LoadAssetAtPath<InputActionAsset>("Assets/IA_Base.inputactions)");//Hard-coded so Singleton pattern works out the box.
+            if(BindingsCollection == null){
+                BindingsCollection = AssetDatabase.LoadAssetAtPath<InputActionAsset>("Assets/IA_Base.inputactions");//Hard-coded so Singleton pattern works out the box.
+            }
             DontDestroyOnLoad(gameObject);
         }
         else
@@ -227,13 +229,17 @@ public class ControlsCarrier : MonoBehaviour
                 break;
         }
         //This I'm unsure about. But I should be able to find it with Linq
-        var positiveBind = controlAxis.bindings.FirstOrDefault(b => b.name == "Positive");
-        var negativeBind = controlAxis.bindings.FirstOrDefault(b => b.name == "Negative");
+        var positiveBind = controlAxis.bindings.FirstOrDefault(b => b.name == "positive");
+        var negativeBind = controlAxis.bindings.FirstOrDefault(b => b.name == "negative");
         positive=positiveBind.effectivePath.Split('/')[1];//The string is <Keyboard>/[bind], so split is optimal
         negative=negativeBind.effectivePath.Split("/")[1];
     }
     public InputActionMap GetSelectedActionMap()
     {
+        if (BindingsCollection == null)
+        {
+            BindingsCollection = AssetDatabase.LoadAssetAtPath<InputActionAsset>("Assets/IA_Base.inputactions");//We default to our inputactionasset if it doesn't exist.
+        }
         switch (ControlsType)
         {
             case ControlsType.PitchYawOnMouse:
