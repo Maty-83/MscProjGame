@@ -71,11 +71,15 @@ public class ControlsCarrier : MonoBehaviour
     }
     #endregion
     
-    #region Button Utilities
+    #region Utility Functions
     public void CycleStab()
     {
         stabType =(StabilizationType)(((int)stabType + 1) % Enum.GetNames(typeof(StabilizationType)).Length);//A smart piece of code that automatically cycles through enum modulo count.      
     }
+    /// <summary>
+    /// Returns the description of the stabilization type set in the ControlsCarrier instance, excluding mouse controls.
+    /// </summary>
+    /// <returns>String describing the stabilization type</returns>
     public string GetStabTypeDesc()
     {
         var fieldInfo=stabType.GetType().GetField(stabType.ToString());
@@ -87,6 +91,10 @@ public class ControlsCarrier : MonoBehaviour
     {
         controlsType =(ControlsType)(((int)controlsType + 1)% Enum.GetNames (typeof(ControlsType)).Length);
     }
+    /// <summary>
+    /// Gets the string-based description of the controlsType of this ControlsCarrier instance
+    /// </summary>
+    /// <returns>String describing the controls type</returns>
     public string GetControlsTypeDesc()
     {
         var fieldInfo = controlsType.GetType().GetField(controlsType.ToString());
@@ -97,12 +105,21 @@ public class ControlsCarrier : MonoBehaviour
     {
         mouseControlType= (AxisControlType)(((int)mouseControlType + 1) % Enum.GetNames(typeof(AxisControlType)).Length);
     }
+    /// <summary>
+    /// Returns the shared axis control type mouse controls share for this instance of ControlsCarrier 
+    /// </summary>
+    /// <returns>String description of the mouseControlType.</returns>
     public string GetMouseControlTypeDesc()
     {
         var fieldInfo = mouseControlType.GetType().GetField(mouseControlType.ToString());
         var attributes = (DescriptionAttribute[])fieldInfo.GetCustomAttributes(typeof(DescriptionAttribute), false);
         return attributes.Length > 0 ? attributes[0].Description : mouseControlType.ToString();
     }
+    /// <summary>
+    /// Gets string-based description of the axis control type stored in this ControlsCarrier instance for a given axis
+    /// </summary>
+    /// <param name="axis">Axis whose control type description we want</param>
+    /// <returns>String description of control type.</returns>
     public string GetControlTypeDesc(AxisType axis)
     {
         var type = GetAxisControlType(axis);
@@ -124,6 +141,11 @@ public class ControlsCarrier : MonoBehaviour
         
     }
 
+    /// <summary>
+    /// Get the axis control type for a specific axis for this instance of ControlsCarrier
+    /// </summary>
+    /// <param name="axis">Enum of axis whose control type we want</param>
+    /// <returns>AxisControlType enum which is assigned to the axis currently.</returns>
     public AxisControlType GetAxisControlType(AxisType axis)
     {
         //Everything starts as Direct.
@@ -185,7 +207,11 @@ public class ControlsCarrier : MonoBehaviour
         }
         return controlType;
     }
-
+    /// <summary>
+    /// Sets controls to a ShipMovementProto script and PlayerInput based on current instance saved parameters
+    /// </summary>
+    /// <param name="movementScript">ShipMovementProto instance</param>
+    /// <param name="input">PlayerInput linked to player controls of the movement script</param>
     public void SetControls(ShipMovementProto movementScript, PlayerInput input)
     {
         input.actions = this.BindingsCollection;
