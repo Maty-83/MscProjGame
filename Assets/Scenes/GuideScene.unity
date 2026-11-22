@@ -763,12 +763,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Actual text about controls (TODO)
-
-    Second Line
-
-    Control Binds
-    (Third line)'
+  m_text: '<color=orange>The throttle is how you accelerate forwards and backwards
+    (Where you''re pointing).\n\nCurrent bindings: <i>Forward:</i></color> {forwardBind}<color=orange>
+    Reverse:</color> {reverseBind} <color=orange>Control Type:</color> {controlType}'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1206,7 +1203,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: BACK TO MAIN MENU
+  m_text: <color=orange>BACK TO MAIN MENU</color>
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1375,12 +1372,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Actual text about controls (TODO)
-
-    Second Line
-
-    Control Binds
-    (Third line)'
+  m_text: '<color=orange>Vertical movement is going up and down.\n\nCurrent bindings:
+    Up:</color> {upBind}<color=orange> Down:</color> {downBind} <color=orange>Control
+    Type:</color> {controlType}'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1596,12 +1590,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Actual text about controls (TODO)
-
-    Second Line
-
-    Control Binds
-    (Third line)'
+  m_text: '<color=orange>Pitch is the motion of your ship''s nose going up or down.
+    It''s generally faster than yawing.\n\nCurrent bindings: Up:</color> {upBind}<color=orange>
+    Down:</color> {downBind} <color=orange>Control Type:</color> {controlType}'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1892,11 +1883,11 @@ MonoBehaviour:
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
-    m_NormalColor: {r: 0.15686275, g: 0.15686275, b: 0.15686275, a: 0.5019608}
-    m_HighlightedColor: {r: 0.15686275, g: 0.15686275, b: 0.15686275, a: 0.5019608}
+    m_NormalColor: {r: 0.11764706, g: 0.11764706, b: 0.11764706, a: 0.5019608}
+    m_HighlightedColor: {r: 0.11764706, g: 0.11764706, b: 0.11764706, a: 0.5019608}
     m_PressedColor: {r: 0.39215687, g: 0.39215687, b: 0.39215687, a: 0.5019608}
-    m_SelectedColor: {r: 0, g: 0.15686275, b: 0.15686275, a: 1}
-    m_DisabledColor: {r: 0.15686275, g: 0.15686275, b: 0.15686275, a: 0.2509804}
+    m_SelectedColor: {r: 0.11764706, g: 0.11764706, b: 0.11764706, a: 1}
+    m_DisabledColor: {r: 0, g: 0.11764706, b: 0.11764706, a: 0.2509804}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
@@ -2722,12 +2713,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Actual text about controls (TODO)
-
-    Second Line
-
-    Control Binds
-    (Third line)'
+  m_text: '<color=orange>Lateral movement is strafing left or right.\n\nCurrent bindings:
+    Left:</color> {leftBind}<color=orange> Right:</color> {rightBind} <color=orange>Control
+    Type:</color> {controlType}'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -2864,12 +2852,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Actual text about controls (TODO)
-
-    Second Line
-
-    Control Binds
-    (Third line)'
+  m_text: '<color=orange>Yaw is rotating your ship either left or right, like steering
+    a car.\nIt is noticeably slower than either pitch or roll.\nCurrent bindings:
+    Left:</color> {leftBind}<color=orange> Right:</color> {rightBind} <color=orange>Control
+    Type:</color> {controlType}'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -3006,12 +2992,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Actual text about controls (TODO)
-
-    Second Line
-
-    Control Binds
-    (Third line)'
+  m_text: '<color=orange>Roll is rotating your ship arounds its forward axis.\nLeft
+    roll pushes your left side down, right roll the right side.\nCurrent bindings:
+    Left:</color> {leftBind}<color=orange> Right:</color> {rightBind)} <color=orange>Control
+    Type:</color> {controlType}'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}

@@ -33,7 +33,7 @@ public class GuideExplanations : MonoBehaviour
     {
         ControlsCarrier.Instance().GetCurrentControlBinds(AxisType.Forward,out string forwardBind, out string reverseBind);
         string controlType=ControlsCarrier.Instance().GetControlTypeDesc(AxisType.Forward);
-        return $"<color=orange>The throttle is how you accelerate forwards and backwards (Where you're pointing).\n\nCurrent bindings: <i>Forward:</i></color> {forwardBind.ToUpper()}<color=orange> Reverse:</color> {reverseBind.ToUpper()} <color=orange>Control Type:</color> {controlType}";
+        return $"<color=orange>The throttle is how you accelerate forwards and backwards (Where you're pointing).\n\nCurrent bindings: Forward:</color> {forwardBind.ToUpper()}<color=orange> Reverse:</color> {reverseBind.ToUpper()} <color=orange>Control Type:</color> {controlType}";
     }
 
 
