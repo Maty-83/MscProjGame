@@ -43,11 +43,11 @@ public enum ControlsPreset
     ElitePitchAndRollFA,
     [Description("Star Citizen")]
     StarCitizen,
-    [Description("E:D, recommended FA-off")]
+    [Description("E:D, full FA-off")]
     ElitePYFAOff,
-    [Description("E:D, KB rot. stabilized")]
+    [Description("E:D, partial FA-off")]
     ElitePartialFAOff,
-    [Description("Custom Scheme")]
+    [Description("Custom")]
     Custom
 }
 
@@ -118,7 +118,17 @@ public class ControlsCarrier : MonoBehaviour
     {
         if (cycleDown)
         {
-            controlsPreset = (ControlsPreset)(((int)controlsPreset - 1) % Enum.GetNames(typeof(ControlsPreset)).Length);
+            int presetToInt = 0;
+            //Apparently modulo in C# uses negative remainders with negative values, sooooo.
+            if(controlsPreset == 0)
+            {
+                presetToInt = Enum.GetNames(typeof(ControlsPreset)).Length - 1;
+            }
+            else
+            {
+                presetToInt = ((int)controlsPreset - 1) % Enum.GetNames(typeof(ControlsPreset)).Length;
+            }
+            controlsPreset = (ControlsPreset)presetToInt;
         }
         else
         {
@@ -169,6 +179,15 @@ public class ControlsCarrier : MonoBehaviour
     {
         if (down)
         {
+            int presetToInt = 0;
+            if (stabType == 0)
+            {
+                presetToInt = Enum.GetNames(typeof(StabilizationType)).Length - 1;
+            }
+            else
+            {
+                presetToInt = ((int)stabType - 1) % Enum.GetNames(typeof(StabilizationType)).Length;
+            }
             stabType = (StabilizationType)(((int)stabType - 1) % Enum.GetNames(typeof(StabilizationType)).Length);
         }
         else
@@ -192,7 +211,17 @@ public class ControlsCarrier : MonoBehaviour
     {
         if (down)
         {
-            controlsType = (ControlsType)(((int)controlsType - 1) % Enum.GetNames(typeof(ControlsType)).Length);
+            int presetToInt = 0;
+            if (controlsType == 0)
+            {
+                presetToInt = Enum.GetNames(typeof(ControlsType)).Length - 1;
+            }
+            else
+            {
+                presetToInt = ((int)controlsType - 1) % Enum.GetNames(typeof(ControlsType)).Length;
+            }
+
+            controlsType = (ControlsType)presetToInt;
         }
         else
         {
@@ -214,7 +243,17 @@ public class ControlsCarrier : MonoBehaviour
     {
         if (down)
         {
-            mouseControlType = (AxisControlType)(((int)mouseControlType - 1) % Enum.GetNames(typeof(AxisControlType)).Length);
+            int presetToInt = 0;
+            if (mouseControlType == 0)
+            {
+                presetToInt = Enum.GetNames(typeof(AxisControlType)).Length - 1;
+            }
+            else
+            {
+                presetToInt = ((int)mouseControlType - 1) % Enum.GetNames(typeof(AxisControlType)).Length;
+            }
+
+            mouseControlType = (AxisControlType)presetToInt;
         }
         else
         {

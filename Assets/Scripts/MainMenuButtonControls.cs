@@ -15,7 +15,7 @@ public class MainMenuButtonControls : MonoBehaviour
     private StabilizationType CachedStabType = StabilizationType.FAOnThrottleForwards;
     private AxisControlType CachedMouseControlType = AxisControlType.Throttle;
     private ControlsType CachedControlsType = ControlsType.PitchYawOnMouse;
-    public ControlsPreset CachedPresetType = ControlsPreset.ElitePitchAndYawFA;
+    private ControlsPreset CachedPresetType = ControlsPreset.ElitePitchAndYawFA;
     public bool cycleDown = false;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
