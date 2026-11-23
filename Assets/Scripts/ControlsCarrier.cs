@@ -20,7 +20,7 @@ public enum StabilizationType
     [Description("FA-On, Forward Axis as Throttle")]
     FAOnThrottleForwards,
     [Description("FA-Off, Rotation on KB Stabilized")]
-    FAOffNonMouseRotStabilized,
+    FAOffNonMouseRotStabilized
 }
 
 public enum ControlsType
@@ -34,12 +34,31 @@ public enum ControlsType
     [Description("Keyboard-Only, KSP-Like")]
     KerbalKB
 }
+
+public enum ControlsPreset
+{
+    [Description("E:D, Pitch & Yaw")]
+    ElitePitchAndYawFA,
+    [Description("E:D, Pitch & Roll")]
+    ElitePitchAndRollFA,
+    [Description("Star Citizen")]
+    StarCitizen,
+    [Description("E:D, recommended FA-off")]
+    ElitePYFAOff,
+    [Description("E:D, KB rot. stabilized")]
+    ElitePartialFAOff,
+    [Description("Custom Scheme")]
+    Custom
+}
+
 public class ControlsCarrier : MonoBehaviour
 {
    
-    public StabilizationType stabType=StabilizationType.FAOnThrottleForwards;
-    public ControlsType controlsType = ControlsType.PitchYawOnMouse;
-    public AxisControlType mouseControlType = AxisControlType.Throttle;
+    public StabilizationType stabType { get; private set; } = StabilizationType.FAOnThrottleForwards;
+    public ControlsType controlsType { get; private set; } = ControlsType.PitchYawOnMouse;
+    public AxisControlType mouseControlType { get; private set; } = AxisControlType.Throttle;
+
+    public ControlsPreset controlsPreset { get; private set; } = ControlsPreset.ElitePitchAndYawFA;
 
     public InputActionAsset BindingsCollection;
     #region Singleton Pattern no.2
@@ -72,9 +91,90 @@ public class ControlsCarrier : MonoBehaviour
     #endregion
     
     #region Utility Functions
-    public void CycleStab()
+
+    public void SetControlsType(ControlsType type)
     {
-        stabType =(StabilizationType)(((int)stabType + 1) % Enum.GetNames(typeof(StabilizationType)).Length);//A smart piece of code that automatically cycles through enum modulo count.      
+        controlsType = type;
+        controlsPreset = ControlsPreset.Custom;
+    }
+    public void SetMouseControlType(AxisControlType type)
+    {
+        mouseControlType = type;
+        controlsPreset = ControlsPreset.Custom;
+    }
+    public void SetStabType(StabilizationType type)
+    {
+        stabType = type;
+        controlsPreset= ControlsPreset.Custom;
+    }
+    public string GetPresetTypeDesc()
+    {
+        var fieldInfo = controlsPreset.GetType().GetField(controlsPreset.ToString());
+        var attributes = (DescriptionAttribute[])fieldInfo.GetCustomAttributes(typeof(DescriptionAttribute), false);
+        return attributes.Length > 0 ? attributes[0].Description : controlsPreset.ToString();
+    }
+    public void CyclePreset(bool cycleDown = false)
+    {
+        if (cycleDown)
+        {
+            controlsPreset = (ControlsPreset)(((int)controlsPreset - 1) % Enum.GetNames(typeof(ControlsPreset)).Length);
+        }
+        else
+        {
+            controlsPreset = (ControlsPreset)(((int)controlsPreset + 1) % Enum.GetNames(typeof(ControlsPreset)).Length);
+        }
+        UpdateOnPreset();
+    }
+    public void SetPreset(ControlsPreset preset)
+    {
+        controlsPreset = preset;
+        UpdateOnPreset();
+    }
+    private void UpdateOnPreset()
+    {
+        switch (controlsPreset)
+        {
+            case ControlsPreset.ElitePitchAndYawFA:
+                stabType = StabilizationType.FAOnThrottleForwards;
+                controlsType = ControlsType.PitchYawOnMouse;
+                mouseControlType = AxisControlType.Throttle;
+                break;
+            case ControlsPreset.ElitePitchAndRollFA:
+                stabType = StabilizationType.FAOnThrottleForwards;
+                controlsType = ControlsType.PitchRollOnMouse;
+                mouseControlType = AxisControlType.Throttle;
+                break;
+            case ControlsPreset.StarCitizen:
+                stabType = StabilizationType.FAOn;
+                controlsType = ControlsType.PitchYawOnMouse;
+                mouseControlType = AxisControlType.Throttle;
+                break;
+            case ControlsPreset.ElitePYFAOff:
+                stabType = StabilizationType.FAOff;
+                controlsType = ControlsType.PitchYawOnMouse;
+                mouseControlType = AxisControlType.AccumulationDamped;
+                break;
+            case ControlsPreset.ElitePartialFAOff:
+                stabType = StabilizationType.FAOffNonMouseRotStabilized;
+                controlsType = ControlsType.PitchYawOnMouse;
+                mouseControlType = AxisControlType.AccumulationDamped;
+                break;
+            case ControlsPreset.Custom://Do nothing, custom is free of settings.
+                break;
+        }
+    }
+
+    public void CycleStab(bool down=false)
+    {
+        if (down)
+        {
+            stabType = (StabilizationType)(((int)stabType - 1) % Enum.GetNames(typeof(StabilizationType)).Length);
+        }
+        else
+        {
+            stabType = (StabilizationType)(((int)stabType + 1) % Enum.GetNames(typeof(StabilizationType)).Length);//A smart piece of code that automatically cycles through enum modulo count.
+        }
+        controlsPreset = ControlsPreset.Custom;
     }
     /// <summary>
     /// Returns the description of the stabilization type set in the ControlsCarrier instance, excluding mouse controls.
@@ -87,9 +187,17 @@ public class ControlsCarrier : MonoBehaviour
         return attributes.Length > 0 ? attributes[0].Description : stabType.ToString();
     }
     
-    public void CycleControls()
+    public void CycleControls(bool down=false)
     {
-        controlsType =(ControlsType)(((int)controlsType + 1)% Enum.GetNames (typeof(ControlsType)).Length);
+        if (down)
+        {
+            controlsType = (ControlsType)(((int)controlsType - 1) % Enum.GetNames(typeof(ControlsType)).Length);
+        }
+        else
+        {
+            controlsType = (ControlsType)(((int)controlsType + 1) % Enum.GetNames(typeof(ControlsType)).Length);
+        }
+        controlsPreset = ControlsPreset.Custom;
     }
     /// <summary>
     /// Gets the string-based description of the controlsType of this ControlsCarrier instance
@@ -101,9 +209,17 @@ public class ControlsCarrier : MonoBehaviour
         var attributes = (DescriptionAttribute[])fieldInfo.GetCustomAttributes(typeof(DescriptionAttribute), false);
         return attributes.Length > 0 ? attributes[0].Description : controlsType.ToString();
     }
-    public void CycleMouseControl()
+    public void CycleMouseControl(bool down=false)
     {
-        mouseControlType= (AxisControlType)(((int)mouseControlType + 1) % Enum.GetNames(typeof(AxisControlType)).Length);
+        if (down)
+        {
+            mouseControlType = (AxisControlType)(((int)mouseControlType - 1) % Enum.GetNames(typeof(AxisControlType)).Length);
+        }
+        else
+        {
+            mouseControlType = (AxisControlType)(((int)mouseControlType + 1) % Enum.GetNames(typeof(AxisControlType)).Length);
+        }
+        controlsPreset = ControlsPreset.Custom;
     }
     /// <summary>
     /// Returns the shared axis control type mouse controls share for this instance of ControlsCarrier 
