@@ -66,6 +66,7 @@ public class ControlsCarrier : MonoBehaviour
 
     void Awake()
     {
+        UpdateOnPreset();
         if (instance == null)
         {
             instance = this;
