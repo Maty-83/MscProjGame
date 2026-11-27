@@ -18,7 +18,7 @@ public class FinishRing : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player"))
         {
-            CheckpointManager.Instance.TryFinish();
+            LevelManager.Instance.TryFinish();
         }
     }
 }

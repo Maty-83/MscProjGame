@@ -13,7 +13,7 @@ public class CheckpointCounterUI : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        var cpm = CheckpointManager.Instance;
+        var cpm = LevelManager.Instance;
         if (cpm.Finished)
         {
             text.text = "FINISH!";

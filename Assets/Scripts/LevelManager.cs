@@ -1,19 +1,19 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CheckpointManager : MonoBehaviour
+public class LevelManager : MonoBehaviour
 {
     #region Singleton Pattern no.1
-    private static CheckpointManager instance;
+    private static LevelManager instance;
 
-    public static CheckpointManager Instance
+    public static LevelManager Instance
     {
         get
         {
             if (instance == null)
             {
                 var go= new GameObject("Game Manager");
-                instance = go.AddComponent<CheckpointManager>();
+                instance = go.AddComponent<LevelManager>();
             }
             return instance;
         }

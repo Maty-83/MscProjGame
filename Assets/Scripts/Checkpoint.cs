@@ -13,8 +13,8 @@ public class Checkpoint : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        if (UseAutomaticRank) CheckpointManager.Instance.AddCheckpointToList(this);
-        else CheckpointManager.Instance.AddCheckpointToList(this, (int)RankInSequence);
+        if (UseAutomaticRank) LevelManager.Instance.AddCheckpointToList(this);
+        else LevelManager.Instance.AddCheckpointToList(this, (int)RankInSequence);
     }
 
     // Update is called once per frame
@@ -28,13 +28,13 @@ public class Checkpoint : MonoBehaviour
     /// <returns>True if checkpoint can be passed, False otherwise</returns>
     private bool CanPass()
     {
-        return CheckpointManager.Instance.MaxCheckpointOrdPassed >= MinRankToOpen;
+        return LevelManager.Instance.MaxCheckpointOrdPassed >= MinRankToOpen;
     }
     private bool TryPass()
     {
         if (CanPass())
         {
-            return CheckpointManager.Instance.SetCheckpointLevelComplete(this);            
+            return LevelManager.Instance.SetCheckpointLevelComplete(this);            
         }
         return false;
     }
