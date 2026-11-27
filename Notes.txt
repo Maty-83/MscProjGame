@@ -436,10 +436,19 @@ Initial notes about diploma thesis:
 	
 	>Replay system:
 		>Goal: Logging controls and acceleration in order to reproduce a given path
+		>For now, only logging inputs and position, not velocity.
+			>Could log velocity, but we can simulate to a given frame.. Plus it would make the files way larger.
+		
 		>Considered approaches:
 			>Direct IO every frame: Rejected on principle of unequal length of write depending on buffer size, could cause lag.
-			>Stream to string at finish: Rejected due to lag at finish during longer levels, commonly seen in e.g. Trackmania Nations Forever
+			>Stream to string, write at finish: Rejected due to lag at finish during longer levels, commonly seen in e.g. Trackmania Nations Forever. Also, streaming to string leaves much to be desired.
+			>Async writes: Input sequence is important to us as it describes position via inputs, rejected.
+			>Save inputs and write async at finish: Less memory-intensive than string (Saving 32-bit value types in structs), async write as Task job finishes even on scene switch (We just need to ensure we aren't touching any engine stuff), limited impact on frame when it saves.
 			
+		>Last approach was selected as no other option was immediately seen, since we require:
+			>Correct order. Since we add synchronously to a structure, order is present by the fact frames are temporally displaced.
+			>As little memory leakage over time as possible. By the nature of replays, unless writing to a temporary file (Which would break condition #1 potentially), we need to save data. This seems the most ideal compromise as our stack should grow by (7+6+2)*4+1=61B every frame at most, leaving time to GB at multiple days.
+			>Limited end-frame impact is optional, but highly desired, which the async write is very useful for.
 	
 	
 	>For paper, I ran it through a couple AIs to start with, since they work as search engines. (Similar topics, none quite there):

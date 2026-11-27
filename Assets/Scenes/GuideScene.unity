@@ -2383,7 +2383,6 @@ GameObject:
   - component: {fileID: 951242824}
   - component: {fileID: 951242827}
   - component: {fileID: 951242826}
-  - component: {fileID: 951242825}
   m_Layer: 5
   m_Name: Text_HowToPlay_Title (1)
   m_TagString: Untagged
@@ -2411,24 +2410,6 @@ RectTransform:
   m_AnchoredPosition: {x: 990, y: -480.0001}
   m_SizeDelta: {x: 600, y: 50}
   m_Pivot: {x: 0, y: 1}
---- !u!114 &951242825
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 951242823}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 73239f16e576677429e5bba235979749, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::GuideExplanations
-  throttleText: {fileID: 1618625558}
-  lateralText: {fileID: 0}
-  verticalText: {fileID: 0}
-  pitchText: {fileID: 0}
-  yawText: {fileID: 0}
-  rollText: {fileID: 0}
 --- !u!114 &951242826
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3795,7 +3776,6 @@ GameObject:
   - component: {fileID: 1821535763}
   - component: {fileID: 1821535766}
   - component: {fileID: 1821535765}
-  - component: {fileID: 1821535764}
   m_Layer: 5
   m_Name: Text_Throttle_Title
   m_TagString: Untagged
@@ -3826,24 +3806,6 @@ RectTransform:
   m_AnchoredPosition: {x: 990, y: -75.00006}
   m_SizeDelta: {x: 600, y: 50}
   m_Pivot: {x: 0, y: 1}
---- !u!114 &1821535764
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1821535762}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 73239f16e576677429e5bba235979749, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::GuideExplanations
-  throttleText: {fileID: 2035229677}
-  lateralText: {fileID: 645305399}
-  verticalText: {fileID: 1619242401}
-  pitchText: {fileID: 1448615386}
-  yawText: {fileID: 0}
-  rollText: {fileID: 0}
 --- !u!114 &1821535765
 MonoBehaviour:
   m_ObjectHideFlags: 0

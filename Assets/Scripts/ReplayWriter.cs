@@ -67,15 +67,11 @@ public struct PhysicsFramePositionLog
 {
     Vector3 localPosition;
     Quaternion localRotation;
-    Vector3 linearVelocity;
-    Vector3 angularVelocity;
 
-    public PhysicsFramePositionLog(Vector3 localPosition, Quaternion localRotation, Vector3 linearVelocity, Vector3 angularVelocity)
+    public PhysicsFramePositionLog(Vector3 localPosition, Quaternion localRotation)
     {
         this.localPosition = localPosition;
         this.localRotation = localRotation;
-        this.linearVelocity = linearVelocity;
-        this.angularVelocity = angularVelocity;
     }
 }
 
