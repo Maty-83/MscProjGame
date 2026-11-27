@@ -53,7 +53,7 @@ public class ReplayWriter : MonoBehaviour
 
         throw new System.Exception();
     }
-    private static void WriteReplayStatic(string levelIdentifier, float? finishCompletionTime, List<PhysicsFrameControlLog> inputFrames, List<PhysicsFramePositionLog> positionFrames, List<CheckpointCompletion> checkpointCompletions)
+    private static void WriteReplayStatic(string levelIdentifier, float? finishCompletionTime,string PresetConfig, List<PhysicsFrameControlLog> inputFrames, List<PhysicsFramePositionLog> positionFrames, List<CheckpointCompletion> checkpointCompletions)
     {
 
         string filename = $"{DateTime.Now.ToString("s").Replace(":", "")}.replay";
@@ -62,22 +62,45 @@ public class ReplayWriter : MonoBehaviour
             sw.WriteLine(levelIdentifier);
             if (finishCompletionTime != null)
             {
-                sw.WriteLine(Timer.GetTimeFromFloat(finishCompletionTime.Value));
+                sw.WriteLine(Timer.GetTimeFromFloat(finishCompletionTime.Value));//For now, I'm doing this human-readable since I will be analyzing it.
             }
             else 
             {
                 sw.WriteLine();
             }
+            sw.WriteLine();
+            sw.WriteLine(PresetConfig);
+            sw.WriteLine();
+            for (int i = 0; i< checkpointCompletions.Count; i++)
+            {
+                sw.WriteLine(checkpointCompletions[i].ToString());
+            }
+            sw.WriteLine();
+            for (int i = 0; i<inputFrames.Count; i++)
+            {
+                sw.WriteLine(inputFrames[i].ToString());
+            }
+            sw.WriteLine();
+            for (int i = 0;i<positionFrames.Count; i++)
+            {
+                sw.WriteLine(positionFrames[i].ToString());
+            }
         }
     }
     public void RecordNewFrame(PhysicsFrameControlLog controlLog, PhysicsFramePositionLog positionLog)
     {
-        inputFrames.Add(controlLog);
-        positionFrames.Add(positionLog);
+        if (finishCompletionTime == null) 
+        { //if we haven't finished, add the logs
+            inputFrames.Add(controlLog);
+            positionFrames.Add(positionLog);
+        }
     }
     public void RecordNewCheckpointCompletion(CheckpointCompletion completion)
     {
-        checkpointCompletions.Add(completion);
+        if (finishCompletionTime == null)
+        { // if we haven't finished, add the log.
+            checkpointCompletions.Add(completion);
+        }
     }
     public void Finish(float timerTime, bool write = true)
     {
@@ -118,6 +141,10 @@ public struct PhysicsFrameControlLog
         this.lateral = lateral;
         this.spaceBrake = spaceBrake;
     }
+    public override string ToString()
+    {
+        return $"P{pitch}Y{yaw}R{roll}T{thrust}V{vertical}L{lateral}SB{Convert.ToInt32(spaceBrake)}";
+    }
 }
 public struct PhysicsFramePositionLog
 {
@@ -128,6 +155,10 @@ public struct PhysicsFramePositionLog
     {
         this.localPosition = localPosition;
         this.localRotation = localRotation;
+    }
+    public override string ToString()
+    {
+        return $"{localPosition.ToString()}|{localRotation.ToString()}";
     }
 }
 
@@ -140,5 +171,9 @@ public struct CheckpointCompletion
     {
         CheckpointRank = checkpointRank;
         this.timeSinceStart = timeSinceStart;
+    }
+    public override string ToString()
+    {
+        return $"{CheckpointRank}|{Timer.GetTimeFromFloat(timeSinceStart)}";
     }
 }

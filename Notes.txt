@@ -450,6 +450,17 @@ Initial notes about diploma thesis:
 			>As little memory leakage over time as possible. By the nature of replays, unless writing to a temporary file (Which would break condition #1 potentially), we need to save data. This seems the most ideal compromise as our stack should grow by (7+6+2)*4+1=61B every frame at most, leaving time to GB at multiple days.
 			>Limited end-frame impact is optional, but highly desired, which the async write is very useful for.
 	
+		>File format:
+			>.replay extension
+			>Line 1: string of scene or level identifier (Assigned as hash could be good)
+			>Line 2: Finish line if finished, else empty.
+			>Line 3: Empty
+			>Line 4: Config data (Either one line, or strings separated by "|"
+			>Line 5:
+			>Line 6-n: Checkpoint data (Format: checkpoint level, ID)
+			>Line n+1: Empty
+			>Rest of lines: Raw control data.
+	
 	
 	>For paper, I ran it through a couple AIs to start with, since they work as search engines. (Similar topics, none quite there):
 	
