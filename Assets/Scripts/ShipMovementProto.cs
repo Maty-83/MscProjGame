@@ -701,5 +701,14 @@ public class ShipMovementProto : MonoBehaviour
         ApplyRotationVelChanges();
 
         ApplyLinearVelChanges();
+
+        RecordThisFrame();
+    }
+
+    public void RecordThisFrame()
+    {
+        PhysicsFrameControlLog controlLog = new PhysicsFrameControlLog(LastFrameRotInputPercent, LastFrameLinInputPercent, LastFrameSpaceBrakeApplied);
+        PhysicsFramePositionLog positionLog = new PhysicsFramePositionLog(this.transform.localPosition, this.transform.localRotation);
+        ReplayWriter.Instance.RecordNewFrame(controlLog, positionLog);
     }
 }

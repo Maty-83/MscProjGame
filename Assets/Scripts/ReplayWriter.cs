@@ -131,15 +131,14 @@ public struct PhysicsFrameControlLog
     float vertical;
     float lateral;
     bool spaceBrake;
-
-    public PhysicsFrameControlLog(float pitch, float yaw, float roll, float thrust, float vertical, float lateral, bool spaceBrake)
+    public PhysicsFrameControlLog(Vector3 rot, Vector3 lin, bool spaceBrake)
     {
-        this.pitch = pitch;
-        this.yaw = yaw;
-        this.roll = roll;
-        this.thrust = thrust;
-        this.vertical = vertical;
-        this.lateral = lateral;
+        pitch = rot.z;
+        yaw = rot.y;
+        roll = rot.x;
+        thrust = lin.x;
+        lateral = lin.z;
+        vertical = lin.y;
         this.spaceBrake = spaceBrake;
     }
     public override string ToString()

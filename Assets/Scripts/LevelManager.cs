@@ -45,7 +45,7 @@ public class LevelManager : MonoBehaviour
             CheckpointNumber = CreatorCheckpointIndex;
             Checkpoint.RankInSequence = CreatorCheckpointIndex;
             CreatorCheckpointIndex++;
-            if (CreatorCheckpointIndex > 0)
+            if (CreatorCheckpointIndex >= -1)
             {
                 Debug.Log("Congratulations, you've somehow placed enough checkpoints to break the game. HOW?");//Leave this in, it's both a fault code and a message to stop.
             }
@@ -137,10 +137,17 @@ public class LevelManager : MonoBehaviour
             var set = CheckpointsNotPassed[C.RankInSequence];
             if (set.Contains(C))
             {
-                foreach (var item in set) item.SetPassed(true);
+                foreach (var item in set)
+                {
+                    item.SetPassed(true);
+                }
                 CheckpointsNotPassed.Remove(C.RankInSequence);
                 MaxCheckpointOrdPassed = Mathf.Max(MaxCheckpointOrdPassed, C.RankInSequence);
                 LastCompleteCheckpoint = C;
+
+                CheckpointCompletion completion= new CheckpointCompletion(C.RankInSequence,Timer.GetShipTimer().GetTimeSinceStart());
+                ReplayWriter.Instance.RecordNewCheckpointCompletion(completion);
+
                 return true;
             }
         } 
@@ -169,6 +176,8 @@ public class LevelManager : MonoBehaviour
                 c.SetPassed(false);
             }
         }
+        CheckpointCompletion completion = new CheckpointCompletion(-1, Timer.GetShipTimer().GetTimeSinceStart());
+        ReplayWriter.Instance.RecordNewCheckpointCompletion(completion);
     }
     /// <summary>
     /// A function call which sets the "Finished" value in checkpoint manager if all prerequisits to finish a level have been completed (We have gone through all checkpoints.)
@@ -185,6 +194,7 @@ public class LevelManager : MonoBehaviour
                 timer.PauseTimer();
             }
             //TODO: We do something here if we finish (Like timescale to zero, record our logs and time, etc.)
+            ReplayWriter.Instance.Finish(timer.GetTimeSinceStart());
             return true;
         }
         return false;
