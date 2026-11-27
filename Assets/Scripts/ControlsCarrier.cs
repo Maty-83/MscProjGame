@@ -446,4 +446,16 @@ public class ControlsCarrier : MonoBehaviour
         }
         return null;
     }
+
+    public override string ToString()
+    {
+        if(controlsPreset != ControlsPreset.Custom)
+        {
+            return GetPresetTypeDesc();
+        }
+        else
+        {
+            return $"{GetPresetTypeDesc()}|{GetControlsTypeDesc()}|{GetMouseControlTypeDesc()}|{GetStabTypeDesc()}";
+        }
+    }
 }

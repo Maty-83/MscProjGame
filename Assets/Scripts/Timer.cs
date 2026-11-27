@@ -17,7 +17,7 @@ public class Timer : MonoBehaviour
     public TMP_Text TimerUI;
     void Start()
     {
-        TimerUI.text = "00.00";
+        TimerUI.text = "00.000";
         if (IsShipTimer)
         {
             ShipTimer = this;
@@ -38,13 +38,14 @@ public class Timer : MonoBehaviour
         float timeSec = time % 60;
         int timeMin = (int)time / 60;
 
-        if (timeMin > 0)
+        //Precision to the thousandth is enough.
+        if (timeMin > 0) 
         {
-            return $"{timeMin}:{timeSec.ToString("00.00")}";
+            return $"{timeMin}:{timeSec.ToString("00.000")}";
         }
         else
         {
-            return timeSec.ToString("00.00");
+            return timeSec.ToString("00.000");
         }
     }
     /// <summary>

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -50,8 +51,8 @@ public class ReplayWriter : MonoBehaviour
         {
             levelIdentifier = SceneManager.GetActiveScene().name;
         }
-
-        throw new System.Exception();
+        Action a= ()=> WriteReplayStatic(levelIdentifier, finishCompletionTime, ControlsCarrier.Instance().ToString(), inputFrames, positionFrames, checkpointCompletions);
+        Task.Run(a);
     }
     private static void WriteReplayStatic(string levelIdentifier, float? finishCompletionTime,string PresetConfig, List<PhysicsFrameControlLog> inputFrames, List<PhysicsFramePositionLog> positionFrames, List<CheckpointCompletion> checkpointCompletions)
     {
@@ -143,7 +144,7 @@ public struct PhysicsFrameControlLog
     }
     public override string ToString()
     {
-        return $"P{pitch}Y{yaw}R{roll}T{thrust}V{vertical}L{lateral}SB{Convert.ToInt32(spaceBrake)}";
+        return $"P{pitch.ToString("R")}Y{yaw.ToString("R")}R{roll.ToString("R")}T{thrust.ToString("R")}V{vertical.ToString("R")}L{lateral.ToString("R")}SB{Convert.ToInt32(spaceBrake)}";
     }
 }
 public struct PhysicsFramePositionLog
@@ -158,7 +159,7 @@ public struct PhysicsFramePositionLog
     }
     public override string ToString()
     {
-        return $"{localPosition.ToString()}|{localRotation.ToString()}";
+        return $"{localPosition.ToString("R")}|{localRotation.ToString("R")}";
     }
 }
 

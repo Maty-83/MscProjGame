@@ -455,12 +455,15 @@ Initial notes about diploma thesis:
 			>Line 1: string of scene or level identifier (Assigned as hash could be good)
 			>Line 2: Finish line if finished, else empty.
 			>Line 3: Empty
-			>Line 4: Config data (Either one line, or strings separated by "|"
-			>Line 5:
-			>Line 6-n: Checkpoint data (Format: checkpoint level, ID)
+			>Line 4: Config data (Either one string, or strings separated by "|" as $"{GetPresetTypeDesc()}|{GetControlsTypeDesc()}|{GetMouseControlTypeDesc()}|{GetStabTypeDesc()}"
+			>Line 5: Empty
+			>Line 6 to n: Checkpoint data (Format: checkpoint level, ID)
 			>Line n+1: Empty
-			>Rest of lines: Raw control data.
+			>Line n+2 to m: Input data Vector3.ToString("R")|Quaternion.ToString("R")
+			>Line m+1: Empty
+			>Line m+2 to l: Recorded positions
 	
+		>All ToString methods except checkpoints are in "R" format. Checkpoints should show time to the thousandth, though variance by less than a physics frame may be acceptable due to execution order.
 	
 	>For paper, I ran it through a couple AIs to start with, since they work as search engines. (Similar topics, none quite there):
 	
