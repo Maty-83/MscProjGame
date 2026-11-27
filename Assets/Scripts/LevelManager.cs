@@ -12,7 +12,7 @@ public class LevelManager : MonoBehaviour
         {
             if (instance == null)
             {
-                var go= new GameObject("Game Manager");
+                var go= new GameObject("Level Manager");
                 instance = go.AddComponent<LevelManager>();
             }
             return instance;

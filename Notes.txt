@@ -434,6 +434,13 @@ Initial notes about diploma thesis:
 		>Negatives of implementation:
 			>Strings defined in code: This could be bypassed by logging the strings outside the game, but as it stands with one language and easier formatting, we will be using code-defined strings since we want adaptive controls. That does reduce our modularity and would need change on a full game, but would also mean more effort and code spent on loading in the strings.
 	
+	>Replay system:
+		>Goal: Logging controls and acceleration in order to reproduce a given path
+		>Considered approaches:
+			>Direct IO every frame: Rejected on principle of unequal length of write depending on buffer size, could cause lag.
+			>Stream to string at finish: Rejected due to lag at finish during longer levels, commonly seen in e.g. Trackmania Nations Forever
+			
+	
 	
 	>For paper, I ran it through a couple AIs to start with, since they work as search engines. (Similar topics, none quite there):
 	
