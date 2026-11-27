@@ -28,16 +28,23 @@ public class Timer : MonoBehaviour
     void Update()
     {
         float time=GetTimeSinceStart();
+        
+        TimerUI.text = GetTimeFromFloat(time);
+
+    }
+
+    public static string GetTimeFromFloat(float time)
+    {
         float timeSec = time % 60;
         int timeMin = (int)time / 60;
 
-        if(timeMin > 0)
+        if (timeMin > 0)
         {
-            TimerUI.text = $"{timeMin}:{timeSec.ToString("00.00")}";
+            return $"{timeMin}:{timeSec.ToString("00.00")}";
         }
         else
         {
-            TimerUI.text = timeSec.ToString("00.00");
+            return timeSec.ToString("00.00");
         }
     }
     /// <summary>

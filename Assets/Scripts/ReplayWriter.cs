@@ -1,5 +1,9 @@
+using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class ReplayWriter : MonoBehaviour
 {
@@ -24,10 +28,10 @@ public class ReplayWriter : MonoBehaviour
     }
     #endregion
     private List<PhysicsFrameControlLog> inputFrames=new List<PhysicsFrameControlLog>();
-    private List<PhysicsFramePositionLog> positionLog=new List<PhysicsFramePositionLog>();
+    private List<PhysicsFramePositionLog> positionFrames=new List<PhysicsFramePositionLog>();
     private List<CheckpointCompletion> checkpointCompletions=new List<CheckpointCompletion>();
-    private float? FinishCompletionTime=null;
-    private string levelIdentifier="";
+    private float? finishCompletionTime=null;
+    private string levelIdentifier=null;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -40,7 +44,59 @@ public class ReplayWriter : MonoBehaviour
     {
         
     }
-    
+    private void WriteReplay()
+    {
+        if (levelIdentifier == null)
+        {
+            levelIdentifier = SceneManager.GetActiveScene().name;
+        }
+
+        throw new System.Exception();
+    }
+    private static void WriteReplayStatic(string levelIdentifier, float? finishCompletionTime, List<PhysicsFrameControlLog> inputFrames, List<PhysicsFramePositionLog> positionFrames, List<CheckpointCompletion> checkpointCompletions)
+    {
+
+        string filename = $"{DateTime.Now.ToString("s").Replace(":", "")}.replay";
+        using (StreamWriter sw=new StreamWriter(filename))
+        {
+            sw.WriteLine(levelIdentifier);
+            if (finishCompletionTime != null)
+            {
+                sw.WriteLine(Timer.GetTimeFromFloat(finishCompletionTime.Value));
+            }
+            else 
+            {
+                sw.WriteLine();
+            }
+        }
+    }
+    public void RecordNewFrame(PhysicsFrameControlLog controlLog, PhysicsFramePositionLog positionLog)
+    {
+        inputFrames.Add(controlLog);
+        positionFrames.Add(positionLog);
+    }
+    public void RecordNewCheckpointCompletion(CheckpointCompletion completion)
+    {
+        checkpointCompletions.Add(completion);
+    }
+    public void Finish(float timerTime, bool write = true)
+    {
+        finishCompletionTime=timerTime;
+        if (write)
+        {
+            //Write as default, but overwritable since we may do verification later.x
+            WriteReplay();
+        }
+    }
+    /// <summary>
+    /// Sets specific string identifier for the level
+    /// </summary>
+    /// <param name="identifier">identifier to set</param>
+    /// <remarks>Currently unused, intended for dynamically loaded levels.</remarks>
+    public void SetStringIdentifier(string identifier)
+    {
+        levelIdentifier=identifier;
+    }
 }
 public struct PhysicsFrameControlLog
 {
