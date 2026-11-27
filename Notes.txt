@@ -459,9 +459,9 @@ Initial notes about diploma thesis:
 			>Line 5: Empty
 			>Line 6 to n: Checkpoint data (Format: checkpoint level, ID)
 			>Line n+1: Empty
-			>Line n+2 to m: Input data 
+			>Line n+2 to m: Input data 						
 			>Line m+1: Empty
-			>Line m+2 to l: Vector3.ToString("R")|Quaternion.ToString("R") //This is recorded AFTER applying that frame's changes. But it's position, so shouldn't matter.
+			>(OPTIONAL; writes if RecordPositions is true.) Line m+2 to l: Vector3.ToString("R")|Quaternion.ToString("R") //This is recorded AFTER applying that frame's changes. But it's position, so shouldn't matter.
 			
 		>NOTE: For multi-laps, the method is experimental, we use "-1" as the index (Since it's otherwise unused.). But it's untested and would need to be expanded on.
 	

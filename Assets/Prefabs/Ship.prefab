@@ -5349,30 +5349,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1270f700868a3a4aaab4caee3f6e026, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ShipMovementProto
-  pitchAccelPerSec: 1
+  pitchAccelPerSec: 1.5
   maxPitchVel: 1
   pitchControlType: 1
   pitchSensitivity: 1
   yawAccelPerSec: 0.5
-  maxYawVel: 1
+  maxYawVel: 0.75
   yawControlType: 1
   yawSensitivity: 1
-  rollAccelPerSec: 1
-  maxRollVel: 1
+  rollAccelPerSec: 2
+  maxRollVel: 2
   rollControlType: 1
   rollSensitivity: 1
-  forwardAccelPerSec: 40
-  maxVel: 200
-  reverseAccelPerSec: 20
-  maxReverseVel: 100
+  forwardAccelPerSec: 50
+  maxVel: 240
+  reverseAccelPerSec: 25
+  maxReverseVel: 120
   thrustControlType: 4
   thrustSensitivity: 1
   lateralAccelPerSec: 15
-  maxLateralVel: 100
+  maxLateralVel: 80
   lateralControlType: 1
   lateralSensitivity: 1
-  verticalAccelPerSec: 20
-  maxVerticalVel: 100
+  verticalAccelPerSec: 25
+  maxVerticalVel: 120
   verticalControlType: 1
   verticalSensitivity: 1
   maxAccumulation: 100

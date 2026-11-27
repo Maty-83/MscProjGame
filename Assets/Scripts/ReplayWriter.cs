@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.IO;
+using System.IO.Compression;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using UnityEngine;
@@ -10,7 +12,7 @@ public class ReplayWriter : MonoBehaviour
 {
     #region Singleton Pattern no.1
     private static ReplayWriter instance;
-
+    public bool recordPositions = true;
     public static ReplayWriter Instance
     {
         get
@@ -51,14 +53,18 @@ public class ReplayWriter : MonoBehaviour
         {
             levelIdentifier = SceneManager.GetActiveScene().name;
         }
-        Action a= ()=> WriteReplayStatic(levelIdentifier, finishCompletionTime, ControlsCarrier.Instance().ToString(), inputFrames, positionFrames, checkpointCompletions);
+        Action a= ()=> WriteReplayStatic(levelIdentifier, finishCompletionTime, ControlsCarrier.Instance().ToString(), inputFrames, positionFrames, checkpointCompletions, recordPositions);
         Task.Run(a);
     }
-    private static void WriteReplayStatic(string levelIdentifier, float? finishCompletionTime,string PresetConfig, List<PhysicsFrameControlLog> inputFrames, List<PhysicsFramePositionLog> positionFrames, List<CheckpointCompletion> checkpointCompletions)
+    private static void WriteReplayStatic(string levelIdentifier, float? finishCompletionTime,string PresetConfig, List<PhysicsFrameControlLog> inputFrames, List<PhysicsFramePositionLog> positionFrames, List<CheckpointCompletion> checkpointCompletions, bool recordPositions)
     {
+        const string replayDir = "replays";
+        Directory.CreateDirectory("replays");
+        string filename = Path.Combine(replayDir,$"{DateTime.Now.ToString("s").Replace(":", "")}.replay");
 
-        string filename = $"{DateTime.Now.ToString("s").Replace(":", "")}.replay";
-        using (StreamWriter sw=new StreamWriter(filename))
+        using (FileStream stream = new FileStream(filename, FileMode.Create))
+        using (GZipStream gzipStream= new GZipStream(stream, CompressionMode.Compress))
+        using (StreamWriter sw=new StreamWriter(gzipStream, System.Text.Encoding.UTF8))
         {
             sw.WriteLine(levelIdentifier);
             if (finishCompletionTime != null)
@@ -82,9 +88,12 @@ public class ReplayWriter : MonoBehaviour
                 sw.WriteLine(inputFrames[i].ToString());
             }
             sw.WriteLine();
-            for (int i = 0;i<positionFrames.Count; i++)
-            {
-                sw.WriteLine(positionFrames[i].ToString());
+            if (recordPositions)
+            {       
+                for (int i = 0; i < positionFrames.Count; i++)
+                {
+                    sw.WriteLine(positionFrames[i].ToString().Replace("(", "").Replace(")", "").Replace(" ", ""));
+                }
             }
         }
     }
@@ -143,7 +152,7 @@ public struct PhysicsFrameControlLog
     }
     public override string ToString()
     {
-        return $"P{pitch.ToString("R")}Y{yaw.ToString("R")}R{roll.ToString("R")}T{thrust.ToString("R")}V{vertical.ToString("R")}L{lateral.ToString("R")}SB{Convert.ToInt32(spaceBrake)}";
+        return $"p{pitch.ToString("R")}y{yaw.ToString("R")}r{roll.ToString("R")}t{thrust.ToString("R")}v{vertical.ToString("R")}l{lateral.ToString("R")}x{Convert.ToInt32(spaceBrake)}";
     }
 }
 public struct PhysicsFramePositionLog
