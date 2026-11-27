@@ -13,15 +13,15 @@ public class CheckpointCounterUI : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        var cpm = LevelManager.Instance;
-        if (cpm.Finished)
+        var lvm = LevelManager.Instance;
+        if (lvm.Finished)
         {
             text.text = "FINISH!";
         }
         else
         {
-            var remaining = cpm.GetTotalRemainingCheckpoints();
-            var total = cpm.GetTotalCheckpoints();
+            var remaining = lvm.GetTotalRemainingCheckpoints();
+            var total = lvm.GetTotalCheckpoints();
             text.text = $"{total-remaining}/{total}";
         }
     }

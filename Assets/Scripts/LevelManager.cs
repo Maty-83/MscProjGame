@@ -185,7 +185,7 @@ public class LevelManager : MonoBehaviour
     /// <returns>True if succesfully finished, False if not</returns>
     public bool TryFinish()
     {
-        if (GetTotalRemainingCheckpoints() == 0)
+        if (GetTotalRemainingCheckpoints() == 0 && !Finished)
         {
             Finished = true;
             var timer=Timer.GetShipTimer();
