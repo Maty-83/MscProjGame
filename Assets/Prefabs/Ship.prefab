@@ -5363,15 +5363,15 @@ MonoBehaviour:
   rollSensitivity: 1
   forwardAccelPerSec: 50
   maxVel: 240
-  reverseAccelPerSec: 25
+  reverseAccelPerSec: 30
   maxReverseVel: 120
   thrustControlType: 4
   thrustSensitivity: 1
-  lateralAccelPerSec: 15
+  lateralAccelPerSec: 20
   maxLateralVel: 80
   lateralControlType: 1
   lateralSensitivity: 1
-  verticalAccelPerSec: 25
+  verticalAccelPerSec: 30
   maxVerticalVel: 120
   verticalControlType: 1
   verticalSensitivity: 1

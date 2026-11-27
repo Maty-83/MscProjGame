@@ -466,6 +466,11 @@ Initial notes about diploma thesis:
 		>NOTE: For multi-laps, the method is experimental, we use "-1" as the index (Since it's otherwise unused.). But it's untested and would need to be expanded on.
 	
 		>All ToString methods except checkpoints are in "R" format. Checkpoints should show time to the thousandth, though variance by less than a physics frame may be acceptable due to execution order.
+		
+		>Results with basic replays proved successful, but a problem arose: Due to size of plain strings, replay files were sized at about 600kB/minute of flight (Approximate)
+			>Unacceptable size, files need to be much smaller.
+			>Using GZipStream, the files can be reduced to about 220kB/min
+			>Also added in-code toggle which records purely inputs and omits positions, which has the possibility of decreasing to a third or less.
 	
 	>For paper, I ran it through a couple AIs to start with, since they work as search engines. (Similar topics, none quite there):
 	

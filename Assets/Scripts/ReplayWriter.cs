@@ -63,7 +63,7 @@ public class ReplayWriter : MonoBehaviour
         string filename = Path.Combine(replayDir,$"{DateTime.Now.ToString("s").Replace(":", "")}.replay");
 
         using (FileStream stream = new FileStream(filename, FileMode.Create))
-        using (GZipStream gzipStream= new GZipStream(stream, CompressionMode.Compress))
+        using (GZipStream gzipStream= new GZipStream(stream, System.IO.Compression.CompressionLevel.Optimal))
         using (StreamWriter sw=new StreamWriter(gzipStream, System.Text.Encoding.UTF8))
         {
             sw.WriteLine(levelIdentifier);
